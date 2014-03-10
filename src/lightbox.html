@@ -1,0 +1,28 @@
+<div class="modal-body">
+  <!-- navigation -->
+  <div class="lightbox-nav">
+    <!-- close button -->
+    <button class="close" aria-hidden="true" ng-click="$dismiss()">×</button>
+
+    <div class="btn-group">
+      <a class="btn btn-xs btn-default" ng-click="Lightbox.prevImage()">
+        ‹ Previous
+      </a>
+
+      <a ng-href="{{Lightbox.image.url}}" target="_blank"
+          class="btn btn-xs btn-default" title="Open in new tab">
+        Open image in new tab
+      </a>
+
+      <a class="btn btn-xs btn-default" ng-click="Lightbox.nextImage()">
+        Next ›
+      </a>
+    </div>
+  </div>
+
+  <!-- image -->
+  <div class="lightbox-image-container">
+    <div class="lightbox-image-caption">{{Lightbox.image.caption}}</div>
+    <img lightbox-img ng-src="{{Lightbox.image.url}}" alt="">
+  </div>
+</div>
