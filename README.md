@@ -6,6 +6,10 @@ This lightbox displays images using an AngularUI Bootstrap Modal.
 
 ## Install
 
+```
+bower install angular-bootstrap-lightbox --save
+```
+
 Stylesheet with dependencies:
 
 ```html
