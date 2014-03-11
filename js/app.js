@@ -7,7 +7,7 @@ angular.module('app').controller('GalleryCtrl', function ($scope, Lightbox) {
       'width': 2272,
       'height': 1704,
       'thumbUrl': 'http://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Waynejunction0810b.JPG/180px-Waynejunction0810b.JPG',
-      'caption': 'This image has dimensions 2272x1704.'
+      'caption': 'This image has dimensions 2272x1704 and the img element is scaled to fit inside the window. The left and right arrow keys are binded for navigation. The escape key for closing the modal is binded by AngularUI Bootstrap.'
     },
     {
       'url': 'http://upload.wikimedia.org/wikipedia/commons/thumb/9/98/%27Grand_Canyon_with_Rainbow%27_by_Thomas_Moran%2C_1912.JPG/586px-%27Grand_Canyon_with_Rainbow%27_by_Thomas_Moran%2C_1912.JPG',
@@ -28,7 +28,7 @@ angular.module('app').controller('GalleryCtrl', function ($scope, Lightbox) {
       'width': 50,
       'height': 33,
       'thumbUrl': 'http://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/%28%2B%29-CAMP-3D-spacefill.png/50px-%28%2B%29-CAMP-3D-spacefill.png',
-      'caption': '50x33'
+      'caption': '50x33. The min modal dimensions (400x200) apply.'
     }
   ];
 
