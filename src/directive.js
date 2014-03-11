@@ -1,5 +1,5 @@
 angular.module('angular-bootstrap-lightbox')
-    .directive('lightboxImg', function ($window, cfpLoadingBar, Lightbox) {
+    .directive('lightboxSrc', function ($window, cfpLoadingBar, Lightbox) {
   /**
    * Calculate the dimensions to display the image. The max dimensions
    *   override the min dimensions if they conflict.
@@ -64,8 +64,8 @@ angular.module('angular-bootstrap-lightbox')
   };
 
   return {
-    'link': function (scope, element) {
-      // handler for resizing the image and the containing modal
+    'link': function (scope, element, attrs) {
+      // resize the image and the containing modal
       var resize = function () {
         // get the window dimensions
         var windowWidth = $window.innerWidth;
@@ -126,16 +126,31 @@ angular.module('angular-bootstrap-lightbox')
         });
       };
 
-      // initial resize for the first image
-      resize();
+      // load the new image whenever the attr changes
+      scope.$watch(function () {
+        return attrs.lightboxSrc;
+      }, function (src) {
+        img = new Image();
 
-      // when a new image loads
-      element.on('load', function () {
-        cfpLoadingBar.complete();
-        resize();
+        // start loading the image
+        img.src = src;
+
+        // when the image has loaded
+        img.onload = function() {
+          // blank the image before resizing the element; see
+          // http://stackoverflow.com/questions/5775469/whats-the-valid-way-to-include-an-image-with-no-src
+          element[0].src = '//:0';
+
+          resize();
+
+          // show the image
+          element[0].src = src;
+
+          cfpLoadingBar.complete();
+        };
       });
 
-      // when the window gets resized
+      // resize the image and modal whenever the window gets resized
       angular.element($window).on('resize', resize);
     }
   };
