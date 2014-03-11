@@ -1,0 +1,16 @@
+body {
+  margin: 1em;
+  font-size: 14px;
+}
+
+a {
+  cursor: pointer;
+}
+
+#gallery li {
+  display: inline-block;
+  margin: 0 1em 1em 0;
+  width: 150px;
+  list-style-type: none;
+  text-align: center;
+}

@@ -228,13 +228,11 @@ angular.module('angular-bootstrap-lightbox')
 
   return {
     'link': function (scope, element) {
-      var $windowElement = angular.element($window);
-
       // handler for resizing the image and the containing modal
       var resize = function () {
         // get the window dimensions
-        var windowWidth = $windowElement.width();
-        var windowHeight = $windowElement.height();
+        var windowWidth = $window.innerWidth;
+        var windowHeight = $window.innerHeight;
 
         var imageWidth = scope.Lightbox.image.width;
         var imageHeight = scope.Lightbox.image.height;
@@ -269,21 +267,21 @@ angular.module('angular-bootstrap-lightbox')
 
         // resize the image
         element.css({
-          'width': imageDisplayDimensions.width,
-          'height': imageDisplayDimensions.height
+          'width': imageDisplayDimensions.width + 'px',
+          'height': imageDisplayDimensions.height + 'px'
         });
 
         // setting the height on .modal-dialog does not expand the div with the
         // background, which is .modal-content
-        element.closest('.modal-dialog').css({
-          'width': modalDimensions.width
+        angular.element(document.querySelector('.lightbox-modal .modal-dialog')).css({
+          'width': modalDimensions.width + 'px'
         });
 
         // .modal-content has no width specified; if we set the width on .modal-
         // .content and not on.modal-dialog, .modal-dialog retains its default
         // .width of 600px and that places .modal-content off center
-        element.closest('.modal-content').css({
-          'height': modalDimensions.height
+        angular.element(document.querySelector('.lightbox-modal .modal-content')).css({
+          'height': modalDimensions.height + 'px'
         });
       };
 
@@ -295,7 +293,7 @@ angular.module('angular-bootstrap-lightbox')
         cfpLoadingBar.complete();
         resize();
       });
-      $windowElement.bind('resize', resize);
+      angular.element($window).on('resize', resize);
     }
   };
 });
