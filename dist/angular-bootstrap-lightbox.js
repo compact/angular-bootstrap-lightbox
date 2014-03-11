@@ -14,6 +14,9 @@ angular.module('angular-bootstrap-lightbox').provider('Lightbox', function () {
   this.templateUrl = 'lightbox.html';
 
   /**
+   * Calculate the max and min limits to the width and height of the displayed
+   *   image (all are optional). The max dimensions override the min
+   *   dimensions if they conflict.
    * @param  {Object} dimensions Contains the properties windowWidth,
    *   windowHeight, imageWidth, imageHeight.
    * @return {Object} May optionally contain the properties minWidth,
@@ -34,6 +37,9 @@ angular.module('angular-bootstrap-lightbox').provider('Lightbox', function () {
   };
 
   /**
+   * Calculate the width and height of the modal. This method gets called
+   *   after the width and height of the image, as displayed inside the modal,
+   *   are calculated.
    * @param  {Object} dimensions Contains the properties windowWidth,
    *   windowHeight, imageDisplayWidth, imageDisplayHeight.
    * @return {Object} Must contain the properties width and height.
