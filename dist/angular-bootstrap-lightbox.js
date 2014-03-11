@@ -6,7 +6,7 @@ angular.module('angular-bootstrap-lightbox').run(['$templateCache', function($te
   'use strict';
 
   $templateCache.put('lightbox.html',
-    "<div class=modal-body><div class=lightbox-nav><button class=close aria-hidden=true ng-click=$dismiss()>×</button><div class=btn-group><a class=\"btn btn-xs btn-default\" ng-click=Lightbox.prevImage()>‹ Previous</a> <a ng-href={{Lightbox.image.url}} target=_blank class=\"btn btn-xs btn-default\" title=\"Open in new tab\">Open image in new tab</a> <a class=\"btn btn-xs btn-default\" ng-click=Lightbox.nextImage()>Next ›</a></div></div><div class=lightbox-image-container><div class=lightbox-image-caption>{{Lightbox.image.caption}}</div><img lightbox-img=\"\" ng-src={{Lightbox.image.url}} alt=\"\"></div></div>"
+    "<div class=modal-body><div class=lightbox-nav><button class=close aria-hidden=true ng-click=$dismiss()>×</button><div class=btn-group><a class=\"btn btn-xs btn-default\" ng-click=Lightbox.prevImage()>‹ Previous</a> <a ng-href={{Lightbox.image.url}} target=_blank class=\"btn btn-xs btn-default\" title=\"Open in new tab\">Open image in new tab</a> <a class=\"btn btn-xs btn-default\" ng-click=Lightbox.nextImage()>Next ›</a></div></div><div class=lightbox-image-container><div class=lightbox-image-caption><span>{{Lightbox.image.caption}}</span></div><img lightbox-img=\"\" ng-src={{Lightbox.image.url}} alt=\"\"></div></div>"
   );
 
 }]);
@@ -273,14 +273,18 @@ angular.module('angular-bootstrap-lightbox')
 
         // setting the height on .modal-dialog does not expand the div with the
         // background, which is .modal-content
-        angular.element(document.querySelector('.lightbox-modal .modal-dialog')).css({
+        angular.element(
+          document.querySelector('.lightbox-modal .modal-dialog')
+        ).css({
           'width': modalDimensions.width + 'px'
         });
 
         // .modal-content has no width specified; if we set the width on .modal-
         // .content and not on.modal-dialog, .modal-dialog retains its default
         // .width of 600px and that places .modal-content off center
-        angular.element(document.querySelector('.lightbox-modal .modal-content')).css({
+        angular.element(
+          document.querySelector('.lightbox-modal .modal-content')
+        ).css({
           'height': modalDimensions.height + 'px'
         });
       };
@@ -288,11 +292,13 @@ angular.module('angular-bootstrap-lightbox')
       // initial resize for the first image
       resize();
 
-      // bind
-      element.bind('load', function () {
+      // when a new image loads
+      element.on('load', function () {
         cfpLoadingBar.complete();
         resize();
       });
+
+      // when the window gets resized
       angular.element($window).on('resize', resize);
     }
   };
