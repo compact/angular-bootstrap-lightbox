@@ -4,6 +4,10 @@ This lightbox displays images using an AngularUI Bootstrap Modal.
 
 [angular-loading-bar](https://github.com/chieffancypants/angular-loading-bar) is used to show the loading progress of the current image.
 
+## Demo
+
+[Demo](http://compact.github.io/angular-bootstrap-lightbox/)
+
 ## Install
 
 ```
