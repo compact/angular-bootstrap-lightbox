@@ -6,7 +6,7 @@ angular.module('angular-bootstrap-lightbox').run(['$templateCache', function($te
   'use strict';
 
   $templateCache.put('lightbox.html',
-    "<div class=modal-body><div class=lightbox-nav><button class=close aria-hidden=true ng-click=$dismiss()>×</button><div class=btn-group><a class=\"btn btn-xs btn-default\" ng-click=Lightbox.prevImage()>‹ Previous</a> <a ng-href={{Lightbox.image.url}} target=_blank class=\"btn btn-xs btn-default\" title=\"Open in new tab\">Open image in new tab</a> <a class=\"btn btn-xs btn-default\" ng-click=Lightbox.nextImage()>Next ›</a></div></div><div class=lightbox-image-container><div class=lightbox-image-caption>{{Lightbox.image.caption}}</div><img lightbox-img=\"\" ng-src={{Lightbox.image.url}} alt=\"\"></div></div>"
+    "<div class=modal-body><div class=lightbox-nav><button class=close aria-hidden=true ng-click=$dismiss()>×</button><div class=btn-group><a class=\"btn btn-xs btn-default\" ng-click=Lightbox.prevImage()>‹ Previous</a> <a ng-href={{Lightbox.image.url}} target=_blank class=\"btn btn-xs btn-default\" title=\"Open in new tab\">Open image in new tab</a> <a class=\"btn btn-xs btn-default\" ng-click=Lightbox.nextImage()>Next ›</a></div></div><div class=lightbox-image-container><div class=lightbox-image-caption><span>{{Lightbox.image.caption}}</span></div><img lightbox-img=\"\" ng-src={{Lightbox.image.url}} alt=\"\"></div></div>"
   );
 
 }]);
@@ -228,13 +228,11 @@ angular.module('angular-bootstrap-lightbox')
 
   return {
     'link': function (scope, element) {
-      var $windowElement = angular.element($window);
-
       // handler for resizing the image and the containing modal
       var resize = function () {
         // get the window dimensions
-        var windowWidth = $windowElement.width();
-        var windowHeight = $windowElement.height();
+        var windowWidth = $window.innerWidth;
+        var windowHeight = $window.innerHeight;
 
         var imageWidth = scope.Lightbox.image.width;
         var imageHeight = scope.Lightbox.image.height;
@@ -269,33 +267,39 @@ angular.module('angular-bootstrap-lightbox')
 
         // resize the image
         element.css({
-          'width': imageDisplayDimensions.width,
-          'height': imageDisplayDimensions.height
+          'width': imageDisplayDimensions.width + 'px',
+          'height': imageDisplayDimensions.height + 'px'
         });
 
         // setting the height on .modal-dialog does not expand the div with the
         // background, which is .modal-content
-        element.closest('.modal-dialog').css({
-          'width': modalDimensions.width
+        angular.element(
+          document.querySelector('.lightbox-modal .modal-dialog')
+        ).css({
+          'width': modalDimensions.width + 'px'
         });
 
         // .modal-content has no width specified; if we set the width on .modal-
         // .content and not on.modal-dialog, .modal-dialog retains its default
         // .width of 600px and that places .modal-content off center
-        element.closest('.modal-content').css({
-          'height': modalDimensions.height
+        angular.element(
+          document.querySelector('.lightbox-modal .modal-content')
+        ).css({
+          'height': modalDimensions.height + 'px'
         });
       };
 
       // initial resize for the first image
       resize();
 
-      // bind
-      element.bind('load', function () {
+      // when a new image loads
+      element.on('load', function () {
         cfpLoadingBar.complete();
         resize();
       });
-      $windowElement.bind('resize', resize);
+
+      // when the window gets resized
+      angular.element($window).on('resize', resize);
     }
   };
 });
