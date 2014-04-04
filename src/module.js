@@ -1,4 +1,4 @@
-angular.module('angular-bootstrap-lightbox', [
+angular.module('bootstrapLightbox', [
   'ngTouch',
   'ui.bootstrap',
   'chieffancypants.loadingBar',

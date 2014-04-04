@@ -70,7 +70,7 @@ module.exports = function (grunt) {
       }
     },
     ngtemplates: {
-      'angular-bootstrap-lightbox': {
+      'bootstrapLightbox': {
         cwd: 'src',
         src: '*.html',
         dest: '.tmp/templates.js',

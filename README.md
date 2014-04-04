@@ -38,7 +38,7 @@ Script with dependencies:
 Add the module as a dependency:
 
 ```js
-angular.module('app', ['angular-bootstrap-lightbox']);
+angular.module('app', ['bootstrapLightbox']);
 ```
 
 ## Example

@@ -1,9 +1,9 @@
-angular.module('angular-bootstrap-lightbox', [
+angular.module('bootstrapLightbox', [
   'ngTouch',
   'ui.bootstrap',
   'chieffancypants.loadingBar',
 ]);
-angular.module('angular-bootstrap-lightbox').run(['$templateCache', function($templateCache) {
+angular.module('bootstrapLightbox').run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('lightbox.html',
@@ -11,7 +11,7 @@ angular.module('angular-bootstrap-lightbox').run(['$templateCache', function($te
   );
 
 }]);
-angular.module('angular-bootstrap-lightbox').provider('Lightbox', function () {
+angular.module('bootstrapLightbox').provider('Lightbox', function () {
   this.templateUrl = 'lightbox.html';
 
   /**
@@ -168,7 +168,7 @@ angular.module('angular-bootstrap-lightbox').provider('Lightbox', function () {
     return Lightbox;
   };
 });
-angular.module('angular-bootstrap-lightbox')
+angular.module('bootstrapLightbox')
     .directive('lightboxSrc', function ($window, cfpLoadingBar, Lightbox) {
   /**
    * Calculate the dimensions to display the image. The max dimensions

@@ -1,4 +1,4 @@
-angular.module('angular-bootstrap-lightbox').provider('Lightbox', function () {
+angular.module('bootstrapLightbox').provider('Lightbox', function () {
   this.templateUrl = 'lightbox.html';
 
   /**

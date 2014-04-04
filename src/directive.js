@@ -1,4 +1,4 @@
-angular.module('angular-bootstrap-lightbox')
+angular.module('bootstrapLightbox')
     .directive('lightboxSrc', function ($window, cfpLoadingBar, Lightbox) {
   /**
    * Calculate the dimensions to display the image. The max dimensions
