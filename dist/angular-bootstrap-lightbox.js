@@ -1,16 +1,17 @@
-angular.module('angular-bootstrap-lightbox', [
+angular.module('bootstrapLightbox', [
+  'ngTouch',
   'ui.bootstrap',
   'chieffancypants.loadingBar',
 ]);
-angular.module('angular-bootstrap-lightbox').run(['$templateCache', function($templateCache) {
+angular.module('bootstrapLightbox').run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('lightbox.html',
-    "<div class=modal-body><div class=lightbox-nav><button class=close aria-hidden=true ng-click=$dismiss()>×</button><div class=btn-group><a class=\"btn btn-xs btn-default\" ng-click=Lightbox.prevImage()>‹ Previous</a> <a ng-href={{Lightbox.image.url}} target=_blank class=\"btn btn-xs btn-default\" title=\"Open in new tab\">Open image in new tab</a> <a class=\"btn btn-xs btn-default\" ng-click=Lightbox.nextImage()>Next ›</a></div></div><div class=lightbox-image-container><div class=lightbox-image-caption><span>{{Lightbox.image.caption}}</span></div><img lightbox-src={{Lightbox.image.url}} alt=\"\"></div></div>"
+    "<div class=modal-body ng-swipe-left=Lightbox.prevImage() ng-swipe-right=Lightbox.nextImage()><div class=lightbox-nav><button class=close aria-hidden=true ng-click=$dismiss()>×</button><div class=btn-group><a class=\"btn btn-xs btn-default\" ng-click=Lightbox.prevImage()>‹ Previous</a> <a ng-href={{Lightbox.image.url}} target=_blank class=\"btn btn-xs btn-default\" title=\"Open in new tab\">Open image in new tab</a> <a class=\"btn btn-xs btn-default\" ng-click=Lightbox.nextImage()>Next ›</a></div></div><div class=lightbox-image-container><div class=lightbox-image-caption><span>{{Lightbox.image.caption}}</span></div><img lightbox-src={{Lightbox.image.url}} alt=\"\"></div></div>"
   );
 
 }]);
-angular.module('angular-bootstrap-lightbox').provider('Lightbox', function () {
+angular.module('bootstrapLightbox').provider('Lightbox', function () {
   this.templateUrl = 'lightbox.html';
 
   /**
@@ -167,7 +168,7 @@ angular.module('angular-bootstrap-lightbox').provider('Lightbox', function () {
     return Lightbox;
   };
 });
-angular.module('angular-bootstrap-lightbox')
+angular.module('bootstrapLightbox')
     .directive('lightboxSrc', function ($window, cfpLoadingBar, Lightbox) {
   /**
    * Calculate the dimensions to display the image. The max dimensions

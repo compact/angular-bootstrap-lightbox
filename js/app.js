@@ -1,4 +1,4 @@
-angular.module('app', ['angular-bootstrap-lightbox']);
+angular.module('app', ['bootstrapLightbox']);
 
 angular.module('app').controller('GalleryCtrl', function ($scope, Lightbox) {
   $scope.images = [
