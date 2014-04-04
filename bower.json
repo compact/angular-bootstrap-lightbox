@@ -13,6 +13,7 @@
   ],
   "dependencies": {
     "angular": "~1.2.14",
+    "angular-touch": "~1.2.14",
     "angular-bootstrap": "~0.10.0",
     "angular-loading-bar": "~0.3.0",
     "bootstrap": "~3.1.1"
