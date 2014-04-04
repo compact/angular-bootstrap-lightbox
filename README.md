@@ -2,9 +2,9 @@
 
 This lightbox displays images using an AngularUI Bootstrap Modal.
 
-The left/right arrow keys are binded for navigating to the previous/next image. The escape key for closing the modal is binded by AngularUI Bootstrap. A button group for navigation and a close button are placed at the top of the modal.
+When the lightbox is opened, navigating to the previous/next image can be achieved by clicking buttons above the image, clicking the left/right arrow keys, or swiping to the left/right (using [ngTouch directives](http://docs.angularjs.org/api/ngTouch/directive)). The escape key for closing the lightbox modal is automatically binded by AngularUI Bootstrap.
 
-The image is scaled to fit inside the window. An optional image caption overlays the top left corner of the image.
+Each image is scaled to fit inside the window. An optional image caption overlays the top left corner of the image.
 
 [angular-loading-bar](https://github.com/chieffancypants/angular-loading-bar) is used to show the loading progress of the current image.
 
@@ -30,6 +30,7 @@ Script with dependencies:
 
 ```html
 <script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-touch/angular-touch.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
 <script src="bower_components/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.js"></script>
