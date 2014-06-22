@@ -29,16 +29,6 @@ module.exports = function (grunt) {
         dest: 'dist/<%= library.name %>.css'
       }
     },
-    uglify: {
-      options: {
-        banner: '/*! <%= pkg.name %> */\n'
-      },
-      jid: {
-        files: {
-          'dist/<%= library.name %>.min.js': ['<%= concat.library.dest %>']
-        }
-      }
-    },
     jshint: {
       beforeConcat: {
         src: ['Gruntfile.js', 'src/**/*.js']
@@ -58,6 +48,24 @@ module.exports = function (grunt) {
           angular: true
         },
         globalstrict: false
+      }
+    },
+    ngmin: {
+      dist: {
+        files: [{
+          src: '<%= concat.library.dest %>',
+          dest: 'dist/<%= library.name %>.min.js'
+        }]
+      }
+    },
+    uglify: {
+      options: {
+        banner: '/*! <%= pkg.name %> */\n'
+      },
+      jid: {
+        files: {
+          'dist/<%= library.name %>.min.js': ['dist/<%= library.name %>.min.js']
+        }
       }
     },
     cssmin: {
@@ -92,6 +100,7 @@ module.exports = function (grunt) {
     'ngtemplates',
     'jshint:beforeConcat',
     'concat',
+    'ngmin',
     'jshint:afterConcat',
     'uglify',
     'cssmin',
