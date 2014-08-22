@@ -50,7 +50,7 @@ module.exports = function (grunt) {
         globalstrict: false
       }
     },
-    ngmin: {
+    ngAnnotate: {
       dist: {
         files: [{
           src: '<%= concat.library.dest %>',
@@ -100,7 +100,7 @@ module.exports = function (grunt) {
     'ngtemplates',
     'jshint:beforeConcat',
     'concat',
-    'ngmin',
+    'ngAnnotate',
     'jshint:afterConcat',
     'uglify',
     'cssmin',
