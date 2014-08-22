@@ -1,6 +1,6 @@
 # angular-bootstrap-lightbox
 
-This lightbox displays images using an AngularUI Bootstrap Modal.
+This lightbox displays images using an [AngularUI Bootstrap](http://angular-ui.github.io/bootstrap/) Modal.
 
 When the lightbox is opened, navigating to the previous/next image can be achieved by clicking buttons above the image, clicking the left/right arrow keys, or swiping to the left/right (using [ngTouch directives](http://docs.angularjs.org/api/ngTouch/directive)). The escape key for closing the lightbox modal is automatically binded by AngularUI Bootstrap.
 
@@ -36,7 +36,7 @@ Script with dependencies:
 <script src="bower_components/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.js"></script>
 ```
 
-Add the module as a dependency:
+The Angular module is named `bootstrapLightbox`. Add it as a dependency:
 
 ```js
 angular.module('app', ['bootstrapLightbox']);
@@ -62,11 +62,11 @@ Controller:
 angular.module('app').controller('GalleryCtrl', function ($scope, Lightbox) {
   $scope.images = [
     {
-      'url': '1.jpg', // required property
-      'width': 123,   // required property
-      'height': 456,  // required property
-      'thumbUrl': 'thumb1.jpg',
-      'caption': 'Optional caption'
+      'url': '1.jpg',                // required
+      'width': 123,                  // required
+      'height': 456,                 // required
+      'caption': 'Optional caption', // optional
+      'thumbUrl': 'thumb1.jpg'       // used only for this example
     },
     {
       'url': '2.gif',
@@ -89,6 +89,10 @@ angular.module('app').controller('GalleryCtrl', function ($scope, Lightbox) {
 ```
 
 ## Configuration
+
+The look of the lightbox may be edited by changing the `templateUrl` or by adding CSS rules for the elements in the default view [lightbox.html](src/lightbox.html) (for example, use the selector `.lightbox-image-caption` to style the caption).
+
+The provider may be configured as follows.
 
 ```js
 angular.module('app').config(function (LightboxProvider) {
