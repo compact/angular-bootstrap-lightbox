@@ -12,14 +12,10 @@
     "package.json"
   ],
   "dependencies": {
-    "angular": "~1.2.14",
-    "angular-touch": "~1.2.14",
-    "angular-bootstrap": "~0.10.0",
-    "angular-loading-bar": "~0.3.0",
-    "bootstrap": "~3.1.1"
-  },
-  "devDependencies": {
-    "angular-mocks": "~1.2.14",
-    "angular-scenario": "~1.2.14"
+    "angular": "^1.2.22",
+    "angular-bootstrap": "^0.11.0",
+    "angular-loading-bar": "^0.5.0",
+    "angular-touch": "^1.2.22",
+    "bootstrap": "^3.2.0"
   }
 }
