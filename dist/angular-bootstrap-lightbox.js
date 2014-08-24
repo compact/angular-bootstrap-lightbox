@@ -11,6 +11,34 @@ angular.module('bootstrapLightbox').run(['$templateCache', function($templateCac
   );
 
 }]);
+angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
+  this.load = function (url) {
+    var deferred = $q.defer();
+
+    image = new Image();
+
+    // when the image has loaded
+    image.onload = function () {
+      // check image properties for possible errors
+      if ((typeof this.complete === 'boolean' && this.complete === false) ||
+          (typeof this.naturalWidth === 'number' && this.naturalWidth === 0)) {
+        deferred.reject();
+      }
+
+      deferred.resolve();
+    };
+
+    // when the image fails to load
+    image.onerror = function () {
+      deferred.reject();
+    };
+
+    // start loading the image
+    image.src = url;
+
+    return deferred.promise;
+  };
+});
 angular.module('bootstrapLightbox').provider('Lightbox', function () {
   this.templateUrl = 'lightbox.html';
 
@@ -199,41 +227,13 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     return Lightbox;
   };
 });
-angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
-  this.load = function (url) {
-    var deferred = $q.defer();
-
-    image = new Image();
-
-    // when the image has loaded
-    image.onload = function () {
-      // check image properties for possible errors
-      if ((typeof this.complete === 'boolean' && this.complete === false) ||
-          (typeof this.naturalWidth === 'number' && this.naturalWidth === 0)) {
-        deferred.reject();
-      }
-
-      deferred.resolve();
-    };
-
-    // when the image fails to load
-    image.onerror = function () {
-      deferred.reject();
-    };
-
-    // start loading the image
-    image.src = url;
-
-    return deferred.promise;
-  };
-});
 angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
     Lightbox) {
   /**
    * Calculate the dimensions to display the image. The max dimensions
    *   override the min dimensions if they conflict.
    */
-  var calculateImageDisplayDimensions = function (dimensions) {
+  calculateImageDisplayDimensions = function (dimensions) {
     var w = dimensions.width;
     var h = dimensions.height;
     var minW = dimensions.minWidth;
@@ -375,7 +375,7 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
 
         // show the image
         element[0].src = src;
-     });
+      });
 
       // resize the image and modal whenever the window gets resized
       angular.element($window).on('resize', resize);
