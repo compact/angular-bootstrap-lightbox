@@ -62,15 +62,16 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     };
   };
 
-  this.$get = function service($document, $modal, $timeout, cfpLoadingBar) {
+  this.$get = function ($document, $modal, $timeout, cfpLoadingBar,
+      ImageLoader) {
     // whether the lightbox is currently open; used in the keydown event handler
     var opened = false;
 
-    // array of all images to be shown in the lightbox
+    // array of all images to be shown in the lightbox (not Image objects)
     var images = [];
 
     // the index of the image currently shown (Lightbox.image)
-    var index = 0;
+    var index = -1;
 
     // the service object
     var Lightbox = {};
@@ -80,44 +81,74 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     Lightbox.calculateImageDimensionLimits = this.calculateImageDimensionLimits;
     Lightbox.calculateModalDimensions = this.calculateModalDimensions;
 
+    // the current image
+    Lightbox.image = {};
+
     // open the lightbox modal
     Lightbox.openModal = function (newImages, newIndex) {
       images = newImages;
-      index = newIndex;
-      Lightbox.image = images[index];
-      cfpLoadingBar.start();
+      Lightbox.setImage(newIndex);
 
       $modal.open({
         'templateUrl': Lightbox.templateUrl,
         'controller': ['$scope', function ($scope) {
           // $scope is the modal scope, a child of $rootScope
           $scope.Lightbox = Lightbox;
+
           opened = true;
         }],
         'windowClass': 'lightbox-modal'
-      }).result.finally(function () {
+      }).result.finally(function () { // close
+        // prevent the lightbox from flickering from the old image when it gets
+        // opened again
+        Lightbox.image = {};
+
+        // complete any lingering loading bar progress
         cfpLoadingBar.complete();
+
         opened = false;
       });
     };
 
-    // helper for the image navigation methods below
-    var setImage = function (newIndex) {
-      index = newIndex;
-      Lightbox.image = images[index];
+    Lightbox.setImage = function (newIndex) {
+      if (!(newIndex in images) || !('url' in images[newIndex])) {
+        throw 'Invalid image.';
+      }
+
       cfpLoadingBar.start();
+
+      var success = function () {
+        index = newIndex;
+        Lightbox.image = images[index];
+
+        cfpLoadingBar.complete();
+      };
+
+      // load the image before setting it, so everything in the view is updated
+      // at the same time; otherwise, the previous image remains while the
+      // current image is loading
+      ImageLoader.load(images[newIndex].url).then(success, function () {
+        success();
+
+        // blank image
+        Lightbox.image.url = '//:0';
+        // use the caption to show the user an error
+        Lightbox.image.caption = 'Failed to load image';
+      });
     };
+
+    // methods for navigation
     Lightbox.firstImage = function () {
-      setImage(0);
+      Lightbox.setImage(0);
     };
     Lightbox.prevImage = function () {
-      setImage((index - 1 + images.length) % images.length);
+      Lightbox.setImage((index - 1 + images.length) % images.length);
     };
     Lightbox.nextImage = function () {
-      setImage((index + 1) % images.length);
+      Lightbox.setImage((index + 1) % images.length);
     };
     Lightbox.lastImage = function () {
-      setImage(images.length - 1);
+      Lightbox.setImage(images.length - 1);
     };
 
     /**
@@ -127,7 +158,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      */
     Lightbox.setImages = function (newImages) {
       images = newImages;
-      Lightbox.image = images[index];
+      Lightbox.setImage(index);
     };
 
     /**

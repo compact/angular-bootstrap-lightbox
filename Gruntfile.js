@@ -18,6 +18,7 @@ module.exports = function (grunt) {
           'src/module.js',
           '.tmp/templates.js',
           'src/service.js',
+          'src/image-loader-service.js',
           'src/directive.js',
         ],
         dest: 'dist/<%= library.name %>.js'

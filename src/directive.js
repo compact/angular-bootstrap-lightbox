@@ -1,10 +1,10 @@
-angular.module('bootstrapLightbox')
-    .directive('lightboxSrc', function ($window, cfpLoadingBar, Lightbox) {
+angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
+    Lightbox) {
   /**
    * Calculate the dimensions to display the image. The max dimensions
    *   override the min dimensions if they conflict.
    */
-  var calculateImageDisplayDimensions = function (dimensions) {
+  calculateImageDisplayDimensions = function (dimensions) {
     var w = dimensions.width;
     var h = dimensions.height;
     var minW = dimensions.minWidth;
@@ -58,10 +58,14 @@ angular.module('bootstrapLightbox')
     }
 
     return {
-      'width': displayW,
-      'height': displayH
+      'width': displayW || 0,
+      'height': displayH || 0 // NaN is possible when dimensions.width is 0
     };
   };
+
+  // the dimensions of the image
+  var imageWidth = 0;
+  var imageHeight = 0;
 
   return {
     'link': function (scope, element, attrs) {
@@ -70,9 +74,6 @@ angular.module('bootstrapLightbox')
         // get the window dimensions
         var windowWidth = $window.innerWidth;
         var windowHeight = $window.innerHeight;
-
-        var imageWidth = scope.Lightbox.image.width;
-        var imageHeight = scope.Lightbox.image.height;
 
         // calculate the max/min dimensions for the image
         var imageDimensionLimits = Lightbox.calculateImageDimensionLimits({
@@ -116,9 +117,9 @@ angular.module('bootstrapLightbox')
           'width': modalDimensions.width + 'px'
         });
 
-        // .modal-content has no width specified; if we set the width on .modal-
-        // .content and not on.modal-dialog, .modal-dialog retains its default
-        // .width of 600px and that places .modal-content off center
+        // .modal-content has no width specified; if we set the width on
+        // .modal-content and not on .modal-dialog, .modal-dialog retains its
+        // default width of 600px and that places .modal-content off center
         angular.element(
           document.querySelector('.lightbox-modal .modal-content')
         ).css({
@@ -130,24 +131,21 @@ angular.module('bootstrapLightbox')
       scope.$watch(function () {
         return attrs.lightboxSrc;
       }, function (src) {
-        img = new Image();
+        // blank the image before resizing the element; see
+        // http://stackoverflow.com/questions/5775469/whats-the-valid-way-to-include-an-image-with-no-src
+        element[0].src = '//:0';
 
-        // start loading the image
-        img.src = src;
+        var image = new Image();
+        image.src = src;
 
-        // when the image has loaded
-        img.onload = function() {
-          // blank the image before resizing the element; see
-          // http://stackoverflow.com/questions/5775469/whats-the-valid-way-to-include-an-image-with-no-src
-          element[0].src = '//:0';
+        // these variables must be set before resize(), as they are used in it
+        imageWidth = image.naturalWidth;
+        imageHeight = image.naturalHeight;
 
-          resize();
+        resize();
 
-          // show the image
-          element[0].src = src;
-
-          cfpLoadingBar.complete();
-        };
+        // show the image
+        element[0].src = src;
       });
 
       // resize the image and modal whenever the window gets resized

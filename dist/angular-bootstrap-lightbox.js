@@ -75,15 +75,16 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     };
   };
 
-  this.$get = function service($document, $modal, $timeout, cfpLoadingBar) {
+  this.$get = function ($document, $modal, $timeout, cfpLoadingBar,
+      ImageLoader) {
     // whether the lightbox is currently open; used in the keydown event handler
     var opened = false;
 
-    // array of all images to be shown in the lightbox
+    // array of all images to be shown in the lightbox (not Image objects)
     var images = [];
 
     // the index of the image currently shown (Lightbox.image)
-    var index = 0;
+    var index = -1;
 
     // the service object
     var Lightbox = {};
@@ -93,44 +94,74 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     Lightbox.calculateImageDimensionLimits = this.calculateImageDimensionLimits;
     Lightbox.calculateModalDimensions = this.calculateModalDimensions;
 
+    // the current image
+    Lightbox.image = {};
+
     // open the lightbox modal
     Lightbox.openModal = function (newImages, newIndex) {
       images = newImages;
-      index = newIndex;
-      Lightbox.image = images[index];
-      cfpLoadingBar.start();
+      Lightbox.setImage(newIndex);
 
       $modal.open({
         'templateUrl': Lightbox.templateUrl,
         'controller': ['$scope', function ($scope) {
           // $scope is the modal scope, a child of $rootScope
           $scope.Lightbox = Lightbox;
+
           opened = true;
         }],
         'windowClass': 'lightbox-modal'
-      }).result.finally(function () {
+      }).result.finally(function () { // close
+        // prevent the lightbox from flickering from the old image when it gets
+        // opened again
+        Lightbox.image = {};
+
+        // complete any lingering loading bar progress
         cfpLoadingBar.complete();
+
         opened = false;
       });
     };
 
-    // helper for the image navigation methods below
-    var setImage = function (newIndex) {
-      index = newIndex;
-      Lightbox.image = images[index];
+    Lightbox.setImage = function (newIndex) {
+      if (!(newIndex in images) || !('url' in images[newIndex])) {
+        throw 'Invalid image.';
+      }
+
       cfpLoadingBar.start();
+
+      var success = function () {
+        index = newIndex;
+        Lightbox.image = images[index];
+
+        cfpLoadingBar.complete();
+      };
+
+      // load the image before setting it, so everything in the view is updated
+      // at the same time; otherwise, the previous image remains while the
+      // current image is loading
+      ImageLoader.load(images[newIndex].url).then(success, function () {
+        success();
+
+        // blank image
+        Lightbox.image.url = '//:0';
+        // use the caption to show the user an error
+        Lightbox.image.caption = 'Failed to load image';
+      });
     };
+
+    // methods for navigation
     Lightbox.firstImage = function () {
-      setImage(0);
+      Lightbox.setImage(0);
     };
     Lightbox.prevImage = function () {
-      setImage((index - 1 + images.length) % images.length);
+      Lightbox.setImage((index - 1 + images.length) % images.length);
     };
     Lightbox.nextImage = function () {
-      setImage((index + 1) % images.length);
+      Lightbox.setImage((index + 1) % images.length);
     };
     Lightbox.lastImage = function () {
-      setImage(images.length - 1);
+      Lightbox.setImage(images.length - 1);
     };
 
     /**
@@ -140,7 +171,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      */
     Lightbox.setImages = function (newImages) {
       images = newImages;
-      Lightbox.image = images[index];
+      Lightbox.setImage(index);
     };
 
     /**
@@ -168,8 +199,36 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     return Lightbox;
   };
 });
-angular.module('bootstrapLightbox')
-    .directive('lightboxSrc', function ($window, cfpLoadingBar, Lightbox) {
+angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
+  this.load = function (url) {
+    var deferred = $q.defer();
+
+    image = new Image();
+
+    // when the image has loaded
+    image.onload = function () {
+      // check image properties for possible errors
+      if ((typeof this.complete === 'boolean' && this.complete === false) ||
+          (typeof this.naturalWidth === 'number' && this.naturalWidth === 0)) {
+        deferred.reject();
+      }
+
+      deferred.resolve();
+    };
+
+    // when the image fails to load
+    image.onerror = function () {
+      deferred.reject();
+    };
+
+    // start loading the image
+    image.src = url;
+
+    return deferred.promise;
+  };
+});
+angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
+    Lightbox) {
   /**
    * Calculate the dimensions to display the image. The max dimensions
    *   override the min dimensions if they conflict.
@@ -228,10 +287,14 @@ angular.module('bootstrapLightbox')
     }
 
     return {
-      'width': displayW,
-      'height': displayH
+      'width': displayW || 0,
+      'height': displayH || 0 // NaN is possible when dimensions.width is 0
     };
   };
+
+  // the dimensions of the image
+  var imageWidth = 0;
+  var imageHeight = 0;
 
   return {
     'link': function (scope, element, attrs) {
@@ -240,9 +303,6 @@ angular.module('bootstrapLightbox')
         // get the window dimensions
         var windowWidth = $window.innerWidth;
         var windowHeight = $window.innerHeight;
-
-        var imageWidth = scope.Lightbox.image.width;
-        var imageHeight = scope.Lightbox.image.height;
 
         // calculate the max/min dimensions for the image
         var imageDimensionLimits = Lightbox.calculateImageDimensionLimits({
@@ -286,9 +346,9 @@ angular.module('bootstrapLightbox')
           'width': modalDimensions.width + 'px'
         });
 
-        // .modal-content has no width specified; if we set the width on .modal-
-        // .content and not on.modal-dialog, .modal-dialog retains its default
-        // .width of 600px and that places .modal-content off center
+        // .modal-content has no width specified; if we set the width on
+        // .modal-content and not on .modal-dialog, .modal-dialog retains its
+        // default width of 600px and that places .modal-content off center
         angular.element(
           document.querySelector('.lightbox-modal .modal-content')
         ).css({
@@ -300,25 +360,22 @@ angular.module('bootstrapLightbox')
       scope.$watch(function () {
         return attrs.lightboxSrc;
       }, function (src) {
-        img = new Image();
+        // blank the image before resizing the element; see
+        // http://stackoverflow.com/questions/5775469/whats-the-valid-way-to-include-an-image-with-no-src
+        element[0].src = '//:0';
 
-        // start loading the image
-        img.src = src;
+        var image = new Image();
+        image.src = src;
 
-        // when the image has loaded
-        img.onload = function() {
-          // blank the image before resizing the element; see
-          // http://stackoverflow.com/questions/5775469/whats-the-valid-way-to-include-an-image-with-no-src
-          element[0].src = '//:0';
+        // these variables must be set before resize(), as they are used in it
+        imageWidth = image.naturalWidth;
+        imageHeight = image.naturalHeight;
 
-          resize();
+        resize();
 
-          // show the image
-          element[0].src = src;
-
-          cfpLoadingBar.complete();
-        };
-      });
+        // show the image
+        element[0].src = src;
+     });
 
       // resize the image and modal whenever the window gets resized
       angular.element($window).on('resize', resize);

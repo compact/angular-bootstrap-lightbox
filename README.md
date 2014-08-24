@@ -63,21 +63,15 @@ angular.module('app').controller('GalleryCtrl', function ($scope, Lightbox) {
   $scope.images = [
     {
       'url': '1.jpg',                // required
-      'width': 123,                  // required
-      'height': 456,                 // required
       'caption': 'Optional caption', // optional
       'thumbUrl': 'thumb1.jpg'       // used only for this example
     },
     {
       'url': '2.gif',
-      'width': 789,
-      'height': 1012,
       'thumbUrl': 'thumb2.jpg'
     },
     {
       'url': '3.png',
-      'width': 345,
-      'height': 678,
       'thumbUrl': 'thumb3.png'
     }
   ];
