@@ -64,9 +64,6 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
 
   this.$get = function ($document, $modal, $timeout, cfpLoadingBar,
       ImageLoader) {
-    // whether the lightbox is currently open; used in the keydown event handler
-    var opened = false;
-
     // array of all images to be shown in the lightbox (not Image objects)
     var images = [];
 
@@ -76,10 +73,14 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     // the service object
     var Lightbox = {};
 
-    // config
+    // configurable properties
     Lightbox.templateUrl = this.templateUrl;
     Lightbox.calculateImageDimensionLimits = this.calculateImageDimensionLimits;
     Lightbox.calculateModalDimensions = this.calculateModalDimensions;
+
+    // whether keyboard navigation is currently enabled for navigating through
+    // images in the lightbox
+    Lightbox.keyboardNavEnabled = false;
 
     // the current image
     Lightbox.image = {};
@@ -95,7 +96,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
           // $scope is the modal scope, a child of $rootScope
           $scope.Lightbox = Lightbox;
 
-          opened = true;
+          Lightbox.keyboardNavEnabled = true;
         }],
         'windowClass': 'lightbox-modal'
       }).result.finally(function () { // close
@@ -103,10 +104,10 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         // opened again
         Lightbox.image = {};
 
+        Lightbox.keyboardNavEnabled = false;
+
         // complete any lingering loading bar progress
         cfpLoadingBar.complete();
-
-        opened = false;
       });
     };
 
@@ -163,23 +164,35 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
 
     /**
      * Bind the left and right arrow keys for image navigation. This event
-     *   handler never gets unbinded.
+     *   handler never gets unbinded. Disable this using the
+     *   keyboardNavEnabled flag. It is automatically disabled when
+     *   the target is an input and or a textarea.
      */
     $document.bind('keydown', function (event) {
-      if (opened) {
-        switch (event.which) {
-        case 39: // right arrow key
-          // don't know why the view doesn't update without this manual digest
-          $timeout(function () {
-            Lightbox.nextImage();
-          });
-          return false;
-        case 37: // left arrow key
-          $timeout(function () {
-            Lightbox.prevImage();
-          });
-          return false;
-        }
+      if (!Lightbox.keyboardNavEnabled) {
+        return;
+      }
+
+      // method of Lightbox to call
+      var method = null;
+
+      switch (event.which) {
+      case 39: // right arrow key
+        method = 'nextImage';
+        break;
+      case 37: // left arrow key
+        method = 'prevImage';
+        break;
+      }
+
+      if (method !== null &&
+          ['input', 'textarea'].indexOf(event.tagName) === -1) {
+        // the view doesn't update without a manual digest
+        $timeout(function () {
+          Lightbox[method]();
+        });
+
+        event.preventDefault();
       }
     });
 

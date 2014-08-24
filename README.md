@@ -84,6 +84,8 @@ angular.module('app').controller('GalleryCtrl', function ($scope, Lightbox) {
 
 ## Configuration
 
+The keyboard navigation in the lightbox can be enabled or disabled at any time by changing the value of the boolean `Lightbox.keyboardNavEnabled` (`Lightbox` is a service).
+
 The look of the lightbox may be edited by changing the `templateUrl` or by adding CSS rules for the elements in the default view [lightbox.html](src/lightbox.html) (for example, use the selector `.lightbox-image-caption` to style the caption).
 
 The provider may be configured as follows.
