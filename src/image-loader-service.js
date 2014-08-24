@@ -2,7 +2,7 @@ angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
   this.load = function (url) {
     var deferred = $q.defer();
 
-    image = new Image();
+    var image = new Image();
 
     // when the image has loaded
     image.onload = function () {

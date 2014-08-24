@@ -34,21 +34,8 @@ module.exports = function (grunt) {
       beforeConcat: {
         src: ['Gruntfile.js', 'src/**/*.js']
       },
-      afterConcat: {
-        src: [
-          '<%= concat.library.dest %>'
-        ]
-      },
       options: {
-        // options here to override JSHint defaults
-        globals: {
-          jQuery: true,
-          console: true,
-          module: true,
-          document: true,
-          angular: true
-        },
-        globalstrict: false
+        jshintrc: '.jshintrc'
       }
     },
     ngAnnotate: {
@@ -102,7 +89,6 @@ module.exports = function (grunt) {
     'jshint:beforeConcat',
     'concat',
     'ngAnnotate',
-    'jshint:afterConcat',
     'uglify',
     'cssmin',
   ]);

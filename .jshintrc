@@ -1,11 +1,15 @@
 {
   "node": true,
-  "es5": true,
   "esnext": true,
   "bitwise": true,
   "camelcase": true,
   "curly": true,
   "eqeqeq": true,
+  "globals": {
+    "angular": true,
+    "document": true,
+    "Image": true
+  },
   "immed": true,
   "indent": 2,
   "latedef": true,
@@ -15,7 +19,7 @@
   "regexp": true,
   "undef": true,
   "unused": true,
-  "strict": true,
+  "strict": false,
   "trailing": true,
   "smarttabs": true,
   "white": true

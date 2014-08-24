@@ -4,7 +4,7 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
    * Calculate the dimensions to display the image. The max dimensions
    *   override the min dimensions if they conflict.
    */
-  calculateImageDisplayDimensions = function (dimensions) {
+  var calculateImageDisplayDimensions = function (dimensions) {
     var w = dimensions.width;
     var h = dimensions.height;
     var minW = dimensions.minWidth;

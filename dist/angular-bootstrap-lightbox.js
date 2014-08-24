@@ -15,7 +15,7 @@ angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
   this.load = function (url) {
     var deferred = $q.defer();
 
-    image = new Image();
+    var image = new Image();
 
     // when the image has loaded
     image.onload = function () {
@@ -233,7 +233,7 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
    * Calculate the dimensions to display the image. The max dimensions
    *   override the min dimensions if they conflict.
    */
-  calculateImageDisplayDimensions = function (dimensions) {
+  var calculateImageDisplayDimensions = function (dimensions) {
     var w = dimensions.width;
     var h = dimensions.height;
     var minW = dimensions.minWidth;
