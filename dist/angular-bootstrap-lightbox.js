@@ -7,10 +7,38 @@ angular.module('bootstrapLightbox').run(['$templateCache', function($templateCac
   'use strict';
 
   $templateCache.put('lightbox.html',
-    "<div class=modal-body ng-swipe-left=Lightbox.prevImage() ng-swipe-right=Lightbox.nextImage()><div class=lightbox-nav><button class=close aria-hidden=true ng-click=$dismiss()>×</button><div class=btn-group><a class=\"btn btn-xs btn-default\" ng-click=Lightbox.prevImage()>‹ Previous</a> <a ng-href={{Lightbox.image.url}} target=_blank class=\"btn btn-xs btn-default\" title=\"Open in new tab\">Open image in new tab</a> <a class=\"btn btn-xs btn-default\" ng-click=Lightbox.nextImage()>Next ›</a></div></div><div class=lightbox-image-container><div class=lightbox-image-caption><span>{{Lightbox.image.caption}}</span></div><img lightbox-src={{Lightbox.image.url}} alt=\"\"></div></div>"
+    "<div class=modal-body ng-swipe-left=Lightbox.nextImage() ng-swipe-right=Lightbox.prevImage()><div class=lightbox-nav><button class=close aria-hidden=true ng-click=$dismiss()>×</button><div class=btn-group><a class=\"btn btn-xs btn-default\" ng-click=Lightbox.prevImage()>‹ Previous</a> <a ng-href={{Lightbox.image.url}} target=_blank class=\"btn btn-xs btn-default\" title=\"Open in new tab\">Open image in new tab</a> <a class=\"btn btn-xs btn-default\" ng-click=Lightbox.nextImage()>Next ›</a></div></div><div class=lightbox-image-container><div class=lightbox-image-caption><span>{{Lightbox.image.caption}}</span></div><img lightbox-src={{Lightbox.image.url}} alt=\"\"></div></div>"
   );
 
 }]);
+angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
+  this.load = function (url) {
+    var deferred = $q.defer();
+
+    var image = new Image();
+
+    // when the image has loaded
+    image.onload = function () {
+      // check image properties for possible errors
+      if ((typeof this.complete === 'boolean' && this.complete === false) ||
+          (typeof this.naturalWidth === 'number' && this.naturalWidth === 0)) {
+        deferred.reject();
+      }
+
+      deferred.resolve();
+    };
+
+    // when the image fails to load
+    image.onerror = function () {
+      deferred.reject();
+    };
+
+    // start loading the image
+    image.src = url;
+
+    return deferred.promise;
+  };
+});
 angular.module('bootstrapLightbox').provider('Lightbox', function () {
   this.templateUrl = 'lightbox.html';
 
@@ -77,9 +105,6 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
 
   this.$get = function ($document, $modal, $timeout, cfpLoadingBar,
       ImageLoader) {
-    // whether the lightbox is currently open; used in the keydown event handler
-    var opened = false;
-
     // array of all images to be shown in the lightbox (not Image objects)
     var images = [];
 
@@ -89,10 +114,14 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     // the service object
     var Lightbox = {};
 
-    // config
+    // configurable properties
     Lightbox.templateUrl = this.templateUrl;
     Lightbox.calculateImageDimensionLimits = this.calculateImageDimensionLimits;
     Lightbox.calculateModalDimensions = this.calculateModalDimensions;
+
+    // whether keyboard navigation is currently enabled for navigating through
+    // images in the lightbox
+    Lightbox.keyboardNavEnabled = false;
 
     // the current image
     Lightbox.image = {};
@@ -108,7 +137,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
           // $scope is the modal scope, a child of $rootScope
           $scope.Lightbox = Lightbox;
 
-          opened = true;
+          Lightbox.keyboardNavEnabled = true;
         }],
         'windowClass': 'lightbox-modal'
       }).result.finally(function () { // close
@@ -116,10 +145,10 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         // opened again
         Lightbox.image = {};
 
+        Lightbox.keyboardNavEnabled = false;
+
         // complete any lingering loading bar progress
         cfpLoadingBar.complete();
-
-        opened = false;
       });
     };
 
@@ -176,55 +205,39 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
 
     /**
      * Bind the left and right arrow keys for image navigation. This event
-     *   handler never gets unbinded.
+     *   handler never gets unbinded. Disable this using the
+     *   keyboardNavEnabled flag. It is automatically disabled when
+     *   the target is an input and or a textarea.
      */
     $document.bind('keydown', function (event) {
-      if (opened) {
-        switch (event.which) {
-        case 39: // right arrow key
-          // don't know why the view doesn't update without this manual digest
-          $timeout(function () {
-            Lightbox.nextImage();
-          });
-          return false;
-        case 37: // left arrow key
-          $timeout(function () {
-            Lightbox.prevImage();
-          });
-          return false;
-        }
+      if (!Lightbox.keyboardNavEnabled) {
+        return;
+      }
+
+      // method of Lightbox to call
+      var method = null;
+
+      switch (event.which) {
+      case 39: // right arrow key
+        method = 'nextImage';
+        break;
+      case 37: // left arrow key
+        method = 'prevImage';
+        break;
+      }
+
+      if (method !== null &&
+          ['input', 'textarea'].indexOf(event.tagName) === -1) {
+        // the view doesn't update without a manual digest
+        $timeout(function () {
+          Lightbox[method]();
+        });
+
+        event.preventDefault();
       }
     });
 
     return Lightbox;
-  };
-});
-angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
-  this.load = function (url) {
-    var deferred = $q.defer();
-
-    image = new Image();
-
-    // when the image has loaded
-    image.onload = function () {
-      // check image properties for possible errors
-      if ((typeof this.complete === 'boolean' && this.complete === false) ||
-          (typeof this.naturalWidth === 'number' && this.naturalWidth === 0)) {
-        deferred.reject();
-      }
-
-      deferred.resolve();
-    };
-
-    // when the image fails to load
-    image.onerror = function () {
-      deferred.reject();
-    };
-
-    // start loading the image
-    image.src = url;
-
-    return deferred.promise;
   };
 });
 angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
@@ -375,7 +388,7 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
 
         // show the image
         element[0].src = src;
-     });
+      });
 
       // resize the image and modal whenever the window gets resized
       angular.element($window).on('resize', resize);
