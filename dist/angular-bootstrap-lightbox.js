@@ -226,8 +226,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         break;
       }
 
-      if (method !== null &&
-          ['input', 'textarea'].indexOf(event.tagName) === -1) {
+      if (method !== null && ['input', 'textarea'].indexOf(
+          event.target.tagName.toLowerCase()) === -1) {
         // the view doesn't update without a manual digest
         $timeout(function () {
           Lightbox[method]();
