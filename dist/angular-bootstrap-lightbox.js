@@ -7,7 +7,7 @@ angular.module('bootstrapLightbox').run(['$templateCache', function($templateCac
   'use strict';
 
   $templateCache.put('lightbox.html',
-    "<div class=modal-body ng-swipe-left=Lightbox.nextImage() ng-swipe-right=Lightbox.prevImage()><div class=lightbox-nav><button class=close aria-hidden=true ng-click=$dismiss()>×</button><div class=btn-group><a class=\"btn btn-xs btn-default\" ng-click=Lightbox.prevImage()>‹ Previous</a> <a ng-href={{Lightbox.image.url}} target=_blank class=\"btn btn-xs btn-default\" title=\"Open in new tab\">Open image in new tab</a> <a class=\"btn btn-xs btn-default\" ng-click=Lightbox.nextImage()>Next ›</a></div></div><div class=lightbox-image-container><div class=lightbox-image-caption><span>{{Lightbox.image.caption}}</span></div><img lightbox-src={{Lightbox.image.url}} alt=\"\"></div></div>"
+    "<div class=modal-body ng-swipe-left=Lightbox.nextImage() ng-swipe-right=Lightbox.prevImage()><div class=lightbox-nav><button class=close aria-hidden=true ng-click=$dismiss()>×</button><div class=btn-group><a class=\"btn btn-xs btn-default\" ng-click=Lightbox.prevImage()>‹ Previous</a> <a ng-href={{Lightbox.imageUrl}} target=_blank class=\"btn btn-xs btn-default\" title=\"Open in new tab\">Open image in new tab</a> <a class=\"btn btn-xs btn-default\" ng-click=Lightbox.nextImage()>Next ›</a></div></div><div class=lightbox-image-container><div class=lightbox-image-caption><span>{{Lightbox.imageCaption}}</span></div><img lightbox-src={{Lightbox.imageUrl}} alt=\"\"></div></div>"
   );
 
 }]);
@@ -41,6 +41,14 @@ angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
 });
 angular.module('bootstrapLightbox').provider('Lightbox', function () {
   this.templateUrl = 'lightbox.html';
+
+  this.getImageUrl = function (image) {
+    return image.url;
+  };
+
+  this.getImageCaption = function (image) {
+    return image.caption;
+  };
 
   /**
    * Calculate the max and min limits to the width and height of the displayed
@@ -114,8 +122,10 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     // the service object
     var Lightbox = {};
 
-    // configurable properties
+    // set the configurable properties and methods
     Lightbox.templateUrl = this.templateUrl;
+    Lightbox.getImageUrl = this.getImageUrl;
+    Lightbox.getImageCaption = this.getImageCaption;
     Lightbox.calculateImageDimensionLimits = this.calculateImageDimensionLimits;
     Lightbox.calculateModalDimensions = this.calculateModalDimensions;
 
@@ -153,7 +163,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     };
 
     Lightbox.setImage = function (newIndex) {
-      if (!(newIndex in images) || !('url' in images[newIndex])) {
+      if (!(newIndex in images)) {
         throw 'Invalid image.';
       }
 
@@ -166,16 +176,24 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         cfpLoadingBar.complete();
       };
 
+      var imageUrl = Lightbox.getImageUrl(images[newIndex]);
+
       // load the image before setting it, so everything in the view is updated
       // at the same time; otherwise, the previous image remains while the
       // current image is loading
-      ImageLoader.load(images[newIndex].url).then(success, function () {
+      ImageLoader.load(imageUrl).then(function () {
+        success();
+
+        // set the url and caption
+        Lightbox.imageUrl = imageUrl;
+        Lightbox.imageCaption = Lightbox.getImageCaption(Lightbox.image);
+      }, function () {
         success();
 
         // blank image
-        Lightbox.image.url = '//:0';
+        Lightbox.imageUrl = '//:0';
         // use the caption to show the user an error
-        Lightbox.image.caption = 'Failed to load image';
+        Lightbox.imageCaption = 'Failed to load image';
       });
     };
 
