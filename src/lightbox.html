@@ -11,7 +11,7 @@
         ‹ Previous
       </a>
 
-      <a ng-href="{{Lightbox.image.url}}" target="_blank"
+      <a ng-href="{{Lightbox.imageUrl}}" target="_blank"
           class="btn btn-xs btn-default" title="Open in new tab">
         Open image in new tab
       </a>
@@ -25,8 +25,8 @@
   <!-- image -->
   <div class="lightbox-image-container">
     <div class="lightbox-image-caption">
-      <span>{{Lightbox.image.caption}}</span>
+      <span>{{Lightbox.imageCaption}}</span>
     </div>
-    <img lightbox-src="{{Lightbox.image.url}}" alt="">
+    <img lightbox-src="{{Lightbox.imageUrl}}" alt="">
   </div>
 </div>

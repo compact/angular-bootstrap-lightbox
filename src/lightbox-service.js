@@ -1,6 +1,14 @@
 angular.module('bootstrapLightbox').provider('Lightbox', function () {
   this.templateUrl = 'lightbox.html';
 
+  this.getImageUrl = function (image) {
+    return image.url;
+  };
+
+  this.getImageCaption = function (image) {
+    return image.caption;
+  };
+
   /**
    * Calculate the max and min limits to the width and height of the displayed
    *   image (all are optional). The max dimensions override the min
@@ -73,8 +81,10 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     // the service object
     var Lightbox = {};
 
-    // configurable properties
+    // set the configurable properties and methods
     Lightbox.templateUrl = this.templateUrl;
+    Lightbox.getImageUrl = this.getImageUrl;
+    Lightbox.getImageCaption = this.getImageCaption;
     Lightbox.calculateImageDimensionLimits = this.calculateImageDimensionLimits;
     Lightbox.calculateModalDimensions = this.calculateModalDimensions;
 
@@ -112,7 +122,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     };
 
     Lightbox.setImage = function (newIndex) {
-      if (!(newIndex in images) || !('url' in images[newIndex])) {
+      if (!(newIndex in images)) {
         throw 'Invalid image.';
       }
 
@@ -125,16 +135,24 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         cfpLoadingBar.complete();
       };
 
+      var imageUrl = Lightbox.getImageUrl(images[newIndex]);
+
       // load the image before setting it, so everything in the view is updated
       // at the same time; otherwise, the previous image remains while the
       // current image is loading
-      ImageLoader.load(images[newIndex].url).then(success, function () {
+      ImageLoader.load(imageUrl).then(function () {
+        success();
+
+        // set the url and caption
+        Lightbox.imageUrl = imageUrl;
+        Lightbox.imageCaption = Lightbox.getImageCaption(Lightbox.image);
+      }, function () {
         success();
 
         // blank image
-        Lightbox.image.url = '//:0';
+        Lightbox.imageUrl = '//:0';
         // use the caption to show the user an error
-        Lightbox.image.caption = 'Failed to load image';
+        Lightbox.imageCaption = 'Failed to load image';
       });
     };
 
