@@ -12,7 +12,7 @@ Large images are scaled to fit inside the window. An optional image caption over
 
 ## Setup
 
-Save the files in `[dist](dist)`, or install with [Bower](http://bower.io/):
+Save the files in [`dist`](dist), or install with [Bower](http://bower.io/):
 
 ```
 bower install angular-bootstrap-lightbox --save
