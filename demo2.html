@@ -1,0 +1,15 @@
+---
+title: "Demo 2: Customizations"
+layout: demo
+script: demo2
+---
+
+{% raw %}
+  <ul id="gallery" ng-app="demo2" ng-controller="GalleryCtrl">
+    <li ng-repeat="image in images">
+      <a ng-click="Lightbox.openModal(images, $index)">
+        <img ng-src="{{image}}" class="img-circle" alt="" style="width: 150px;">
+      </a>
+    </li>
+  </ul>
+{% endraw %}

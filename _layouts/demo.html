@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <title>angular-bootstrap-lightbox {{page.title}}</title>
+
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{site.baseurl}}/lib/loading-bar.css">
+  <link rel="stylesheet" href="{{site.baseurl}}/dist/angular-bootstrap-lightbox.css">
+  <link rel="stylesheet" href="{{site.baseurl}}/css/styles.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <header class="jumbotron">
+    <h1>angular-bootstrap-lightbox</h1>
+
+    <p>This is a lightbox made with AngularUI Bootstrap Modal. It can be used in any Angular app. Click on an image below to open the lightbox. View the project and instructions on <a href="https://github.com/compact/angular-bootstrap-lightbox">GitHub</a>.</p>
+  </header>
+
+  <nav>
+    <ul class="nav nav-pills">
+      {% assign sorted_pages = site.pages | sort: "title" %}
+      {% for node in sorted_pages %}
+          <li {% if page.url == node.url %} class="active" {% endif %} >
+            <a href="{{site.baseurl}}{{node.url}}">{{node.title}}</a>
+          </li>
+      {% endfor %}
+    </ul>
+  </nav>
+
+  <section class="panel panel-default">
+    <div class="panel-body">
+
+      <!-- start demo-specific html -->
+      {{content}}
+      <!-- end demo-specific html -->
+
+    </div>
+  </section>
+
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-touch.min.js"></script>
+  <script src="{{site.baseurl}}/lib/ui-bootstrap-tpls.js"></script>
+  <script src="{{site.baseurl}}/lib/loading-bar.js"></script>
+  <script src="{{site.baseurl}}/dist/angular-bootstrap-lightbox.js"></script>
+  <script src="{{site.baseurl}}/js/{{page.script}}.js"></script>
+
+</body>
+</html>

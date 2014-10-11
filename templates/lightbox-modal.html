@@ -1,0 +1,17 @@
+<div class="modal-body"
+    ng-swipe-left="Lightbox.prevImage()"
+    ng-swipe-right="Lightbox.nextImage()">
+
+  <!-- image -->
+  <div class="lightbox-image-container">
+    <img lightbox-src="{{Lightbox.imageUrl}}" alt="">
+  </div>
+
+  <!-- caption -->
+  <div class="alert alert-info" style="margin: 1em 0 0;">
+    The color in the image is <strong>{{Lightbox.imageCaption}}</strong>.<br>
+    This is a custom template where we've removed the top nav and added a Bootstrap alert box. It makes the modal taller and so we have changed its height calculation.<br>
+    Also, the maximum display height of the image has been increased to 1600 (instead of being dependent on the window height), thus vertical scrolling is now possible.
+  </div>
+
+</div>

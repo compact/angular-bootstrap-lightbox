@@ -1,6 +1,6 @@
-angular.module('app', ['bootstrapLightbox']);
+angular.module('demo', ['bootstrapLightbox']);
 
-angular.module('app').controller('GalleryCtrl', function ($scope, Lightbox) {
+angular.module('demo').controller('GalleryCtrl', function ($scope, Lightbox) {
   $scope.images = [
     {
       'url': 'http://upload.wikimedia.org/wikipedia/commons/8/87/Waynejunction0810b.JPG',

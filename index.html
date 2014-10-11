@@ -1,43 +1,15 @@
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="chrome=1">
-  <title>angular-bootstrap-lightbox</title>
+---
+title: "Demo 1: Basic"
+layout: demo
+script: demo1
+---
 
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="lib/loading-bar.css">
-  <link rel="stylesheet" href="dist/angular-bootstrap-lightbox.css">
-  <link rel="stylesheet" href="css/styles.css">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-  <!--[if lt IE 9]>
-  <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-</head>
-<body>
-  <header>
-    <h1>angular-bootstrap-lightbox demo</h1>
-
-    <p>Click on an image to open the lightbox. View the project and instructions on <a href="https://github.com/compact/angular-bootstrap-lightbox">GitHub</a>.</p>
-  </header>
-  <section ng-app="app">
-    <ul id="gallery" ng-controller="GalleryCtrl">
-      <li ng-repeat="image in images">
-        <a ng-click="openLightboxModal($index)">
-          <img ng-src="{{image.thumbUrl}}" class="img-thumbnail" alt="">
-        </a>
-      </li>
-    </ul>
-  </section>
-
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-touch.min.js"></script>
-  <script src="lib/ui-bootstrap-tpls.js"></script>
-  <script src="lib/loading-bar.js"></script>
-  <script src="dist/angular-bootstrap-lightbox.js"></script>
-  <script src="js/app.js"></script>
-
-</body>
-</html>
+{% raw %}
+  <ul id="gallery" ng-app="demo" ng-controller="GalleryCtrl">
+    <li ng-repeat="image in images">
+      <a ng-click="openLightboxModal($index)">
+        <img ng-src="{{image.thumbUrl}}" class="img-thumbnail" alt="">
+      </a>
+    </li>
+  </ul>
+{% endraw %}

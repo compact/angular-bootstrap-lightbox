@@ -7,6 +7,14 @@ a {
   cursor: pointer;
 }
 
+nav {
+  margin-bottom: 1em;
+}
+
+#gallery {
+  padding: 0;
+}
+
 #gallery li {
   display: inline-block;
   margin: 0 1em 1em 0;
