@@ -1,0 +1,6 @@
+baseurl: "/angular-bootstrap-lightbox"
+exclude: [
+  "bower_components",
+  "node_modules",
+  "Gemfile*"
+]
