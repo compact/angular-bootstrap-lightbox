@@ -2,17 +2,17 @@
 
 This lightbox displays images using an [AngularUI Bootstrap](http://angular-ui.github.io/bootstrap/) Modal.
 
-When the lightbox is opened, navigating to the previous/next image can be achieved by clicking buttons above the image, clicking the left/right arrow keys, or swiping to the left/right (using [ngTouch directives](http://docs.angularjs.org/api/ngTouch/directive)). The escape key for closing the lightbox modal is automatically binded by AngularUI Bootstrap.
+When the lightbox is opened, navigating to the previous/next image can be achieved by clicking buttons above the image, clicking the left/right arrow keys, or swiping to the left/right (using [ngTouch directives](http://docs.angularjs.org/api/ngTouch/directive)). The escape key for closing the modal is automatically binded by AngularUI Bootstrap.
 
-Each image is scaled to fit inside the window. An optional image caption overlays the top left corner of the image.
+Large images are scaled to fit inside the window. An optional image caption overlays the top left corner of the image. [angular-loading-bar](https://github.com/chieffancypants/angular-loading-bar) is used to show the progress of the image being loaded.
 
-[angular-loading-bar](https://github.com/chieffancypants/angular-loading-bar) is used to show the loading progress of the current image.
+## Demos
 
-## Demo
+[Demos](http://compact.github.io/angular-bootstrap-lightbox/)
 
-[Demo](http://compact.github.io/angular-bootstrap-lightbox/)
+## Setup
 
-## Install
+Save the files in `[dist](dist)`, or install with [Bower](http://bower.io/):
 
 ```
 bower install angular-bootstrap-lightbox --save
@@ -36,13 +36,13 @@ Script with dependencies:
 <script src="bower_components/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.js"></script>
 ```
 
-The Angular module is named `bootstrapLightbox`. Add it as a dependency:
+The Angular module is named `bootstrapLightbox`. Add it as a dependency to your module:
 
 ```js
 angular.module('app', ['bootstrapLightbox']);
 ```
 
-## Example
+## Basic example
 
 Gallery:
 
@@ -62,9 +62,9 @@ Controller:
 angular.module('app').controller('GalleryCtrl', function ($scope, Lightbox) {
   $scope.images = [
     {
-      'url': '1.jpg',                // required
-      'caption': 'Optional caption', // optional
-      'thumbUrl': 'thumb1.jpg'       // used only for this example
+      'url': '1.jpg',
+      'caption': 'Optional caption',
+      'thumbUrl': 'thumb1.jpg' // used only for this example
     },
     {
       'url': '2.gif',
@@ -84,49 +84,60 @@ angular.module('app').controller('GalleryCtrl', function ($scope, Lightbox) {
 
 ## Configuration
 
-The keyboard navigation in the lightbox can be enabled or disabled at any time by changing the value of the boolean `Lightbox.keyboardNavEnabled` (`Lightbox` is a service).
+### Changing the appearance of the modal lightbox
 
-The look of the lightbox may be edited by changing the `templateUrl` or by adding CSS rules for the elements in the default view [lightbox.html](src/lightbox.html) (for example, use the selector `.lightbox-image-caption` to style the caption).
+The default view template for the lightbox is [lightbox.html](src/lightbox.html) and it does not look particularly pretty. Its look can be changed by making your own custom template and/or adding CSS rules (for example, use the selector `.lightbox-image-caption` to style the caption).
 
-The provider may be configured as follows.
+If you make your own template and save it at `lightbox.html`, no further code is necessary. If you save it at a different path, set it in the provider:
 
 ```js
 angular.module('app').config(function (LightboxProvider) {
   // set a custom template
-  LightboxProvider.templateUrl = 'lightbox.html';
+  LightboxProvider.templateUrl = 'path/to/your-template.html';
+});
+```
 
-  /**
-   * Calculate the max and min limits to the width and height of the displayed
-   *   image (all are optional). The max dimensions override the min
-   *   dimensions if they conflict.
-   * @param  {Object} dimensions Contains the properties windowWidth,
-   *   windowHeight, imageWidth, imageHeight.
-   * @return {Object} May optionally contain the properties minWidth,
-   *   minHeight, maxWidth, maxHeight.
-   */
-  LightboxProvider.calculateImageDimensionLimits = function (dimensions) {
-    return {
-      'minWidth': 100,
-      'minHeight': 100,
-      'maxWidth': dimensions.windowWidth - 102,
-      'maxHeight': dimensions.windowHeight - 136
-    };
+### Disabling the keyboard navigation
+
+The keyboard navigation in the lightbox with the left/right arrow keys can be enabled/disabled at any time by changing the value of the boolean `Lightbox.keyboardNavEnabled`.
+
+### Array of images
+
+The first argument to `Lightbox.openModal` must be an array, and its elements may be of any type. In the basic example above, it is an array of objects with properties `url` and `caption`, but this is only the default and is not required. To let the `Lightbox` service know the correct values, set these methods in the provider:
+
+```js
+angular.module('app').config(function (LightboxProvider) {
+  LightboxProvider.getImageUrl = function (image) {
+    return '/base/dir/' + image.getName();
   };
 
-  /**
-   * Calculate the width and height of the modal. This method gets called
-   *   after the width and height of the image, as displayed inside the modal,
-   *   are calculated. See the default method for cases where the width or
-   *   height are 'auto'.
-   * @param  {Object} dimensions Contains the properties windowWidth,
-   *   windowHeight, imageDisplayWidth, imageDisplayHeight.
-   * @return {Object} Must contain the properties width and height.
-   */
-  LightboxProvider.calculateModalDimensions = function (dimensions) {
-    return {
-      'width': Math.max(500, dimensions.imageDisplayWidth + 42),
-      'height': Math.max(500, dimensions.imageDisplayHeight + 76)
-    };
+  LightboxProvider.getImageCaption = function (image) {
+    return image.label;
   };
 });
 ```
+
+For a more specific example, if you have no captions, the array can contain strings for the urls:
+
+```js
+angular.module('app').config(function (LightboxProvider) {
+  LightboxProvider.getImageUrl = function (imageUrl) {
+    return imageUrl;
+  };
+});
+
+angular.module('app').controller('GalleryCtrl', function ($scope, Lightbox) {
+  $scope.images = ['1.jpg', '2.jpg', '3.jpg'];
+
+  $scope.openLightboxModal = function (index) {
+    Lightbox.openModal($scope.images, index);
+  };
+});
+```
+
+### Setting different limits for the image and lightbox dimensions
+
+By default, images are scaled only if they are too large for the modal to contain without scrolling. To change this behaviour, see the [documentation](src/lightbox-service.js) of the following methods:
+
+* `LightboxProvider.calculateImageDimensionLimits`
+* `LightboxProvider.calculateModalDimensions`
