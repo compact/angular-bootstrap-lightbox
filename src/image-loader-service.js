@@ -1,4 +1,10 @@
 angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
+  /**
+   * Load the image at the given URL.
+   * @param  {String}  url
+   * @return {Promise} A $q promise that resolves when the image has loaded
+   *   successfully.
+   */
   this.load = function (url) {
     var deferred = $q.defer();
 

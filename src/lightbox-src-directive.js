@@ -1,3 +1,8 @@
+/**
+ * This attribute directive is used in an img element in the modal template in
+ *   place of src. It handles resizing both the img element and its relevant
+ *   parent elements within the modal.
+ */
 angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
     Lightbox) {
   /**

@@ -12,6 +12,12 @@ angular.module('bootstrapLightbox').run(['$templateCache', function($templateCac
 
 }]);
 angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
+  /**
+   * Load the image at the given URL.
+   * @param  {String}  url
+   * @return {Promise} A $q promise that resolves when the image has loaded
+   *   successfully.
+   */
   this.load = function (url) {
     var deferred = $q.defer();
 
@@ -40,12 +46,24 @@ angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
   };
 });
 angular.module('bootstrapLightbox').provider('Lightbox', function () {
+  /**
+   * Template URL passed into $modal.open().
+   * @type {String}
+   */
   this.templateUrl = 'lightbox.html';
 
+  /**
+   * @param  {*}      image An element in the array of images.
+   * @return {String}       The URL of the given image.
+   */
   this.getImageUrl = function (image) {
     return image.url;
   };
 
+  /**
+   * @param  {*}      image An element in the array of images.
+   * @return {String}       The caption of the given image.
+   */
   this.getImageCaption = function (image) {
     return image.caption;
   };
@@ -119,24 +137,55 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     // the index of the image currently shown (Lightbox.image)
     var index = -1;
 
-    // the service object
+    /**
+     * The service object for the lightbox.
+     * @type {Object}
+     */
     var Lightbox = {};
 
-    // set the configurable properties and methods
+    // set the configurable properties and methods, the defaults of which are
+    // defined above
     Lightbox.templateUrl = this.templateUrl;
     Lightbox.getImageUrl = this.getImageUrl;
     Lightbox.getImageCaption = this.getImageCaption;
     Lightbox.calculateImageDimensionLimits = this.calculateImageDimensionLimits;
     Lightbox.calculateModalDimensions = this.calculateModalDimensions;
 
-    // whether keyboard navigation is currently enabled for navigating through
-    // images in the lightbox
+    /**
+     * Whether keyboard navigation is currently enabled for navigating through
+     *   images in the lightbox.
+     * @type {Boolean}
+     */
     Lightbox.keyboardNavEnabled = false;
 
-    // the current image
+    /**
+     * The current image.
+     * @type {*}
+     */
     Lightbox.image = {};
 
-    // open the lightbox modal
+    /**
+     * The URL of the current image. This is a property of the service rather
+     *   than of Lightbox.image because Lightbox.image need not be an object,
+     *   and besides it would be poor practice to alter the given objects.
+     * @type {String}
+     */
+    // Lightbox.imageUrl = '';
+
+    /**
+     * The caption of the current image. See the description of
+     *   Lightbox.imageUrl.
+     * @type {String}
+     */
+    // Lightbox.imageCaption = '';
+
+    /**
+     * Open the lightbox modal.
+     * @param  {Array}  newImages An array of images. Each image may be of any
+     *   type.
+     * @param  {Number} newIndex  The index in newImages to set as the current
+     *   image.
+     */
     Lightbox.openModal = function (newImages, newIndex) {
       images = newImages;
       Lightbox.setImage(newIndex);
@@ -162,6 +211,12 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       });
     };
 
+    /**
+     * This method can be used in all methods which navigate/change the
+     *   current image.
+     * @param {Number} newIndex The index in the array of images to set as the
+     *   new current image.
+     */
     Lightbox.setImage = function (newIndex) {
       if (!(newIndex in images)) {
         throw 'Invalid image.';
@@ -197,24 +252,39 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       });
     };
 
-    // methods for navigation
+    /**
+     * Navigate to the first image.
+     */
     Lightbox.firstImage = function () {
       Lightbox.setImage(0);
     };
+
+    /**
+     * Navigate to the previous image.
+     */
     Lightbox.prevImage = function () {
       Lightbox.setImage((index - 1 + images.length) % images.length);
     };
+
+    /**
+     * Navigate to the next image.
+     */
     Lightbox.nextImage = function () {
       Lightbox.setImage((index + 1) % images.length);
     };
+
+    /**
+     * Navigate to the last image.
+     */
     Lightbox.lastImage = function () {
       Lightbox.setImage(images.length - 1);
     };
 
     /**
-     * Call this method to set both the images array and the image object
-     *   (based on the current index). A use case is when the images get
-     *   changed dynamically in some way.
+     * Call this method to set both the array of images and the current image
+     *   (based on the current index). A use case is when the image collection
+     *   gets changed dynamically in some way while the lightbox is still open.
+     * @param {Array} newImages The new array of images.
      */
     Lightbox.setImages = function (newImages) {
       images = newImages;
@@ -258,6 +328,11 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     return Lightbox;
   };
 });
+/**
+ * This attribute directive is used in an img element in the modal template in
+ *   place of src. It handles resizing both the img element and its relevant
+ *   parent elements within the modal.
+ */
 angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
     Lightbox) {
   /**
