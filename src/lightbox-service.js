@@ -156,6 +156,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         // prevent the lightbox from flickering from the old image when it gets
         // opened again
         Lightbox.image = {};
+        Lightbox.imageUrl = null;
+        Lightbox.imageCaption = null;
 
         Lightbox.keyboardNavEnabled = false;
 
