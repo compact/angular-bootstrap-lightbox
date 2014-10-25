@@ -31,17 +31,29 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
    *   minHeight, maxWidth, maxHeight.
    */
   this.calculateImageDimensionLimits = function (dimensions) {
-    return {
-      // 102px = 2 * (30px margin of .modal-dialog
-      //              + 1px border of .modal-content
-      //              + 20px padding of .modal-body)
-      // with the goal of 30px side margins; however, the actual side margins
-      // will be slightly less (at 22.5px) due to the vertical scrollbar
-      'maxWidth': dimensions.windowWidth - 102,
-      // 136px = 102px as above
-      //         + 34px outer height of .lightbox-nav
-      'maxHeight': dimensions.windowHeight - 136
-    };
+    if (dimensions.windowWidth >= 768) {
+      return {
+        // 92px = 2 * (30px margin of .modal-dialog
+        //             + 1px border of .modal-content
+        //             + 15px padding of .modal-body)
+        // with the goal of 30px side margins; however, the actual side margins
+        // will be slightly less (at 22.5px) due to the vertical scrollbar
+        'maxWidth': dimensions.windowWidth - 92,
+        // 126px = 92px as above
+        //         + 34px outer height of .lightbox-nav
+        'maxHeight': dimensions.windowHeight - 126
+      };
+    } else {
+      return {
+        // 52px = 2 * (10px margin of .modal-dialog
+        //             + 1px border of .modal-content
+        //             + 15px padding of .modal-body)
+        'maxWidth': dimensions.windowWidth - 52,
+        // 86px = 52px as above
+        //        + 34px outer height of .lightbox-nav
+        'maxHeight': dimensions.windowHeight - 86
+      };
+    }
   };
 
   /**
@@ -54,14 +66,14 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
    */
   this.calculateModalDimensions = function (dimensions) {
     // 400px = arbitrary min width
-    // 42px = 2 * (1px border of .modal-content
-    //        + 20px padding of .modal-body)
-    var width = Math.max(400, dimensions.imageDisplayWidth + 42);
+    // 32px = 2 * (1px border of .modal-content
+    //             + 15px padding of .modal-body)
+    var width = Math.max(400, dimensions.imageDisplayWidth + 32);
 
     // 200px = arbitrary min height
-    // 76px = 42px as above
+    // 66px = 32px as above
     //        + 34px outer height of .lightbox-nav
-    var height = Math.max(200, dimensions.imageDisplayHeight + 76);
+    var height = Math.max(200, dimensions.imageDisplayHeight + 66);
 
     // first case:  the modal width cannot be larger than the window width
     //              20px = arbitrary value larger than the vertical scrollbar
