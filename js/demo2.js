@@ -18,23 +18,25 @@ angular.module('demo2').config(function (LightboxProvider) {
   // increase the maximum display height of the image
   LightboxProvider.calculateImageDimensionLimits = function (dimensions) {
     return {
-      'maxWidth': dimensions.windowWidth - 102, // default
-      'maxHeight': 1600                         // custom
+      'maxWidth': dimensions.windowWidth >= 768 ? // default
+        dimensions.windowWidth - 92 :
+        dimensions.windowWidth - 52,
+      'maxHeight': 1600                           // custom
     };
   };
 
   // the modal height calculation has to be changed since our custom template is
   // taller than the default template
   LightboxProvider.calculateModalDimensions = function (dimensions) {
-    var width = Math.max(400, dimensions.imageDisplayWidth + 42);
+    var width = Math.max(400, dimensions.imageDisplayWidth + 32);
 
     if (width >= dimensions.windowWidth - 20 || dimensions.windowWidth < 768) {
       width = 'auto';
     }
 
     return {
-      'width': width,                           // default
-      'height': 'auto'                          // custom
+      'width': width,                             // default
+      'height': 'auto'                            // custom
     };
   };
 });
