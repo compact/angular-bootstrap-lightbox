@@ -1,6 +1,5 @@
 body {
   margin: 1em;
-  font-size: 14px;
 }
 
 a {
@@ -18,9 +17,16 @@ nav {
 #gallery li {
   display: inline-block;
   margin: 0 1em 1em 0;
-  width: 150px;
+  width: 10em;
   list-style-type: none;
   text-align: center;
+}
+
+@media (max-width: 767px) {
+  #gallery li {
+    margin: 0 0.5em 0.5em 0;
+    width: 6em;
+  }
 }
 
 #loading-bar .bar {

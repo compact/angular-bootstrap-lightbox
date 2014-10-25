@@ -8,7 +8,7 @@ script: demo2
   <ul id="gallery" ng-app="demo2" ng-controller="GalleryCtrl">
     <li ng-repeat="image in images">
       <a ng-click="Lightbox.openModal(images, $index)">
-        <img ng-src="{{image}}" class="img-circle" alt="" style="width: 150px;">
+        <img ng-src="{{image}}" class="img-circle" alt="" style="width: 6em;">
       </a>
     </li>
   </ul>
