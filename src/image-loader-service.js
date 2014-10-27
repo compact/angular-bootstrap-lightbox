@@ -18,7 +18,7 @@ angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
         deferred.reject();
       }
 
-      deferred.resolve();
+      deferred.resolve(image);
     };
 
     // when the image fails to load

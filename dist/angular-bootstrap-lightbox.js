@@ -31,7 +31,7 @@ angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
         deferred.reject();
       }
 
-      deferred.resolve();
+      deferred.resolve(image);
     };
 
     // when the image fails to load
@@ -348,7 +348,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
  *   parent elements within the modal.
  */
 angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
-    Lightbox) {
+    ImageLoader, Lightbox) {
   /**
    * Calculate the dimensions to display the image. The max dimensions
    *   override the min dimensions if they conflict.
@@ -418,7 +418,7 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
 
   return {
     'link': function (scope, element, attrs) {
-      // resize the image and the containing modal
+      // resize the img element and the containing modal
       var resize = function () {
         // get the window dimensions
         var windowWidth = $window.innerWidth;
@@ -484,17 +484,17 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
         // http://stackoverflow.com/questions/5775469/whats-the-valid-way-to-include-an-image-with-no-src
         element[0].src = '//:0';
 
-        var image = new Image();
-        image.src = src;
+        ImageLoader.load(src).then(function (image) {
+          // these variables must be set before resize(), as they are used in it
+          imageWidth = image.naturalWidth;
+          imageHeight = image.naturalHeight;
 
-        // these variables must be set before resize(), as they are used in it
-        imageWidth = image.naturalWidth;
-        imageHeight = image.naturalHeight;
+          // resize the img element and the containing modal
+          resize();
 
-        resize();
-
-        // show the image
-        element[0].src = src;
+          // show the image
+          element[0].src = src;
+        });
       });
 
       // resize the image and modal whenever the window gets resized
