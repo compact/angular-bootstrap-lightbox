@@ -11,7 +11,7 @@ angular.module('bootstrapLightbox').run(['$templateCache', function($templateCac
   );
 
 }]);
-angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
+angular.module('bootstrapLightbox').service('ImageLoader', ['$q', function ($q) {
   /**
    * Load the image at the given URL.
    * @param  {String}  url
@@ -44,7 +44,7 @@ angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
 
     return deferred.promise;
   };
-});
+}]);
 angular.module('bootstrapLightbox').provider('Lightbox', function () {
   /**
    * Template URL passed into $modal.open().
@@ -347,7 +347,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
  *   place of src. It handles resizing both the img element and its relevant
  *   parent elements within the modal.
  */
-angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
+angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window', 'ImageLoader', 'Lightbox',function ($window,
     ImageLoader, Lightbox) {
   /**
    * Calculate the dimensions to display the image. The max dimensions
@@ -501,4 +501,4 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
       angular.element($window).on('resize', resize);
     }
   };
-});
+}]);

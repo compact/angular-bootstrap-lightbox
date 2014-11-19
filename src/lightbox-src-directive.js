@@ -3,7 +3,7 @@
  *   place of src. It handles resizing both the img element and its relevant
  *   parent elements within the modal.
  */
-angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
+angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window', 'ImageLoader', 'Lightbox',function ($window,
     ImageLoader, Lightbox) {
   /**
    * Calculate the dimensions to display the image. The max dimensions
@@ -157,4 +157,4 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', function ($window,
       angular.element($window).on('resize', resize);
     }
   };
-});
+}]);

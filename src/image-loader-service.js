@@ -1,4 +1,4 @@
-angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
+angular.module('bootstrapLightbox').service('ImageLoader', ['$q', function ($q) {
   /**
    * Load the image at the given URL.
    * @param  {String}  url
@@ -31,4 +31,4 @@ angular.module('bootstrapLightbox').service('ImageLoader', function ($q) {
 
     return deferred.promise;
   };
-});
+}]);
