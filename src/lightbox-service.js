@@ -94,7 +94,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     };
   };
 
-  this.$get = ['$document', '$modal', '$timeout', 'cfpLoadingBar', function ($document, $modal, $timeout, cfpLoadingBar,
+  this.$get = ['$document', '$modal', '$timeout', 'cfpLoadingBar', 'ImageLoader', function ($document, $modal, $timeout, cfpLoadingBar,
       ImageLoader) {
     // array of all images to be shown in the lightbox (not Image objects)
     var images = [];
