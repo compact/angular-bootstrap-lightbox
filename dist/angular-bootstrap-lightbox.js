@@ -141,7 +141,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     };
   };
 
-  this.$get = function ($document, $modal, $timeout, cfpLoadingBar,
+  this.$get = ['$document', '$modal', '$timeout', 'cfpLoadingBar', function ($document, $modal, $timeout, cfpLoadingBar,
       ImageLoader) {
     // array of all images to be shown in the lightbox (not Image objects)
     var images = [];
@@ -340,14 +340,14 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     });
 
     return Lightbox;
-  };
+  }];
 });
 /**
  * This attribute directive is used in an img element in the modal template in
  *   place of src. It handles resizing both the img element and its relevant
  *   parent elements within the modal.
  */
-angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window', 'ImageLoader', 'Lightbox',function ($window,
+angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window', 'ImageLoader', 'Lightbox', function ($window,
     ImageLoader, Lightbox) {
   /**
    * Calculate the dimensions to display the image. The max dimensions
