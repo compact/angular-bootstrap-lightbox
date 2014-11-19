@@ -94,7 +94,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     };
   };
 
-  this.$get = function ($document, $modal, $timeout, cfpLoadingBar,
+  this.$get = ['$document', '$modal', '$timeout', 'cfpLoadingBar', function ($document, $modal, $timeout, cfpLoadingBar,
       ImageLoader) {
     // array of all images to be shown in the lightbox (not Image objects)
     var images = [];
@@ -293,5 +293,5 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     });
 
     return Lightbox;
-  };
+  }];
 });
