@@ -306,6 +306,20 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     };
 
     /**
+     * Get the total count of images available
+     */
+    Lightbox.totalImagesCount = function () {
+      return images.length;
+    };
+
+    /**
+     * Get the current images index
+     */
+    Lightbox.currentImageIndex = function () {
+      return index;
+    };
+
+    /**
      * Bind the left and right arrow keys for image navigation. This event
      *   handler never gets unbinded. Disable this using the
      *   keyboardNavEnabled flag. It is automatically disabled when
