@@ -11,7 +11,8 @@ angular.module('bootstrapLightbox').run(['$templateCache', function($templateCac
   );
 
 }]);
-angular.module('bootstrapLightbox').service('ImageLoader', ['$q', function ($q) {
+angular.module('bootstrapLightbox').service('ImageLoader', ['$q',
+    function ($q) {
   /**
    * Load the image at the given URL.
    * @param  {String}  url
@@ -141,7 +142,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     };
   };
 
-  this.$get = ['$document', '$modal', '$timeout', 'cfpLoadingBar', 'ImageLoader', function ($document, $modal, $timeout, cfpLoadingBar,
+  this.$get = ['$document', '$modal', '$timeout', 'cfpLoadingBar',
+      'ImageLoader', function ($document, $modal, $timeout, cfpLoadingBar,
       ImageLoader) {
     // array of all images to be shown in the lightbox (not Image objects)
     var images = [];
@@ -347,8 +349,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
  *   place of src. It handles resizing both the img element and its relevant
  *   parent elements within the modal.
  */
-angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window', 'ImageLoader', 'Lightbox', function ($window,
-    ImageLoader, Lightbox) {
+angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
+    'ImageLoader', 'Lightbox', function ($window, ImageLoader, Lightbox) {
   /**
    * Calculate the dimensions to display the image. The max dimensions
    *   override the min dimensions if they conflict.
