@@ -6,3 +6,4 @@ exclude: [
 ]
 gems:
   - jekyll-redirect-from
+highlighter: pygments
