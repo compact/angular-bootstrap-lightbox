@@ -1,0 +1,18 @@
+<div class="modal-body" ng-controller="LightboxCtrl"
+    ng-swipe-left="Lightbox.nextImage()"
+    ng-swipe-right="Lightbox.prevImage()">
+
+  <!-- button -->
+  <div style="text-align: center;">
+    <a ng-click="alert('Image URL: ' + Lightbox.image.url)"
+        class="btn btn-danger">
+      Alert (this calls a lightbox controller method)
+    </a>
+  </div>
+
+  <!-- image -->
+  <div class="lightbox-image-container">
+    <img lightbox-src="{{Lightbox.imageUrl}}" alt="">
+  </div>
+
+</div>
