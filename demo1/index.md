@@ -1,6 +1,40 @@
-angular.module('demo', ['bootstrapLightbox']);
+---
+redirect_from: "/"
+title: "Demo 1: Basic"
+layout: demo
+script: demo1.js
+---
 
-angular.module('demo').controller('GalleryCtrl', function ($scope, Lightbox) {
+{% raw %}
+<ul id="gallery" ng-app="demo1" ng-controller="GalleryCtrl">
+  <li ng-repeat="image in images">
+    <a ng-click="openLightboxModal($index)">
+      <img ng-src="{{image.thumbUrl}}" class="img-thumbnail" alt="">
+    </a>
+  </li>
+</ul>
+{% endraw %}
+
+### `index.html`
+
+{% highlight html %}
+{% raw %}
+<ul id="gallery" ng-app="demo1" ng-controller="GalleryCtrl">
+  <li ng-repeat="image in images">
+    <a ng-click="openLightboxModal($index)">
+      <img ng-src="{{image.thumbUrl}}" class="img-thumbnail" alt="">
+    </a>
+  </li>
+</ul>
+{% endraw %}
+{% endhighlight %}
+
+### `demo1.js`
+
+{% highlight js %}
+angular.module('demo1', ['bootstrapLightbox']);
+
+angular.module('demo1').controller('GalleryCtrl', function ($scope, Lightbox) {
   $scope.images = [
     {
       'url': 'http://upload.wikimedia.org/wikipedia/commons/8/87/Waynejunction0810b.JPG',
@@ -50,3 +84,4 @@ angular.module('demo').controller('GalleryCtrl', function ($scope, Lightbox) {
     Lightbox.openModal($scope.images, index);
   };
 });
+{% endhighlight %}

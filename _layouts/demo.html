@@ -17,39 +17,43 @@
   <![endif]-->
 </head>
 <body>
-  <header class="jumbotron">
-    <h1>angular-bootstrap-lightbox <small>v0.3.3</small></h1>
+  <div class="container">
+    <header class="jumbotron">
+      <h1>angular-bootstrap-lightbox <small>v0.3.3</small></h1>
 
-    <p>This is a lightbox made with AngularUI Bootstrap Modal. It can be used in any Angular app. Click on an image below to open the lightbox. View the project and instructions on <a href="https://github.com/compact/angular-bootstrap-lightbox">GitHub</a>.</p>
-  </header>
+      <p>This is a lightbox made with AngularUI Bootstrap Modal. It can be used in any Angular app. Click on an image below to open the lightbox. View the project and instructions on <a href="https://github.com/compact/angular-bootstrap-lightbox">GitHub</a>.</p>
+    </header>
 
-  <nav>
-    <ul class="nav nav-pills">
-      {% assign sorted_pages = site.pages | sort: "title" %}
-      {% for node in sorted_pages %}
-          <li {% if page.url == node.url %} class="active" {% endif %} >
-            <a href="{{site.baseurl}}{{node.url}}">{{node.title}}</a>
-          </li>
-      {% endfor %}
-    </ul>
-  </nav>
+    <nav>
+      <ul class="nav nav-pills">
+        {% assign sorted_pages = site.pages | sort: "title" %}
+        {% for node in sorted_pages %}
+          {% if node.title %}
+            <li {% if page.url == node.url %} class="active" {% endif %} >
+              <a href="{{site.baseurl}}{{node.url}}">{{node.title}}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </nav>
 
-  <section class="panel panel-default">
-    <div class="panel-body">
+    <section class="panel panel-default">
+      <div class="panel-body">
 
-      <!-- start demo-specific html -->
-      {{content}}
-      <!-- end demo-specific html -->
+        <!-- start demo-specific html -->
+        {{content}}
+        <!-- end demo-specific html -->
 
-    </div>
-  </section>
+      </div>
+    </section>
+  </div>
 
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-touch.min.js"></script>
   <script src="{{site.baseurl}}/lib/ui-bootstrap-tpls.js"></script>
   <script src="{{site.baseurl}}/lib/loading-bar.js"></script>
   <script src="{{site.baseurl}}/dist/angular-bootstrap-lightbox.min.js"></script>
-  <script src="{{site.baseurl}}/js/{{page.script}}.js"></script>
+  <script src="{{page.script}}"></script>
 
 </body>
 </html>
