@@ -186,7 +186,6 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         // complete any lingering loading bar progress
         cfpLoadingBar.complete();
       });
-      console.log(Lightbox.modalInstance)
     };
 
     /**

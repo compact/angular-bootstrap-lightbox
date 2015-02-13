@@ -179,6 +179,12 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     Lightbox.image = {};
 
     /**
+     * The modal instance.
+     * @type {*}
+     */
+    Lightbox.modalInstance = null;
+
+    /**
      * The URL of the current image. This is a property of the service rather
      *   than of Lightbox.image because Lightbox.image need not be an object,
      *   and besides it would be poor practice to alter the given objects.
@@ -204,7 +210,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       images = newImages;
       Lightbox.setImage(newIndex);
 
-      $modal.open({
+      //Store in modalInstance so we can close it manually if we need to
+      Lightbox.modalInstance = $modal.open({
         'templateUrl': Lightbox.templateUrl,
         'controller': ['$scope', function ($scope) {
           // $scope is the modal scope, a child of $rootScope
@@ -213,7 +220,9 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
           Lightbox.keyboardNavEnabled = true;
         }],
         'windowClass': 'lightbox-modal'
-      }).result.finally(function () { // close
+      });
+
+      Lightbox.modalInstance.result.finally(function () { // close
         // prevent the lightbox from flickering from the old image when it gets
         // opened again
         Lightbox.image = {};
@@ -225,6 +234,13 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         // complete any lingering loading bar progress
         cfpLoadingBar.complete();
       });
+    };
+
+    /**
+     * Close the lightbox modal.
+     */
+    Lightbox.closeModal = function () {
+      Lightbox.modalInstance.close();
     };
 
     /**
