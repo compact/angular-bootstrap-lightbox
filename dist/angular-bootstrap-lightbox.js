@@ -205,12 +205,14 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      *   type.
      * @param  {Number} newIndex  The index in newImages to set as the current
      *   image.
+     * @return {Object} A [modal instance]{@link
+     *   http://angular-ui.github.io/bootstrap/#/modal}.
      */
     Lightbox.openModal = function (newImages, newIndex) {
       images = newImages;
       Lightbox.setImage(newIndex);
 
-      //Store in modalInstance so we can close it manually if we need to
+      // store the modal instance so we can close it manually if we need to
       Lightbox.modalInstance = $modal.open({
         'templateUrl': Lightbox.templateUrl,
         'controller': ['$scope', function ($scope) {
@@ -222,7 +224,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         'windowClass': 'lightbox-modal'
       });
 
-      Lightbox.modalInstance.result.finally(function () { // close
+      // modal close handler
+      Lightbox.modalInstance.result['finally'](function () {
         // prevent the lightbox from flickering from the old image when it gets
         // opened again
         Lightbox.image = {};
@@ -234,6 +237,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         // complete any lingering loading bar progress
         cfpLoadingBar.complete();
       });
+
+      return Lightbox.modalInstance;
     };
 
     /**
