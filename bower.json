@@ -1,6 +1,6 @@
 {
   "name": "angular-bootstrap-lightbox",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "main": [
     "dist/angular-bootstrap-lightbox.js",
     "dist/angular-bootstrap-lightbox.css"
