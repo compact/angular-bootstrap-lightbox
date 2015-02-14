@@ -243,9 +243,11 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
 
     /**
      * Close the lightbox modal.
+     * @param {*} result This argument can be useful if the modal promise gets
+     *   handler(s) attached to it.
      */
-    Lightbox.closeModal = function () {
-      Lightbox.modalInstance.close();
+    Lightbox.closeModal = function (result) {
+      return Lightbox.modalInstance.close(result);
     };
 
     /**
