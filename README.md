@@ -12,13 +12,13 @@ Large images are scaled to fit inside the window. An optional image caption over
 
 ## Setup
 
-Save the files in [`dist`](dist), or install with [Bower](http://bower.io/):
+Different ways to install:
 
-```
-bower install angular-bootstrap-lightbox --save
-```
+1. Install with Bower: `bower install angular-bootstrap-lightbox --save`
+2. Install with npm: `npm install angular-bootstrap-lightbox --save`
+3. Manually save the script and stylesheet from [`dist`](dist).
 
-Stylesheet with dependencies:
+Include the stylesheet in your app (default Bower paths given with dependencies):
 
 ```html
 <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
@@ -26,7 +26,7 @@ Stylesheet with dependencies:
 <link rel="stylesheet" href="bower_components/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.css">
 ```
 
-Script with dependencies:
+Include the script in your app (default Bower paths given with dependencies):
 
 ```html
 <script src="bower_components/angular/angular.js"></script>
