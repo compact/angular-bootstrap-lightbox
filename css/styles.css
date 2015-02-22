@@ -28,17 +28,3 @@ nav {
     width: 6em;
   }
 }
-
-#loading-bar .bar {
-  height: 5px;
-  background: #fff;
-}
-
-#loading-bar .peg {
-  box-shadow: 1px 0 6px 1px #fff;
-}
-
-#loading-bar-spinner .spinner-icon {
-  border-top-color: #fff;
-  border-left-color: #fff;
-}
