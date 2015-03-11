@@ -145,17 +145,18 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
   this.$get = ['$document', '$modal', '$timeout', 'cfpLoadingBar',
       'ImageLoader', function ($document, $modal, $timeout, cfpLoadingBar,
       ImageLoader) {
-    // array of all images to be shown in the lightbox (not Image objects)
-    var images = [];
-
-    // the index of the image currently shown (Lightbox.image)
-    var index = -1;
 
     /**
      * The service object for the lightbox.
      * @type {Object}
      */
     var Lightbox = {};
+
+    // array of all images to be shown in the lightbox (not Image objects)
+    var Lightbox.images = [];
+
+    // the index of the image currently shown (Lightbox.image)
+    var Lightbox.index = -1;
 
     // set the configurable properties and methods, the defaults of which are
     // defined above
@@ -209,7 +210,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      *   http://angular-ui.github.io/bootstrap/#/modal}.
      */
     Lightbox.openModal = function (newImages, newIndex) {
-      images = newImages;
+      Lightbox.images = newImages;
       Lightbox.setImage(newIndex);
 
       // store the modal instance so we can close it manually if we need to
@@ -257,20 +258,20 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      *   new current image.
      */
     Lightbox.setImage = function (newIndex) {
-      if (!(newIndex in images)) {
+      if (!(newIndex in Lightbox.images)) {
         throw 'Invalid image.';
       }
 
       cfpLoadingBar.start();
 
       var success = function () {
-        index = newIndex;
-        Lightbox.image = images[index];
+        Lightbox.index = newIndex;
+        Lightbox.image = Lightbox.images[Lightbox.index];
 
         cfpLoadingBar.complete();
       };
 
-      var imageUrl = Lightbox.getImageUrl(images[newIndex]);
+      var imageUrl = Lightbox.getImageUrl(Lightbox.images[newIndex]);
 
       // load the image before setting it, so everything in the view is updated
       // at the same time; otherwise, the previous image remains while the
@@ -302,21 +303,21 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      * Navigate to the previous image.
      */
     Lightbox.prevImage = function () {
-      Lightbox.setImage((index - 1 + images.length) % images.length);
+      Lightbox.setImage((Lightbox.index - 1 + Lightbox.images.length) % Lightbox.images.length);
     };
 
     /**
      * Navigate to the next image.
      */
     Lightbox.nextImage = function () {
-      Lightbox.setImage((index + 1) % images.length);
+      Lightbox.setImage((Lightbox.index + 1) % Lightbox.images.length);
     };
 
     /**
      * Navigate to the last image.
      */
     Lightbox.lastImage = function () {
-      Lightbox.setImage(images.length - 1);
+      Lightbox.setImage(Lightbox.images.length - 1);
     };
 
     /**
@@ -326,8 +327,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      * @param {Array} newImages The new array of images.
      */
     Lightbox.setImages = function (newImages) {
-      images = newImages;
-      Lightbox.setImage(index);
+      Lightbox.images = newImages;
+      Lightbox.setImage(Lightbox.index);
     };
 
     /**
