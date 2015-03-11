@@ -105,10 +105,10 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     var Lightbox = {};
 
     // array of all images to be shown in the lightbox (not Image objects)
-    var Lightbox.images = [];
+    Lightbox.images = [];
 
     // the index of the image currently shown (Lightbox.image)
-    var Lightbox.index = -1;
+    Lightbox.index = -1;
 
     // set the configurable properties and methods, the defaults of which are
     // defined above
@@ -181,6 +181,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       Lightbox.modalInstance.result['finally'](function () {
         // prevent the lightbox from flickering from the old image when it gets
         // opened again
+        Lightbox.images = [];
+        Lightbox.index = 1;
         Lightbox.image = {};
         Lightbox.imageUrl = null;
         Lightbox.imageCaption = null;
