@@ -1,3 +1,6 @@
+/**
+ * @namespace bootstrapLightbox
+ */
 angular.module('bootstrapLightbox', [
   'ngTouch',
   'ui.bootstrap',
@@ -11,13 +14,21 @@ angular.module('bootstrapLightbox').run(['$templateCache', function($templateCac
   );
 
 }]);
+/**
+ * @class     ImageLoader
+ * @classdesc Service for loading an image.
+ * @memberOf  bootstrapLightbox
+ */
 angular.module('bootstrapLightbox').service('ImageLoader', ['$q',
     function ($q) {
   /**
    * Load the image at the given URL.
-   * @param  {String}  url
-   * @return {Promise} A $q promise that resolves when the image has loaded
+   * @param    {String} url
+   * @return   {Promise} A $q promise that resolves when the image has loaded
    *   successfully.
+   * @type     {Function}
+   * @name     load
+   * @memberOf bootstrapLightbox.ImageLoader
    */
   this.load = function (url) {
     var deferred = $q.defer();
@@ -46,24 +57,37 @@ angular.module('bootstrapLightbox').service('ImageLoader', ['$q',
     return deferred.promise;
   };
 }]);
+/**
+ * @class     Lightbox
+ * @classdesc Lightbox service.
+ * @memberOf  bootstrapLightbox
+ */
 angular.module('bootstrapLightbox').provider('Lightbox', function () {
   /**
-   * Template URL passed into $modal.open().
-   * @type {String}
+   * Template URL passed into `$modal.open()`.
+   * @type     {String}
+   * @name     templateUrl
+   * @memberOf bootstrapLightbox.Lightbox
    */
   this.templateUrl = 'lightbox.html';
 
   /**
-   * @param  {*}      image An element in the array of images.
-   * @return {String}       The URL of the given image.
+   * @param    {*} image An element in the array of images.
+   * @return   {String} The URL of the given image.
+   * @type     {Function}
+   * @name     getImageUrl
+   * @memberOf bootstrapLightbox.Lightbox
    */
   this.getImageUrl = function (image) {
     return image.url;
   };
 
   /**
-   * @param  {*}      image An element in the array of images.
-   * @return {String}       The caption of the given image.
+   * @param    {*} image An element in the array of images.
+   * @return   {String} The caption of the given image.
+   * @type     {Function}
+   * @name     getImageCaption
+   * @memberOf bootstrapLightbox.Lightbox
    */
   this.getImageCaption = function (image) {
     return image.caption;
@@ -73,10 +97,13 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
    * Calculate the max and min limits to the width and height of the displayed
    *   image (all are optional). The max dimensions override the min
    *   dimensions if they conflict.
-   * @param  {Object} dimensions Contains the properties windowWidth,
-   *   windowHeight, imageWidth, imageHeight.
-   * @return {Object} May optionally contain the properties minWidth,
-   *   minHeight, maxWidth, maxHeight.
+   * @param    {Object} dimensions Contains the properties `windowWidth`,
+   *   `windowHeight`, `imageWidth`, and `imageHeight`.
+   * @return   {Object} May optionally contain the properties `minWidth`,
+   *   `minHeight`, `maxWidth`, and `maxHeight`.
+   * @type     {Function}
+   * @name     calculateImageDimensionLimits
+   * @memberOf bootstrapLightbox.Lightbox
    */
   this.calculateImageDimensionLimits = function (dimensions) {
     if (dimensions.windowWidth >= 768) {
@@ -108,9 +135,12 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
    * Calculate the width and height of the modal. This method gets called
    *   after the width and height of the image, as displayed inside the modal,
    *   are calculated.
-   * @param  {Object} dimensions Contains the properties windowWidth,
-   *   windowHeight, imageDisplayWidth, imageDisplayHeight.
-   * @return {Object} Must contain the properties width and height.
+   * @param    {Object} dimensions Contains the properties `windowWidth`,
+   *   `windowHeight`, `imageDisplayWidth`, and `imageDisplayHeight`.
+   * @return   {Object} Must contain the properties `width` and `height`.
+   * @type     {Function}
+   * @name     calculateModalDimensions
+   * @memberOf bootstrapLightbox.Lightbox
    */
   this.calculateModalDimensions = function (dimensions) {
     // 400px = arbitrary min width
@@ -145,17 +175,23 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
   this.$get = ['$document', '$modal', '$timeout', 'cfpLoadingBar',
       'ImageLoader', function ($document, $modal, $timeout, cfpLoadingBar,
       ImageLoader) {
-
-    /**
-     * The service object for the lightbox.
-     * @type {Object}
-     */
     var Lightbox = {};
 
-    // array of all images to be shown in the lightbox (not Image objects)
+    /**
+     * Array of all images to be shown in the lightbox (not `Image` objects).
+     * @type     {Array}
+     * @name     images
+     * @memberOf bootstrapLightbox.Lightbox
+     */
     Lightbox.images = [];
 
-    // the index of the image currently shown (Lightbox.image)
+    /**
+     * The index in the `Lightbox.images` aray of the image that is currently
+     *   shown in the lightbox.
+     * @type     {Number}
+     * @name     index
+     * @memberOf bootstrapLightbox.Lightbox
+     */
     Lightbox.index = -1;
 
     // set the configurable properties and methods, the defaults of which are
@@ -169,45 +205,56 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     /**
      * Whether keyboard navigation is currently enabled for navigating through
      *   images in the lightbox.
-     * @type {Boolean}
+     * @type     {Boolean}
+     * @name     keyboardNavEnabled
+     * @memberOf bootstrapLightbox.Lightbox
      */
     Lightbox.keyboardNavEnabled = false;
 
     /**
-     * The current image.
-     * @type {*}
+     * The image currently shown in the lightbox.
+     * @type     {*}
+     * @name     image
+     * @memberOf bootstrapLightbox.Lightbox
      */
     Lightbox.image = {};
 
     /**
-     * The modal instance.
-     * @type {*}
+     * The UI Bootstrap modal instance. See {@link
+     *   http://angular-ui.github.io/bootstrap/#/modal}.
+     * @type     {Object}
+     * @name     modalInstance
+     * @memberOf bootstrapLightbox.Lightbox
      */
     Lightbox.modalInstance = null;
 
     /**
      * The URL of the current image. This is a property of the service rather
-     *   than of Lightbox.image because Lightbox.image need not be an object,
-     *   and besides it would be poor practice to alter the given objects.
-     * @type {String}
+     *   than of `Lightbox.image` because `Lightbox.image` need not be an
+     *   object, and besides it would be poor practice to alter the given
+     *   objects.
+     * @type     {String}
+     * @name     imageUrl
+     * @memberOf bootstrapLightbox.Lightbox
      */
-    // Lightbox.imageUrl = '';
 
     /**
-     * The caption of the current image. See the description of
-     *   Lightbox.imageUrl.
-     * @type {String}
+     * The optional caption of the current image.
+     * @type     {String}
+     * @name     imageCaption
+     * @memberOf bootstrapLightbox.Lightbox
      */
-    // Lightbox.imageCaption = '';
 
     /**
      * Open the lightbox modal.
-     * @param  {Array}  newImages An array of images. Each image may be of any
-     *   type.
-     * @param  {Number} newIndex  The index in newImages to set as the current
-     *   image.
-     * @return {Object} A [modal instance]{@link
-     *   http://angular-ui.github.io/bootstrap/#/modal}.
+     * @param    {Array}  newImages An array of images. Each image may be of
+     *   any type.
+     * @param    {Number} newIndex  The index in `newImages` to set as the
+     *   current image.
+     * @return   {Object} The created UI Bootstrap modal instance.
+     * @type     {Function}
+     * @name     openModal
+     * @memberOf bootstrapLightbox.Lightbox
      */
     Lightbox.openModal = function (newImages, newIndex) {
       Lightbox.images = newImages;
@@ -246,8 +293,11 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
 
     /**
      * Close the lightbox modal.
-     * @param {*} result This argument can be useful if the modal promise gets
-     *   handler(s) attached to it.
+     * @param    {*} result This argument can be useful if the modal promise
+     *   gets handler(s) attached to it.
+     * @type     {Function}
+     * @name     closeModal
+     * @memberOf bootstrapLightbox.Lightbox
      */
     Lightbox.closeModal = function (result) {
       return Lightbox.modalInstance.close(result);
@@ -256,8 +306,11 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     /**
      * This method can be used in all methods which navigate/change the
      *   current image.
-     * @param {Number} newIndex The index in the array of images to set as the
-     *   new current image.
+     * @param    {Number} newIndex The index in the array of images to set as
+     *   the new current image.
+     * @type     {Function}
+     * @name     setImage
+     * @memberOf bootstrapLightbox.Lightbox
      */
     Lightbox.setImage = function (newIndex) {
       if (!(newIndex in Lightbox.images)) {
@@ -296,6 +349,9 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
 
     /**
      * Navigate to the first image.
+     * @type     {Function}
+     * @name     firstImage
+     * @memberOf bootstrapLightbox.Lightbox
      */
     Lightbox.firstImage = function () {
       Lightbox.setImage(0);
@@ -303,13 +359,20 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
 
     /**
      * Navigate to the previous image.
+     * @type     {Function}
+     * @name     prevImage
+     * @memberOf bootstrapLightbox.Lightbox
      */
     Lightbox.prevImage = function () {
-      Lightbox.setImage((Lightbox.index - 1 + Lightbox.images.length) % Lightbox.images.length);
+      Lightbox.setImage((Lightbox.index - 1 + Lightbox.images.length) %
+        Lightbox.images.length);
     };
 
     /**
      * Navigate to the next image.
+     * @type     {Function}
+     * @name     nextImage
+     * @memberOf bootstrapLightbox.Lightbox
      */
     Lightbox.nextImage = function () {
       Lightbox.setImage((Lightbox.index + 1) % Lightbox.images.length);
@@ -317,6 +380,9 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
 
     /**
      * Navigate to the last image.
+     * @type     {Function}
+     * @name     lastImage
+     * @memberOf bootstrapLightbox.Lightbox
      */
     Lightbox.lastImage = function () {
       Lightbox.setImage(Lightbox.images.length - 1);
@@ -325,20 +391,22 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     /**
      * Call this method to set both the array of images and the current image
      *   (based on the current index). A use case is when the image collection
-     *   gets changed dynamically in some way while the lightbox is still open.
+     *   gets changed dynamically in some way while the lightbox is still
+     *   open.
      * @param {Array} newImages The new array of images.
+     * @type     {Function}
+     * @name     setImages
+     * @memberOf bootstrapLightbox.Lightbox
      */
     Lightbox.setImages = function (newImages) {
       Lightbox.images = newImages;
       Lightbox.setImage(Lightbox.index);
     };
 
-    /**
-     * Bind the left and right arrow keys for image navigation. This event
-     *   handler never gets unbinded. Disable this using the
-     *   keyboardNavEnabled flag. It is automatically disabled when
-     *   the target is an input and or a textarea.
-     */
+    // Bind the left and right arrow keys for image navigation. This event
+    // handler never gets unbinded. Disable this using the `keyboardNavEnabled`
+    // flag. It is automatically disabled when the target is an input and or a
+    // textarea. TODO: Move this to a directive.
     $document.bind('keydown', function (event) {
       if (!Lightbox.keyboardNavEnabled) {
         return;
@@ -371,16 +439,16 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
   }];
 });
 /**
- * This attribute directive is used in an img element in the modal template in
- *   place of src. It handles resizing both the img element and its relevant
- *   parent elements within the modal.
+ * @class     lightboxSrc
+ * @classdesc This attribute directive is used in an `<img>` element in the
+ *   modal template in place of `src`. It handles resizing both the `<img>`
+ *   element and its relevant parent elements within the modal.
+ * @memberOf  bootstrapLightbox
  */
 angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
     'ImageLoader', 'Lightbox', function ($window, ImageLoader, Lightbox) {
-  /**
-   * Calculate the dimensions to display the image. The max dimensions
-   *   override the min dimensions if they conflict.
-   */
+  // Calculate the dimensions to display the image. The max dimensions override
+  // the min dimensions if they conflict.
   var calculateImageDisplayDimensions = function (dimensions) {
     var w = dimensions.width;
     var h = dimensions.height;
@@ -509,7 +577,7 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
         return attrs.lightboxSrc;
       }, function (src) {
         // blank the image before resizing the element; see
-        // http://stackoverflow.com/questions/5775469/whats-the-valid-way-to-include-an-image-with-no-src
+        // http://stackoverflow.com/questions/5775469
         element[0].src = '//:0';
 
         ImageLoader.load(src).then(function (image) {

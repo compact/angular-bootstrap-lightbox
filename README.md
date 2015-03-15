@@ -10,6 +10,10 @@ Large images are scaled to fit inside the window. An optional image caption over
 
 [Demos](http://compact.github.io/angular-bootstrap-lightbox/)
 
+## API documentation
+
+[API documentation](api.md) of the services and directive in the Angular module
+
 ## Setup
 
 Different ways to install:

@@ -1,14 +1,14 @@
 /**
- * This attribute directive is used in an img element in the modal template in
- *   place of src. It handles resizing both the img element and its relevant
- *   parent elements within the modal.
+ * @class     lightboxSrc
+ * @classdesc This attribute directive is used in an `<img>` element in the
+ *   modal template in place of `src`. It handles resizing both the `<img>`
+ *   element and its relevant parent elements within the modal.
+ * @memberOf  bootstrapLightbox
  */
 angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
     'ImageLoader', 'Lightbox', function ($window, ImageLoader, Lightbox) {
-  /**
-   * Calculate the dimensions to display the image. The max dimensions
-   *   override the min dimensions if they conflict.
-   */
+  // Calculate the dimensions to display the image. The max dimensions override
+  // the min dimensions if they conflict.
   var calculateImageDisplayDimensions = function (dimensions) {
     var w = dimensions.width;
     var h = dimensions.height;
@@ -137,7 +137,7 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
         return attrs.lightboxSrc;
       }, function (src) {
         // blank the image before resizing the element; see
-        // http://stackoverflow.com/questions/5775469/whats-the-valid-way-to-include-an-image-with-no-src
+        // http://stackoverflow.com/questions/5775469
         element[0].src = '//:0';
 
         ImageLoader.load(src).then(function (image) {
