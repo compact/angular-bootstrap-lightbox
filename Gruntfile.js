@@ -2,7 +2,8 @@ module.exports = function (grunt) {
 
   // Load grunt tasks when they are needed
   require('jit-grunt')(grunt, {
-    ngtemplates: 'grunt-angular-templates'
+    ngtemplates: 'grunt-angular-templates',
+    jsdoc2md: 'grunt-jsdoc-to-markdown'
   });
 
   // Time how long tasks take. Can help when optimizing build times
@@ -82,6 +83,12 @@ module.exports = function (grunt) {
             removeRedundantAttributes: true
           }
         }
+      }
+    },
+    jsdoc2md: {
+      doc: {
+        src: 'src/*.js',
+        dest: 'api.md'
       }
     },
   });
