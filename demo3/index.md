@@ -29,6 +29,7 @@ In this example, there is no gallery. Click the button below.
 ### `demo3-lightbox-modal.html`
 
 {% highlight html %}
+{% raw %}
 <div class="modal-body" ng-controller="LightboxCtrl"
     ng-swipe-left="Lightbox.nextImage()"
     ng-swipe-right="Lightbox.prevImage()">
@@ -47,6 +48,7 @@ In this example, there is no gallery. Click the button below.
   </div>
 
 </div>
+{% endraw %}
 {% endhighlight %}
 
 ### `demo3.js`
