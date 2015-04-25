@@ -2,10 +2,19 @@
  * @namespace bootstrapLightbox
  */
 angular.module('bootstrapLightbox', [
-  'ngTouch',
-  'ui.bootstrap',
-  'chieffancypants.loadingBar',
+  'ui.bootstrap'
 ]);
+
+// optional dependencies
+try {
+  angular.module('angular-loading-bar');
+  angular.module('bootstrapLightbox').requires.push('angular-loading-bar');
+} catch (e) {}
+
+try {
+  angular.module('ngTouch');
+  angular.module('bootstrapLightbox').requires.push('ngTouch');
+} catch (e) {}
 angular.module('bootstrapLightbox').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -172,9 +181,12 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     };
   };
 
-  this.$get = ['$document', '$modal', '$timeout', 'cfpLoadingBar',
-      'ImageLoader', function ($document, $modal, $timeout, cfpLoadingBar,
-      ImageLoader) {
+  this.$get = ['$document', '$injector', '$modal', '$timeout', 'ImageLoader',
+      function ($document, $injector, $modal, $timeout, ImageLoader) {
+    // optional dependency
+    var cfpLoadingBar = $injector.has('cfpLoadingBar') ?
+      $injector.get('cfpLoadingBar'): null;
+
     var Lightbox = {};
 
     /**
@@ -285,7 +297,9 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         Lightbox.keyboardNavEnabled = false;
 
         // complete any lingering loading bar progress
-        cfpLoadingBar.complete();
+        if (cfpLoadingBar) {
+          cfpLoadingBar.complete();
+        }
       });
 
       return Lightbox.modalInstance;
@@ -317,13 +331,19 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         throw 'Invalid image.';
       }
 
-      cfpLoadingBar.start();
+      // start the loading bar
+      if (cfpLoadingBar) {
+        cfpLoadingBar.start();
+      }
 
       var success = function () {
         Lightbox.index = newIndex;
         Lightbox.image = Lightbox.images[Lightbox.index];
 
-        cfpLoadingBar.complete();
+        // complete the loading bar
+        if (cfpLoadingBar) {
+          cfpLoadingBar.complete();
+        }
       };
 
       var imageUrl = Lightbox.getImageUrl(Lightbox.images[newIndex]);
