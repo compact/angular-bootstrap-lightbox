@@ -1,10 +1,10 @@
 # angular-bootstrap-lightbox
 
-This lightbox displays images using an [AngularUI Bootstrap](http://angular-ui.github.io/bootstrap/) Modal.
+This lightbox displays images using an [AngularUI Bootstrap Modal](http://angular-ui.github.io/bootstrap/#/modal).
 
-When the lightbox is opened, navigating to the previous/next image can be achieved by clicking buttons above the image, clicking the left/right arrow keys, or swiping to the left/right (using [ngTouch directives](http://docs.angularjs.org/api/ngTouch/directive)). The escape key for closing the modal is automatically binded by AngularUI Bootstrap.
+When the lightbox is opened, navigating to the previous/next image can be achieved by clicking buttons above the image, clicking the left/right arrow keys, or swiping to the left/right (optional with ngTouch). The escape key for closing the modal is automatically binded by AngularUI Bootstrap.
 
-Large images are scaled to fit inside the window. An optional image caption overlays the top left corner of the image. [angular-loading-bar](https://github.com/chieffancypants/angular-loading-bar) is used to show the progress of the image being loaded.
+Large images are scaled to fit inside the window. An optional image caption overlays the top left corner of the image.
 
 ## Demos
 
@@ -16,35 +16,34 @@ Large images are scaled to fit inside the window. An optional image caption over
 
 ## Setup
 
-Different ways to install:
+1. Install in one of the following ways:
 
-1. Install with Bower: `bower install angular-bootstrap-lightbox --save`
-2. Install with npm: `npm install angular-bootstrap-lightbox --save`
-3. Manually save the script and stylesheet from [`dist`](dist).
+  * Install with Bower: `bower install angular-bootstrap-lightbox --save`
+  * Install with npm: `npm install angular-bootstrap-lightbox --save`
+  * Manually save the script and stylesheet from [`dist`](dist).
 
-Include the stylesheet in your app (default Bower paths given with dependencies):
+2. Include the stylesheet in your app:
 
-```html
-<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
-<link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css">
-<link rel="stylesheet" href="bower_components/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.css">
-```
+  ```html
+  <link rel="stylesheet" href="bower_components/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.css">
+  ```
 
-Include the script in your app (default Bower paths given with dependencies):
+3. Include the script in your app:
 
-```html
-<script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-touch/angular-touch.js"></script>
-<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-<script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
-<script src="bower_components/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.js"></script>
-```
+  ```html
+  <script src="bower_components/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.js"></script>
+  ```
 
-The Angular module is named `bootstrapLightbox`. Add it as a dependency to your module:
+4. The Angular module is named `bootstrapLightbox`. Add it as a dependency to your module:
 
-```js
-angular.module('app', ['bootstrapLightbox']);
-```
+  ```js
+  angular.module('app', ['bootstrapLightbox']);
+  ```
+
+5. Optional dependencies:
+
+  * To enable swipe navigation in the lightbox, include the [ngTouch](https://docs.angularjs.org/api/ngTouch) script before `angular-bootstrap-lightbox.js`.
+  * To show a loading bar while an image is loading, include the [angular-loading-bar](https://github.com/chieffancypants/angular-loading-bar) script before `angular-bootstrap-lightbox.js`.
 
 ## Basic example
 
@@ -54,7 +53,7 @@ Gallery:
 <ul ng-controller="GalleryCtrl">
   <li ng-repeat="image in images">
     <a ng-click="openLightboxModal($index)">
-      <img ng-src="{{image.thumbUrl}}" class="img-thumbnail" alt="">
+      <img ng-src="{{image.thumbUrl}}" class="img-thumbnail">
     </a>
   </li>
 </ul>
@@ -90,7 +89,7 @@ angular.module('app').controller('GalleryCtrl', function ($scope, Lightbox) {
 
 ### Changing the appearance of the modal lightbox
 
-The default view template for the lightbox is [lightbox.html](src/lightbox.html) and it does not look particularly pretty. Its look can be changed by making your own custom template and/or adding CSS rules (for example, use the selector `.lightbox-image-caption` to style the caption).
+The default view template for the lightbox is [lightbox.html](src/lightbox.html). Its look can be changed by making your own custom template and/or adding CSS rules; for example, use the selector `.lightbox-image-caption` to style the caption.
 
 If you make your own template and save it at `lightbox.html`, no further code is necessary. If you save it at a different path, set it in the provider:
 
