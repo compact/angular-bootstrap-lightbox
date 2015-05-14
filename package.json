@@ -1,6 +1,6 @@
 {
   "name": "angular-bootstrap-lightbox",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "An AngularJS lightbox built using UI Bootstrap Modal.",
   "keywords": [
     "angular",
@@ -19,13 +19,13 @@
     "grunt": "^0.4.5",
     "grunt-angular-templates": "^0.5.7",
     "grunt-contrib-concat": "^0.5.1",
-    "grunt-contrib-cssmin": "^0.12.2",
+    "grunt-contrib-cssmin": "^0.12.3",
     "grunt-contrib-htmlmin": "^0.4.0",
     "grunt-contrib-jshint": "^0.11.2",
     "grunt-contrib-uglify": "^0.9.1",
-    "grunt-jsdoc-to-markdown": "^1.0.0",
+    "grunt-jsdoc-to-markdown": "^1.1.1",
     "grunt-ng-annotate": "^0.10.0",
     "jit-grunt": "^0.9.1",
-    "time-grunt": "^1.1.1"
+    "time-grunt": "^1.2.0"
   }
 }
