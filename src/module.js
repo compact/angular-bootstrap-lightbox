@@ -1,9 +1,7 @@
 /**
  * @namespace bootstrapLightbox
  */
-angular.module('bootstrapLightbox', [
-  'ui.bootstrap'
-]);
+angular.module('bootstrapLightbox', []);
 
 // optional dependencies
 try {
