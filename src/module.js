@@ -16,3 +16,8 @@ try {
   angular.module('ngTouch');
   angular.module('bootstrapLightbox').requires.push('ngTouch');
 } catch (e) {}
+
+try {
+  angular.module('videosharing-embed');
+  angular.module('bootstrapLightbox').requires.push('videosharing-embed');
+} catch (e) {}

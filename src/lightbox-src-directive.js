@@ -98,10 +98,19 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
         });
       };
 
-      // load the new image whenever the attr changes
+      // load the new image and/or resize the video whenever the attr changes
       scope.$watch(function () {
         return attrs.lightboxSrc;
       }, function (src) {
+
+        if (src && angular.isDefined(attrs.lightboxVideo)){
+          imageWidth = 16;
+          imageHeight = 9;
+          // resize the video element and the containing modal
+          resize();
+          return;
+        }
+
         // blank the image before resizing the element; see
         // http://stackoverflow.com/questions/5775469
         element[0].src = '//:0';
