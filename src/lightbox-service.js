@@ -14,6 +14,20 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
 
   /**
    * @param    {*} image An element in the array of images.
+   * @return   {Boolean} true if medium is video
+   * @type     {Function}
+   * @name     isVideo
+   * @memberOf bootstrapLightbox.Lightbox
+   */
+  this.isVideo = function (image) {
+    if (image.type){
+      return image.type === 'vid' || image.type === 'video';
+    }
+    return false;
+  };
+
+  /**
+   * @param    {*} image An element in the array of images.
    * @return   {String} The URL of the given image.
    * @type     {Function}
    * @name     getImageUrl
@@ -142,6 +156,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     // defined above
     Lightbox.templateUrl = this.templateUrl;
     Lightbox.getImageUrl = this.getImageUrl;
+    Lightbox.isVideo = this.isVideo;
     Lightbox.getImageCaption = this.getImageCaption;
     Lightbox.calculateImageDimensionLimits = this.calculateImageDimensionLimits;
     Lightbox.calculateModalDimensions = this.calculateModalDimensions;
@@ -224,6 +239,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         Lightbox.index = 1;
         Lightbox.image = {};
         Lightbox.imageUrl = null;
+        Lightbox.showVideo = null;
         Lightbox.imageCaption = null;
 
         Lightbox.keyboardNavEnabled = false;
@@ -277,26 +293,35 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
           cfpLoadingBar.complete();
         }
       };
+      var medium = Lightbox.images[newIndex];
 
-      var imageUrl = Lightbox.getImageUrl(Lightbox.images[newIndex]);
+      var imageUrl = Lightbox.getImageUrl(medium);
+      Lightbox.showVideo = Lightbox.isVideo(medium);
 
-      // load the image before setting it, so everything in the view is updated
-      // at the same time; otherwise, the previous image remains while the
-      // current image is loading
-      ImageLoader.load(imageUrl).then(function () {
-        success();
+      if (Lightbox.showVideo){
+         success();
+          // set the url and caption
+          Lightbox.imageUrl = imageUrl;
+          Lightbox.imageCaption = Lightbox.getImageCaption(Lightbox.image);
+      } else {
+          // load the image before setting it, so everything in the view is updated
+          // at the same time; otherwise, the previous image remains while the
+          // current image is loading
+          ImageLoader.load(imageUrl).then(function () {
+            success();
 
-        // set the url and caption
-        Lightbox.imageUrl = imageUrl;
-        Lightbox.imageCaption = Lightbox.getImageCaption(Lightbox.image);
-      }, function () {
-        success();
+            // set the url and caption
+            Lightbox.imageUrl = imageUrl;
+            Lightbox.imageCaption = Lightbox.getImageCaption(Lightbox.image);
+          }, function () {
+            success();
 
-        // blank image
-        Lightbox.imageUrl = '//:0';
-        // use the caption to show the user an error
-        Lightbox.imageCaption = 'Failed to load image';
-      });
+            // blank image
+            Lightbox.imageUrl = '//:0';
+            // use the caption to show the user an error
+            Lightbox.imageCaption = 'Failed to load image';
+          });
+      }
     };
 
     /**

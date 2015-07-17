@@ -17,54 +17,20 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
     var maxW = dimensions.maxWidth;
     var maxH = dimensions.maxHeight;
 
-    var displayW = w;
-    var displayH = h;
+    var ratioW = maxW / w;
+    var ratioH = maxH / h;
 
-    // resize the image if it is too small
-    if (w < minW && h < minH) {
-      // the image is both too thin and short, so compare the aspect ratios to
-      // determine whether to min the width or height
-      if (w / h > maxW / maxH) {
-        displayH = minH;
-        displayW = Math.round(w * minH / h);
-      } else {
-        displayW = minW;
-        displayH = Math.round(h * minW / w);
-      }
-    } else if (w < minW) {
-      // the image is too thin
-      displayW = minW;
-      displayH = Math.round(h * minW / w);
-    } else if (h < minH) {
-      // the image is too short
-      displayH = minH;
-      displayW = Math.round(w * minH / h);
-    }
+    var zoom = Math.min(ratioW, ratioH);
 
-    // resize the image if it is too large
-    if (w > maxW && h > maxH) {
-      // the image is both too tall and wide, so compare the aspect ratios
-      // to determine whether to max the width or height
-      if (w / h > maxW / maxH) {
-        displayW = maxW;
-        displayH = Math.round(h * maxW / w);
-      } else {
-        displayH = maxH;
-        displayW = Math.round(w * maxH / h);
-      }
-    } else if (w > maxW) {
-      // the image is too wide
-      displayW = maxW;
-      displayH = Math.round(h * maxW / w);
-    } else if (h > maxH) {
-      // the image is too tall
-      displayH = maxH;
-      displayW = Math.round(w * maxH / h);
-    }
+    var zoomedW = Math.floor(w * zoom);
+    var zoomedH = Math.floor(h * zoom);
+
+    var displayW = Math.max(minW, zoomedW);  
+    var displayH = Math.max(minH, zoomedH);  
 
     return {
-      'width': displayW || 0,
-      'height': displayH || 0 // NaN is possible when dimensions.width is 0
+      'width': displayW,
+      'height': displayH
     };
   };
 
@@ -132,10 +98,19 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
         });
       };
 
-      // load the new image whenever the attr changes
+      // load the new image and/or resize the video whenever the attr changes
       scope.$watch(function () {
         return attrs.lightboxSrc;
       }, function (src) {
+
+        if (src && angular.isDefined(attrs.lightboxVideo)){
+          imageWidth = 16;
+          imageHeight = 9;
+          // resize the video element and the containing modal
+          resize();
+          return;
+        }
+
         // blank the image before resizing the element; see
         // http://stackoverflow.com/questions/5775469
         element[0].src = '//:0';

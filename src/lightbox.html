@@ -7,16 +7,16 @@
     <button class="close" aria-hidden="true" ng-click="$dismiss()">×</button>
 
     <div class="btn-group">
-      <a class="btn btn-xs btn-default" ng-click="Lightbox.prevImage()">
+      <a class="btn btn-xs btn-default" ng-click="Lightbox.prevImage()" translate>
         ‹ Previous
       </a>
 
       <a ng-href="{{Lightbox.imageUrl}}" target="_blank"
-          class="btn btn-xs btn-default" title="Open in new tab">
+          class="btn btn-xs btn-default" title="Open in new tab" translate>
         Open image in new tab
       </a>
 
-      <a class="btn btn-xs btn-default" ng-click="Lightbox.nextImage()">
+      <a class="btn btn-xs btn-default" ng-click="Lightbox.nextImage()" translate>
         Next ›
       </a>
     </div>
@@ -28,7 +28,11 @@
       <span>{{Lightbox.imageCaption}}</span>
     </div>
 
+    <!-- video, requires 'videosharing-embed' module -->
+    <div ng-if="Lightbox.showVideo" class="embed-responsive embed-responsive-16by9">
+      <embed-video lightbox-video lightbox-src="{{Lightbox.imageUrl}}" ng-href="{{Lightbox.imageUrl}}" controls="1" showinfo="0" title="0" byline="0" portrait="0" info="0" badge="0" class="embed-responsive-item"></embed-video>
+    </div>
     <!-- image -->
-    <img lightbox-src="{{Lightbox.imageUrl}}" alt="">
+    <img ng-if='!Lightbox.showVideo' lightbox-src="{{Lightbox.imageUrl}}" alt="">
   </div>
 </div>
