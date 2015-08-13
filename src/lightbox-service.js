@@ -13,6 +13,14 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
   this.templateUrl = 'lightbox.html';
 
   /**
+   * Whether images should be scaled to the maximum possible dimensions.
+   * @type     {Boolean}
+   * @name     fullScreenMode
+   * @memberOf bootstrapLightbox.Lightbox
+   */
+  this.fullScreenMode = false;
+
+  /**
    * @param    {*} image An element in the array of images.
    * @return   {Boolean} true if medium is video
    * @type     {Function}
@@ -155,6 +163,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     // set the configurable properties and methods, the defaults of which are
     // defined above
     Lightbox.templateUrl = this.templateUrl;
+    Lightbox.fullScreenMode = this.fullScreenMode;
     Lightbox.getImageUrl = this.getImageUrl;
     Lightbox.isVideo = this.isVideo;
     Lightbox.getImageCaption = this.getImageCaption;

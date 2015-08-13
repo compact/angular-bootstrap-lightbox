@@ -9,7 +9,7 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
     'ImageLoader', 'Lightbox', function ($window, ImageLoader, Lightbox) {
   // Calculate the dimensions to display the image. The max dimensions override
   // the min dimensions if they conflict.
-  var calculateImageDisplayDimensions = function (dimensions) {
+  var calculateImageDisplayDimensions = function (dimensions, fullScreenMode) {
     var w = dimensions.width;
     var h = dimensions.height;
     var minW = dimensions.minWidth;
@@ -17,20 +17,65 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
     var maxW = dimensions.maxWidth;
     var maxH = dimensions.maxHeight;
 
-    var ratioW = maxW / w;
-    var ratioH = maxH / h;
+    var displayW = w;
+    var displayH = h;
 
-    var zoom = Math.min(ratioW, ratioH);
+    if (!fullScreenMode) {
+      // resize the image if it is too small
+      if (w < minW && h < minH) {
+        // the image is both too thin and short, so compare the aspect ratios to
+        // determine whether to min the width or height
+        if (w / h > maxW / maxH) {
+          displayH = minH;
+          displayW = Math.round(w * minH / h);
+        } else {
+          displayW = minW;
+          displayH = Math.round(h * minW / w);
+        }
+      } else if (w < minW) {
+        // the image is too thin
+        displayW = minW;
+        displayH = Math.round(h * minW / w);
+      } else if (h < minH) {
+        // the image is too short
+        displayH = minH;
+        displayW = Math.round(w * minH / h);
+      }
 
-    var zoomedW = Math.floor(w * zoom);
-    var zoomedH = Math.floor(h * zoom);
+      // resize the image if it is too large
+      if (w > maxW && h > maxH) {
+        // the image is both too tall and wide, so compare the aspect ratios
+        // to determine whether to max the width or height
+        if (w / h > maxW / maxH) {
+          displayW = maxW;
+          displayH = Math.round(h * maxW / w);
+        } else {
+          displayH = maxH;
+          displayW = Math.round(w * maxH / h);
+        }
+      } else if (w > maxW) {
+        // the image is too wide
+        displayW = maxW;
+        displayH = Math.round(h * maxW / w);
+      } else if (h > maxH) {
+        // the image is too tall
+        displayH = maxH;
+        displayW = Math.round(w * maxH / h);
+      }
+    } else {
+      // full screen mode
+      var ratio = Math.min(maxW / w, maxH / h);
 
-    var displayW = Math.max(minW, zoomedW);  
-    var displayH = Math.max(minH, zoomedH);  
+      var zoomedW = Math.round(w * ratio);
+      var zoomedH = Math.round(h * ratio);
+
+      displayW = Math.max(minW, zoomedW);
+      displayH = Math.max(minH, zoomedH);
+    }
 
     return {
-      'width': displayW,
-      'height': displayH
+      'width': displayW || 0,
+      'height': displayH || 0 // NaN is possible when dimensions.width is 0
     };
   };
 
@@ -63,7 +108,8 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
             'minHeight': 1,
             'maxWidth': 3000,
             'maxHeight': 3000,
-          }, imageDimensionLimits)
+          }, imageDimensionLimits),
+          Lightbox.fullScreenMode
         );
 
         // calculate the dimensions of the modal container
