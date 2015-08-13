@@ -22,20 +22,6 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
 
   /**
    * @param    {*} image An element in the array of images.
-   * @return   {Boolean} true if medium is video
-   * @type     {Function}
-   * @name     isVideo
-   * @memberOf bootstrapLightbox.Lightbox
-   */
-  this.isVideo = function (image) {
-    if (image.type){
-      return image.type === 'vid' || image.type === 'video';
-    }
-    return false;
-  };
-
-  /**
-   * @param    {*} image An element in the array of images.
    * @return   {String} The URL of the given image.
    * @type     {Function}
    * @name     getImageUrl
@@ -135,6 +121,21 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     };
   };
 
+  /**
+   * @param    {*} image An element in the array of images.
+   * @return   {Boolean} Whether the provided element is a video.
+   * @type     {Function}
+   * @name     isVideo
+   * @memberOf bootstrapLightbox.Lightbox
+   */
+  this.isVideo = function (image) {
+    if (typeof image === 'object' && image && image.type) {
+      return image.type === 'video';
+    }
+
+    return false;
+  };
+
   this.$get = ['$document', '$injector', '$modal', '$timeout', 'ImageLoader',
       function ($document, $injector, $modal, $timeout, ImageLoader) {
     // optional dependency
@@ -165,10 +166,10 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     Lightbox.templateUrl = this.templateUrl;
     Lightbox.fullScreenMode = this.fullScreenMode;
     Lightbox.getImageUrl = this.getImageUrl;
-    Lightbox.isVideo = this.isVideo;
     Lightbox.getImageCaption = this.getImageCaption;
     Lightbox.calculateImageDimensionLimits = this.calculateImageDimensionLimits;
     Lightbox.calculateModalDimensions = this.calculateModalDimensions;
+    Lightbox.isVideo = this.isVideo;
 
     /**
      * Whether keyboard navigation is currently enabled for navigating through
