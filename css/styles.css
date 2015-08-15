@@ -1,5 +1,5 @@
 body {
-  margin: 1em;
+  margin: 1em 0;
 }
 
 a {
@@ -7,24 +7,31 @@ a {
 }
 
 nav {
-  margin-bottom: 1em;
+  margin-bottom: 2em;
 }
 
-#gallery {
+.gallery {
   padding: 0;
 }
 
-#gallery li {
+.gallery li {
   display: inline-block;
   margin: 0 1em 1em 0;
-  width: 10em;
   list-style-type: none;
   text-align: center;
 }
 
 @media (max-width: 767px) {
-  #gallery li {
-    margin: 0 0.5em 0.5em 0;
-    width: 6em;
+  .gallery li {
+    margin: 0;
   }
+}
+
+.gallery1 img {
+  width: 75px;
+  height: 75px;
+}
+
+.gallery2 img {
+  width: 6em;
 }

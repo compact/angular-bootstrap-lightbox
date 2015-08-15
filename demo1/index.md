@@ -2,27 +2,31 @@
 redirect_from: "/"
 title: "Demo 1: Basic"
 layout: demo
-script: demo1.js
+module: demo1
 ---
 
+Click on an image in the thumbnail gallery below to open the lightbox.
+
 {% raw %}
-<ul id="gallery" ng-app="demo1" ng-controller="GalleryCtrl">
+<ul class="gallery gallery1" ng-controller="GalleryCtrl">
   <li ng-repeat="image in images">
     <a ng-click="openLightboxModal($index)">
-      <img ng-src="{{image.thumbUrl}}" class="img-thumbnail" alt="">
+      <img ng-src="{{image.thumbUrl}}" class="img-thumbnail">
     </a>
   </li>
 </ul>
 {% endraw %}
 
+<small>*These images are from [NASA HQ PHOTO](https://www.flickr.com/photos/nasahqphoto/) licensed under [CC BY-NC 2.0](https://creativecommons.org/licenses/by-nc/2.0/).*</small>
+
 ### `index.html`
 
 {% highlight html %}
 {% raw %}
-<ul id="gallery" ng-app="demo1" ng-controller="GalleryCtrl">
+<ul class="gallery gallery1" ng-controller="GalleryCtrl">
   <li ng-repeat="image in images">
     <a ng-click="openLightboxModal($index)">
-      <img ng-src="{{image.thumbUrl}}" class="img-thumbnail" alt="">
+      <img ng-src="{{'\{\{image.thumbUrl\}\}'}}" class="img-thumbnail">
     </a>
   </li>
 </ul>
@@ -37,47 +41,63 @@ angular.module('demo1', ['bootstrapLightbox']);
 angular.module('demo1').controller('GalleryCtrl', function ($scope, Lightbox) {
   $scope.images = [
     {
-      'url': 'http://upload.wikimedia.org/wikipedia/commons/8/87/Waynejunction0810b.JPG',
-      'thumbUrl': 'http://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Waynejunction0810b.JPG/180px-Waynejunction0810b.JPG',
-      'caption': 'This image has dimensions 2272x1704 and the img element is scaled to fit inside the window. The left and right arrow keys are binded for navigation. The escape key for closing the modal is binded by AngularUI Bootstrap.'
+      'url': 'https://farm6.staticflickr.com/5830/20552523531_e1efec8d49_k.jpg',
+      'thumbUrl': 'https://farm6.staticflickr.com/5830/20552523531_ef720cd2f1_s.jpg',
+      'caption': 'This image has dimensions 2048x1519 and the img element is scaled to fit inside the window.'
     },
     {
-      'url': 'http://upload.wikimedia.org/wikipedia/commons/thumb/9/98/%27Grand_Canyon_with_Rainbow%27_by_Thomas_Moran%2C_1912.JPG/586px-%27Grand_Canyon_with_Rainbow%27_by_Thomas_Moran%2C_1912.JPG',
-      'thumbUrl': 'http://upload.wikimedia.org/wikipedia/commons/thumb/9/98/%27Grand_Canyon_with_Rainbow%27_by_Thomas_Moran%2C_1912.JPG/150px-%27Grand_Canyon_with_Rainbow%27_by_Thomas_Moran%2C_1912.JPG',
-      'caption': 'This image has dimensions 586x480.'
+      'url': 'https://farm8.staticflickr.com/7300/12807911134_ff56d1fb3b_b.jpg',
+      'thumbUrl': 'https://farm8.staticflickr.com/7300/12807911134_ff56d1fb3b_s.jpg'
     },
     {
-      'url': 'http://upload.wikimedia.org/wikipedia/commons/8/82/%27Right_Shoulder%2C_Arm%2C_and_Hand%27_by_Thomas_Eakins.JPG',
-      'thumbUrl': 'http://upload.wikimedia.org/wikipedia/commons/thumb/8/82/%27Right_Shoulder%2C_Arm%2C_and_Hand%27_by_Thomas_Eakins.JPG/42px-%27Right_Shoulder%2C_Arm%2C_and_Hand%27_by_Thomas_Eakins.JPG',
-      'caption': 'This image has dimensions 975x3105.'
+      'url': 'https://farm1.staticflickr.com/400/20228789791_52fb84917f_b.jpg',
+      'thumbUrl': 'https://farm1.staticflickr.com/400/20228789791_52fb84917f_s.jpg',
+      'caption': 'The left and right arrow keys are binded for navigation. The escape key for closing the modal is binded by AngularUI Bootstrap.'
     },
     {
-      'url': 'http://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/%28%2B%29-CAMP-3D-spacefill.png/50px-%28%2B%29-CAMP-3D-spacefill.png',
-      'thumbUrl': 'http://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/%28%2B%29-CAMP-3D-spacefill.png/50px-%28%2B%29-CAMP-3D-spacefill.png',
-      'caption': '50x33. The default minimum modal dimensions (400x200) apply.'
+      'url': 'https://farm1.staticflickr.com/260/20185156095_912c2714ef_b.jpg',
+      'thumbUrl': 'https://farm1.staticflickr.com/260/20185156095_912c2714ef_s.jpg'
     },
     {
-      'url': 'https://upload.wikimedia.org/wikipedia/en/4/4a/Bowen_America.png',
-      'thumbUrl': 'https://upload.wikimedia.org/wikipedia/en/thumb/4/4a/Bowen_America.png/120px-Bowen_America.png'
+      'url': 'https://farm6.staticflickr.com/5757/20359334789_57316968ed_m.jpg',
+      'thumbUrl': 'https://farm6.staticflickr.com/5757/20359334789_57316968ed_s.jpg',
+      'caption': 'Default minimum modal dimensions (400x200) apply for this image (240x95).'
     },
     {
-      'url': 'https://upload.wikimedia.org/wikipedia/en/thumb/4/49/Jaume_Mercad%C3%A9_Queralt_-_Outskirts_of_Valls_-_Google_Art_Project.jpg/907px-Jaume_Mercad%C3%A9_Queralt_-_Outskirts_of_Valls_-_Google_Art_Project.jpg',
-      'thumbUrl': 'https://upload.wikimedia.org/wikipedia/en/thumb/8/8f/Jaume_Mercad%C3%A9_Queralt_-_Landscape_in_Valls_-_Google_Art_Project.jpg/103px-Jaume_Mercad%C3%A9_Queralt_-_Landscape_in_Valls_-_Google_Art_Project.jpg'
+      'url': 'https://farm1.staticflickr.com/359/18741723375_28c89372d7_c.jpg',
+      'thumbUrl': 'https://farm1.staticflickr.com/359/18741723375_28c89372d7_s.jpg'
     },
     {
-      'url': 'https://upload.wikimedia.org/wikipedia/en/thumb/a/af/Joan_Colom_Agust%C3%AD_-_Estaci%C3%B3_de_Fran%C3%A7a_-_Google_Art_Project.jpg/1256px-Joan_Colom_Agust%C3%AD_-_Estaci%C3%B3_de_Fran%C3%A7a_-_Google_Art_Project.jpg',
-      'thumbUrl': 'https://upload.wikimedia.org/wikipedia/en/thumb/a/af/Joan_Colom_Agust%C3%AD_-_Estaci%C3%B3_de_Fran%C3%A7a_-_Google_Art_Project.jpg/120px-Joan_Colom_Agust%C3%AD_-_Estaci%C3%B3_de_Fran%C3%A7a_-_Google_Art_Project.jpg',
+      'url': 'https://farm6.staticflickr.com/5606/15425945368_6f6ae945fc.jpg',
+      'thumbUrl': 'https://farm6.staticflickr.com/5606/15425945368_6f6ae945fc_s.jpg'
+    },
+    {
+      'url': 'https://farm9.staticflickr.com/8033/8010849891_3f029d68b3_c.jpg',
+      'thumbUrl': 'https://farm9.staticflickr.com/8033/8010849891_3f029d68b3_s.jpg'
+    },
+    {
+      'url': 'https://farm1.staticflickr.com/553/18990336631_4856e7e02c_h.jpg',
+      'thumbUrl': 'https://farm1.staticflickr.com/553/18990336631_0186ac9e3e_s.jpg'
+    },
+    {
+      'url': 'https://farm9.staticflickr.com/8736/16599799789_458891e47f_h.jpg',
+      'thumbUrl': 'https://farm9.staticflickr.com/8736/16599799789_2fe489b6df_s.jpg',
       'caption': 'The next image does not exist and shows how loading errors are handled by default.'
     },
     {
       'url': '/does-not-exist.jpg',
-      'thumbUrl': 'http://upload.wikimedia.org/wikipedia/commons/0/00/404_Symbol.png'
+      'thumbUrl': '/does-not-exist.jpg',
+      'caption': 'This caption does not appear.'
     },
     {
-      'url': 'https://upload.wikimedia.org/wikipedia/en/d/dd/Nicola_Fabricatore_-_Last_Purchases_-_Google_Art_Project.jpg',
-      'thumbUrl': 'https://upload.wikimedia.org/wikipedia/en/thumb/d/dd/Nicola_Fabricatore_-_Last_Purchases_-_Google_Art_Project.jpg/120px-Nicola_Fabricatore_-_Last_Purchases_-_Google_Art_Project.jpg',
+      'url': 'https://farm9.staticflickr.com/8573/16800210195_a8af2ba1bb_h.jpg',
+      'thumbUrl': 'https://farm9.staticflickr.com/8573/16800210195_85ab79b777_s.jpg',
       'caption': 'The previous image does not exist and shows how loading errors are handled by default.'
-    }
+    },
+    {
+      'url': 'https://farm4.staticflickr.com/3870/14860034616_c0dd8cbc71_h.jpg',
+      'thumbUrl': 'https://farm4.staticflickr.com/3870/14860034616_1c941f4f06_s.jpg'
+    },
   ];
 
   $scope.openLightboxModal = function (index) {

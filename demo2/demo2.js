@@ -4,12 +4,6 @@ angular.module('demo2').config(function (LightboxProvider) {
   // set a custom template
   LightboxProvider.templateUrl = 'demo2-lightbox-modal.html';
 
-  // our images array is not in the default format, so we have to write this
-  // custom method
-  LightboxProvider.getImageUrl = function (imageUrl) {
-    return imageUrl;
-  };
-
   // set the caption of each image as its text color
   LightboxProvider.getImageCaption = function (imageUrl) {
     return '#' + imageUrl.match(/00\/(\w+)/)[1];

@@ -1,13 +1,13 @@
 ---
 title: "Demo 3: Custom lightbox controller"
 layout: demo
-script: demo3.js
+module: demo3
 ---
 
 In this example, there is no gallery. Click the button below.
 
 {% raw %}
-<div ng-app="demo3" ng-controller="AppCtrl">
+<div ng-controller="AppCtrl">
   <a ng-click="openLightboxModal(images)" class="btn btn-lg btn-success">
     Open the lightbox
   </a>
@@ -18,7 +18,7 @@ In this example, there is no gallery. Click the button below.
 
 {% highlight html %}
 {% raw %}
-<div ng-app="demo3" ng-controller="AppCtrl">
+<div ng-controller="AppCtrl">
   <a ng-click="openLightboxModal(images)" class="btn btn-lg btn-success">
     Open the lightbox
   </a>
@@ -44,7 +44,7 @@ In this example, there is no gallery. Click the button below.
 
   <!-- image -->
   <div class="lightbox-image-container">
-    <img lightbox-src="{{Lightbox.imageUrl}}" alt="">
+    <img lightbox-src="{{'\{\{Lightbox.imageUrl\}\}'}}">
   </div>
 
 </div>

@@ -1,11 +1,11 @@
 <!doctype html>
-<html>
+<html ng-app="{{page.module}}">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   <title>angular-bootstrap-lightbox {{page.title}}</title>
 
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="{{site.baseurl}}/lib/loading-bar.css">
   <link rel="stylesheet" href="{{site.baseurl}}/dist/angular-bootstrap-lightbox.min.css">
   <link rel="stylesheet" href="{{site.baseurl}}/css/pygments.css">
@@ -20,17 +20,23 @@
 <body>
   <div class="container">
     <header class="jumbotron">
-      <h1>angular-bootstrap-lightbox <small>v0.6.1</small></h1>
+      <!-- remove this container when Bootstrap v3.3.6 releases -->
+      <div class="container">
+        <h1>angular-bootstrap-lightbox <small>v0.6.1</small></h1>
 
-      <p>This is a lightbox made with AngularUI Bootstrap Modal. It can be used in any Angular app. Click on an image below to open the lightbox. View the project and instructions on <a href="https://github.com/compact/angular-bootstrap-lightbox">GitHub</a>.</p>
+        <p>This is a lightbox made with AngularUI Bootstrap Modal. It can be used in any Angular app. View the project and instructions on <a href="https://github.com/compact/angular-bootstrap-lightbox">GitHub</a>.</p>
+      </div>
     </header>
 
-    <nav>
-      <ul class="nav nav-pills">
+    <nav class="btn-group" dropdown>
+      <button id="menu-button" type="button" class="btn btn-primary" dropdown-toggle>
+        {{page.title}} <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="menu-button">
         {% assign sorted_pages = site.pages | sort: "title" %}
         {% for node in sorted_pages %}
           {% if node.title %}
-            <li {% if page.url == node.url %} class="active" {% endif %} >
+            <li role="menuitem">
               <a href="{{site.baseurl}}{{node.url}}">{{node.title}}</a>
             </li>
           {% endif %}
@@ -38,23 +44,20 @@
       </ul>
     </nav>
 
-    <section class="panel panel-default">
-      <div class="panel-body">
-
-        <!-- start demo-specific html -->
-        {{content}}
-        <!-- end demo-specific html -->
-
-      </div>
+    <section>
+      <!-- start demo-specific html -->
+      {{content}}
+      <!-- end demo-specific html -->
     </section>
   </div>
 
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-touch.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-touch.min.js"></script>
   <script src="{{site.baseurl}}/lib/ui-bootstrap-tpls.js"></script>
   <script src="{{site.baseurl}}/lib/loading-bar.js"></script>
+  <script src="{{site.baseurl}}/lib/ng-videosharing-embed.min.js"></script>
   <script src="{{site.baseurl}}/dist/angular-bootstrap-lightbox.min.js"></script>
-  <script src="{{page.script}}"></script>
+  <script src="{{page.module}}.js"></script>
 
 </body>
 </html>

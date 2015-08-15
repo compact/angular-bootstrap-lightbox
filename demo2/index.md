@@ -1,14 +1,14 @@
 ---
 title: "Demo 2: Custom lightbox template"
 layout: demo
-script: demo2.js
+module: demo2
 ---
 
 {% raw %}
-<ul id="gallery" ng-app="demo2" ng-controller="GalleryCtrl">
+<ul class="gallery gallery2" ng-controller="GalleryCtrl">
   <li ng-repeat="image in images">
     <a ng-click="Lightbox.openModal(images, $index)">
-      <img ng-src="{{image}}" class="img-circle" alt="" style="width: 6em;">
+      <img ng-src="{{image}}" class="img-circle">
     </a>
   </li>
 </ul>
@@ -18,17 +18,17 @@ script: demo2.js
 
 {% highlight html %}
 {% raw %}
-<ul id="gallery" ng-app="demo2" ng-controller="GalleryCtrl">
+<ul class="gallery gallery2" ng-controller="GalleryCtrl">
   <li ng-repeat="image in images">
     <a ng-click="Lightbox.openModal(images, $index)">
-      <img ng-src="{{image}}" class="img-circle" alt="" style="width: 6em;">
+      <img ng-src="{{'\{\{image\}\}'}}" class="img-circle">
     </a>
   </li>
 </ul>
 {% endraw %}
 {% endhighlight %}
 
-### `demo2-lightbox-modal.html`: Custom lightbox template
+### `demo2-lightbox-modal.html` (custom lightbox template)
 
 {% highlight html %}
 {% raw %}
@@ -38,12 +38,12 @@ script: demo2.js
 
   <!-- image -->
   <div class="lightbox-image-container">
-    <img lightbox-src="{{Lightbox.imageUrl}}" alt="">
+    <img lightbox-src="{{'\{\{Lightbox.imageUrl\}\}'}}">
   </div>
 
   <!-- caption -->
   <div class="alert alert-info" style="margin: 1em 0 0;">
-    The color in the image is <strong>{{Lightbox.imageCaption}}</strong>.<br>
+    The color in the image is <strong>{{'\{\{Lightbox.imageCaption\}\}'}}</strong>.<br>
     This is a custom template where we've removed the top nav and added a Bootstrap alert box. It makes the modal taller and so we have changed its height calculation.<br>
     Also, the maximum display height of the image has been increased to 1600 (instead of being dependent on the window height), thus vertical scrolling is now possible.
   </div>
@@ -60,12 +60,6 @@ angular.module('demo2', ['bootstrapLightbox']);
 angular.module('demo2').config(function (LightboxProvider) {
   // set a custom template
   LightboxProvider.templateUrl = 'demo2-lightbox-modal.html';
-
-  // our images array is not in the default format, so we have to write this
-  // custom method
-  LightboxProvider.getImageUrl = function (imageUrl) {
-    return imageUrl;
-  };
 
   // set the caption of each image as its text color
   LightboxProvider.getImageCaption = function (imageUrl) {
