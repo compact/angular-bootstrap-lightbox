@@ -28,7 +28,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
    * @memberOf bootstrapLightbox.Lightbox
    */
   this.getImageUrl = function (image) {
-    return image.url;
+    return typeof image === 'string' ? image : image.url;
   };
 
   /**

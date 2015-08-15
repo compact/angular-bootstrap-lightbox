@@ -120,24 +120,6 @@ angular.module('app').config(function (LightboxProvider) {
 });
 ```
 
-For a more specific example, if you have no captions, the array can contain strings for the urls:
-
-```js
-angular.module('app').config(function (LightboxProvider) {
-  LightboxProvider.getImageUrl = function (imageUrl) {
-    return imageUrl;
-  };
-});
-
-angular.module('app').controller('GalleryCtrl', function ($scope, Lightbox) {
-  $scope.images = ['1.jpg', '2.jpg', '3.jpg'];
-
-  $scope.openLightboxModal = function (index) {
-    Lightbox.openModal($scope.images, index);
-  };
-});
-```
-
 ### Setting different limits for the image and lightbox dimensions
 
 By default, images are scaled only if they are too large for the modal to contain without scrolling. To change this behaviour, see the [documentation](src/lightbox-service.js) of the following methods:
