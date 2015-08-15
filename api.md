@@ -1,242 +1,264 @@
 <a name="bootstrapLightbox"></a>
-#bootstrapLightbox
-**Members**
+## bootstrapLightbox : <code>object</code>
+**Kind**: global namespace  
 
-* [bootstrapLightbox](#bootstrapLightbox)
-  * [class: bootstrapLightbox.ImageLoader](#bootstrapLightbox.ImageLoader)
-    * [ImageLoader.load](#bootstrapLightbox.ImageLoader.load)
-  * [class: bootstrapLightbox.Lightbox](#bootstrapLightbox.Lightbox)
-    * [Lightbox.imageUrl](#bootstrapLightbox.Lightbox.imageUrl)
-    * [Lightbox.imageCaption](#bootstrapLightbox.Lightbox.imageCaption)
-    * [Lightbox.templateUrl](#bootstrapLightbox.Lightbox.templateUrl)
-    * [Lightbox.getImageUrl](#bootstrapLightbox.Lightbox.getImageUrl)
-    * [Lightbox.getImageCaption](#bootstrapLightbox.Lightbox.getImageCaption)
-    * [Lightbox.calculateImageDimensionLimits](#bootstrapLightbox.Lightbox.calculateImageDimensionLimits)
-    * [Lightbox.calculateModalDimensions](#bootstrapLightbox.Lightbox.calculateModalDimensions)
-    * [Lightbox.images](#bootstrapLightbox.Lightbox.images)
-    * [Lightbox.index](#bootstrapLightbox.Lightbox.index)
-    * [Lightbox.keyboardNavEnabled](#bootstrapLightbox.Lightbox.keyboardNavEnabled)
-    * [Lightbox.image](#bootstrapLightbox.Lightbox.image)
-    * [Lightbox.modalInstance](#bootstrapLightbox.Lightbox.modalInstance)
-    * [Lightbox.openModal](#bootstrapLightbox.Lightbox.openModal)
-    * [Lightbox.closeModal](#bootstrapLightbox.Lightbox.closeModal)
-    * [Lightbox.setImage](#bootstrapLightbox.Lightbox.setImage)
-    * [Lightbox.firstImage](#bootstrapLightbox.Lightbox.firstImage)
-    * [Lightbox.prevImage](#bootstrapLightbox.Lightbox.prevImage)
-    * [Lightbox.nextImage](#bootstrapLightbox.Lightbox.nextImage)
-    * [Lightbox.lastImage](#bootstrapLightbox.Lightbox.lastImage)
-    * [Lightbox.setImages](#bootstrapLightbox.Lightbox.setImages)
-  * [class: bootstrapLightbox.lightboxSrc](#bootstrapLightbox.lightboxSrc)
+* [bootstrapLightbox](#bootstrapLightbox) : <code>object</code>
+  * [.ImageLoader](#bootstrapLightbox.ImageLoader)
+    * [.load](#bootstrapLightbox.ImageLoader.load) ⇒ <code>Promise</code>
+  * [.Lightbox](#bootstrapLightbox.Lightbox)
+    * [.templateUrl](#bootstrapLightbox.Lightbox.templateUrl) : <code>String</code>
+    * [.fullScreenMode](#bootstrapLightbox.Lightbox.fullScreenMode) : <code>Boolean</code>
+    * [.getImageUrl](#bootstrapLightbox.Lightbox.getImageUrl) ⇒ <code>String</code>
+    * [.getImageCaption](#bootstrapLightbox.Lightbox.getImageCaption) ⇒ <code>String</code>
+    * [.calculateImageDimensionLimits](#bootstrapLightbox.Lightbox.calculateImageDimensionLimits) ⇒ <code>Object</code>
+    * [.calculateModalDimensions](#bootstrapLightbox.Lightbox.calculateModalDimensions) ⇒ <code>Object</code>
+    * [.isVideo](#bootstrapLightbox.Lightbox.isVideo) ⇒ <code>Boolean</code>
+    * [.images](#bootstrapLightbox.Lightbox.images) : <code>Array</code>
+    * [.index](#bootstrapLightbox.Lightbox.index) : <code>Number</code>
+    * [.keyboardNavEnabled](#bootstrapLightbox.Lightbox.keyboardNavEnabled) : <code>Boolean</code>
+    * [.image](#bootstrapLightbox.Lightbox.image) : <code>\*</code>
+    * [.modalInstance](#bootstrapLightbox.Lightbox.modalInstance) : <code>Object</code>
+    * [.imageUrl](#bootstrapLightbox.Lightbox.imageUrl) : <code>String</code>
+    * [.imageCaption](#bootstrapLightbox.Lightbox.imageCaption) : <code>String</code>
+    * [.loading](#bootstrapLightbox.Lightbox.loading) : <code>Boolean</code>
+    * [.openModal](#bootstrapLightbox.Lightbox.openModal) ⇒ <code>Object</code>
+    * [.closeModal](#bootstrapLightbox.Lightbox.closeModal) : <code>function</code>
+    * [.setImage](#bootstrapLightbox.Lightbox.setImage) : <code>function</code>
+    * [.firstImage](#bootstrapLightbox.Lightbox.firstImage) : <code>function</code>
+    * [.prevImage](#bootstrapLightbox.Lightbox.prevImage) : <code>function</code>
+    * [.nextImage](#bootstrapLightbox.Lightbox.nextImage) : <code>function</code>
+    * [.lastImage](#bootstrapLightbox.Lightbox.lastImage) : <code>function</code>
+    * [.setImages](#bootstrapLightbox.Lightbox.setImages) : <code>function</code>
+  * [.lightboxSrc](#bootstrapLightbox.lightboxSrc)
 
 <a name="bootstrapLightbox.ImageLoader"></a>
-##class: bootstrapLightbox.ImageLoader
+### bootstrapLightbox.ImageLoader
 Service for loading an image.
 
-**Members**
-
-* [class: bootstrapLightbox.ImageLoader](#bootstrapLightbox.ImageLoader)
-  * [ImageLoader.load](#bootstrapLightbox.ImageLoader.load)
-
+**Kind**: static class of <code>[bootstrapLightbox](#bootstrapLightbox)</code>  
 <a name="bootstrapLightbox.ImageLoader.load"></a>
-###ImageLoader.load
+#### ImageLoader.load ⇒ <code>Promise</code>
 Load the image at the given URL.
 
-**Params**
-
-- url `String`  
-
-**Type**: `function`  
-**Returns**: `Promise` - A $q promise that resolves when the image has loaded
+**Kind**: static property of <code>[ImageLoader](#bootstrapLightbox.ImageLoader)</code>  
+**Returns**: <code>Promise</code> - A $q promise that resolves when the image has loaded
   successfully.  
+
+| Param | Type |
+| --- | --- |
+| url | <code>String</code> | 
+
 <a name="bootstrapLightbox.Lightbox"></a>
-##class: bootstrapLightbox.Lightbox
+### bootstrapLightbox.Lightbox
 Lightbox service.
 
-**Members**
+**Kind**: static class of <code>[bootstrapLightbox](#bootstrapLightbox)</code>  
 
-* [class: bootstrapLightbox.Lightbox](#bootstrapLightbox.Lightbox)
-  * [Lightbox.imageUrl](#bootstrapLightbox.Lightbox.imageUrl)
-  * [Lightbox.imageCaption](#bootstrapLightbox.Lightbox.imageCaption)
-  * [Lightbox.templateUrl](#bootstrapLightbox.Lightbox.templateUrl)
-  * [Lightbox.getImageUrl](#bootstrapLightbox.Lightbox.getImageUrl)
-  * [Lightbox.getImageCaption](#bootstrapLightbox.Lightbox.getImageCaption)
-  * [Lightbox.calculateImageDimensionLimits](#bootstrapLightbox.Lightbox.calculateImageDimensionLimits)
-  * [Lightbox.calculateModalDimensions](#bootstrapLightbox.Lightbox.calculateModalDimensions)
-  * [Lightbox.images](#bootstrapLightbox.Lightbox.images)
-  * [Lightbox.index](#bootstrapLightbox.Lightbox.index)
-  * [Lightbox.keyboardNavEnabled](#bootstrapLightbox.Lightbox.keyboardNavEnabled)
-  * [Lightbox.image](#bootstrapLightbox.Lightbox.image)
-  * [Lightbox.modalInstance](#bootstrapLightbox.Lightbox.modalInstance)
-  * [Lightbox.openModal](#bootstrapLightbox.Lightbox.openModal)
-  * [Lightbox.closeModal](#bootstrapLightbox.Lightbox.closeModal)
-  * [Lightbox.setImage](#bootstrapLightbox.Lightbox.setImage)
-  * [Lightbox.firstImage](#bootstrapLightbox.Lightbox.firstImage)
-  * [Lightbox.prevImage](#bootstrapLightbox.Lightbox.prevImage)
-  * [Lightbox.nextImage](#bootstrapLightbox.Lightbox.nextImage)
-  * [Lightbox.lastImage](#bootstrapLightbox.Lightbox.lastImage)
-  * [Lightbox.setImages](#bootstrapLightbox.Lightbox.setImages)
+* [.Lightbox](#bootstrapLightbox.Lightbox)
+  * [.templateUrl](#bootstrapLightbox.Lightbox.templateUrl) : <code>String</code>
+  * [.fullScreenMode](#bootstrapLightbox.Lightbox.fullScreenMode) : <code>Boolean</code>
+  * [.getImageUrl](#bootstrapLightbox.Lightbox.getImageUrl) ⇒ <code>String</code>
+  * [.getImageCaption](#bootstrapLightbox.Lightbox.getImageCaption) ⇒ <code>String</code>
+  * [.calculateImageDimensionLimits](#bootstrapLightbox.Lightbox.calculateImageDimensionLimits) ⇒ <code>Object</code>
+  * [.calculateModalDimensions](#bootstrapLightbox.Lightbox.calculateModalDimensions) ⇒ <code>Object</code>
+  * [.isVideo](#bootstrapLightbox.Lightbox.isVideo) ⇒ <code>Boolean</code>
+  * [.images](#bootstrapLightbox.Lightbox.images) : <code>Array</code>
+  * [.index](#bootstrapLightbox.Lightbox.index) : <code>Number</code>
+  * [.keyboardNavEnabled](#bootstrapLightbox.Lightbox.keyboardNavEnabled) : <code>Boolean</code>
+  * [.image](#bootstrapLightbox.Lightbox.image) : <code>\*</code>
+  * [.modalInstance](#bootstrapLightbox.Lightbox.modalInstance) : <code>Object</code>
+  * [.imageUrl](#bootstrapLightbox.Lightbox.imageUrl) : <code>String</code>
+  * [.imageCaption](#bootstrapLightbox.Lightbox.imageCaption) : <code>String</code>
+  * [.loading](#bootstrapLightbox.Lightbox.loading) : <code>Boolean</code>
+  * [.openModal](#bootstrapLightbox.Lightbox.openModal) ⇒ <code>Object</code>
+  * [.closeModal](#bootstrapLightbox.Lightbox.closeModal) : <code>function</code>
+  * [.setImage](#bootstrapLightbox.Lightbox.setImage) : <code>function</code>
+  * [.firstImage](#bootstrapLightbox.Lightbox.firstImage) : <code>function</code>
+  * [.prevImage](#bootstrapLightbox.Lightbox.prevImage) : <code>function</code>
+  * [.nextImage](#bootstrapLightbox.Lightbox.nextImage) : <code>function</code>
+  * [.lastImage](#bootstrapLightbox.Lightbox.lastImage) : <code>function</code>
+  * [.setImages](#bootstrapLightbox.Lightbox.setImages) : <code>function</code>
 
+<a name="bootstrapLightbox.Lightbox.templateUrl"></a>
+#### Lightbox.templateUrl : <code>String</code>
+Template URL passed into `$modal.open()`.
+
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
+<a name="bootstrapLightbox.Lightbox.fullScreenMode"></a>
+#### Lightbox.fullScreenMode : <code>Boolean</code>
+Whether images should be scaled to the maximum possible dimensions.
+
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
+<a name="bootstrapLightbox.Lightbox.getImageUrl"></a>
+#### Lightbox.getImageUrl ⇒ <code>String</code>
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
+**Returns**: <code>String</code> - The URL of the given image.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| image | <code>\*</code> | An element in the array of images. |
+
+<a name="bootstrapLightbox.Lightbox.getImageCaption"></a>
+#### Lightbox.getImageCaption ⇒ <code>String</code>
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
+**Returns**: <code>String</code> - The caption of the given image.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| image | <code>\*</code> | An element in the array of images. |
+
+<a name="bootstrapLightbox.Lightbox.calculateImageDimensionLimits"></a>
+#### Lightbox.calculateImageDimensionLimits ⇒ <code>Object</code>
+Calculate the max and min limits to the width and height of the displayed
+  image (all are optional). The max dimensions override the min
+  dimensions if they conflict.
+
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
+**Returns**: <code>Object</code> - May optionally contain the properties `minWidth`,
+  `minHeight`, `maxWidth`, and `maxHeight`.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| dimensions | <code>Object</code> | Contains the properties `windowWidth`,   `windowHeight`, `imageWidth`, and `imageHeight`. |
+
+<a name="bootstrapLightbox.Lightbox.calculateModalDimensions"></a>
+#### Lightbox.calculateModalDimensions ⇒ <code>Object</code>
+Calculate the width and height of the modal. This method gets called
+  after the width and height of the image, as displayed inside the modal,
+  are calculated.
+
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
+**Returns**: <code>Object</code> - Must contain the properties `width` and `height`.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| dimensions | <code>Object</code> | Contains the properties `windowWidth`,   `windowHeight`, `imageDisplayWidth`, and `imageDisplayHeight`. |
+
+<a name="bootstrapLightbox.Lightbox.isVideo"></a>
+#### Lightbox.isVideo ⇒ <code>Boolean</code>
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
+**Returns**: <code>Boolean</code> - Whether the provided element is a video.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| image | <code>\*</code> | An element in the array of images. |
+
+<a name="bootstrapLightbox.Lightbox.images"></a>
+#### Lightbox.images : <code>Array</code>
+Array of all images to be shown in the lightbox (not `Image` objects).
+
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
+<a name="bootstrapLightbox.Lightbox.index"></a>
+#### Lightbox.index : <code>Number</code>
+The index in the `Lightbox.images` aray of the image that is currently
+  shown in the lightbox.
+
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
+<a name="bootstrapLightbox.Lightbox.keyboardNavEnabled"></a>
+#### Lightbox.keyboardNavEnabled : <code>Boolean</code>
+Whether keyboard navigation is currently enabled for navigating through
+  images in the lightbox.
+
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
+<a name="bootstrapLightbox.Lightbox.image"></a>
+#### Lightbox.image : <code>\*</code>
+The image currently shown in the lightbox.
+
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
+<a name="bootstrapLightbox.Lightbox.modalInstance"></a>
+#### Lightbox.modalInstance : <code>Object</code>
+The UI Bootstrap modal instance. See {@link
+  http://angular-ui.github.io/bootstrap/#/modal}.
+
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
 <a name="bootstrapLightbox.Lightbox.imageUrl"></a>
-###Lightbox.imageUrl
+#### Lightbox.imageUrl : <code>String</code>
 The URL of the current image. This is a property of the service rather
   than of `Lightbox.image` because `Lightbox.image` need not be an
   object, and besides it would be poor practice to alter the given
   objects.
 
-**Type**: `String`  
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
 <a name="bootstrapLightbox.Lightbox.imageCaption"></a>
-###Lightbox.imageCaption
+#### Lightbox.imageCaption : <code>String</code>
 The optional caption of the current image.
 
-**Type**: `String`  
-<a name="bootstrapLightbox.Lightbox.templateUrl"></a>
-###Lightbox.templateUrl
-Template URL passed into `$modal.open()`.
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
+<a name="bootstrapLightbox.Lightbox.loading"></a>
+#### Lightbox.loading : <code>Boolean</code>
+Whether an image is currently being loaded.
 
-**Type**: `String`  
-<a name="bootstrapLightbox.Lightbox.getImageUrl"></a>
-###Lightbox.getImageUrl
-**Params**
-
-- image `*` - An element in the array of images.  
-
-**Type**: `function`  
-**Returns**: `String` - The URL of the given image.  
-<a name="bootstrapLightbox.Lightbox.getImageCaption"></a>
-###Lightbox.getImageCaption
-**Params**
-
-- image `*` - An element in the array of images.  
-
-**Type**: `function`  
-**Returns**: `String` - The caption of the given image.  
-<a name="bootstrapLightbox.Lightbox.calculateImageDimensionLimits"></a>
-###Lightbox.calculateImageDimensionLimits
-Calculate the max and min limits to the width and height of the displayed
-  image (all are optional). The max dimensions override the min
-  dimensions if they conflict.
-
-**Params**
-
-- dimensions `Object` - Contains the properties `windowWidth`,
-  `windowHeight`, `imageWidth`, and `imageHeight`.  
-
-**Type**: `function`  
-**Returns**: `Object` - May optionally contain the properties `minWidth`,
-  `minHeight`, `maxWidth`, and `maxHeight`.  
-<a name="bootstrapLightbox.Lightbox.calculateModalDimensions"></a>
-###Lightbox.calculateModalDimensions
-Calculate the width and height of the modal. This method gets called
-  after the width and height of the image, as displayed inside the modal,
-  are calculated.
-
-**Params**
-
-- dimensions `Object` - Contains the properties `windowWidth`,
-  `windowHeight`, `imageDisplayWidth`, and `imageDisplayHeight`.  
-
-**Type**: `function`  
-**Returns**: `Object` - Must contain the properties `width` and `height`.  
-<a name="bootstrapLightbox.Lightbox.images"></a>
-###Lightbox.images
-Array of all images to be shown in the lightbox (not `Image` objects).
-
-**Type**: `Array`  
-<a name="bootstrapLightbox.Lightbox.index"></a>
-###Lightbox.index
-The index in the `Lightbox.images` aray of the image that is currently
-  shown in the lightbox.
-
-**Type**: `Number`  
-<a name="bootstrapLightbox.Lightbox.keyboardNavEnabled"></a>
-###Lightbox.keyboardNavEnabled
-Whether keyboard navigation is currently enabled for navigating through
-  images in the lightbox.
-
-**Type**: `Boolean`  
-<a name="bootstrapLightbox.Lightbox.image"></a>
-###Lightbox.image
-The image currently shown in the lightbox.
-
-**Type**: `*`  
-<a name="bootstrapLightbox.Lightbox.modalInstance"></a>
-###Lightbox.modalInstance
-The UI Bootstrap modal instance. See ` `.
-
-**Type**: `Object`  
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
 <a name="bootstrapLightbox.Lightbox.openModal"></a>
-###Lightbox.openModal
+#### Lightbox.openModal ⇒ <code>Object</code>
 Open the lightbox modal.
 
-**Params**
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
+**Returns**: <code>Object</code> - The created UI Bootstrap modal instance.  
 
-- newImages `Array` - An array of images. Each image may be of
-  any type.  
-- newIndex `Number` - The index in `newImages` to set as the
-  current image.  
+| Param | Type | Description |
+| --- | --- | --- |
+| newImages | <code>Array</code> | An array of images. Each image may be of   any type. |
+| newIndex | <code>Number</code> | The index in `newImages` to set as the   current image. |
 
-**Type**: `function`  
-**Returns**: `Object` - The created UI Bootstrap modal instance.  
 <a name="bootstrapLightbox.Lightbox.closeModal"></a>
-###Lightbox.closeModal
+#### Lightbox.closeModal : <code>function</code>
 Close the lightbox modal.
 
-**Params**
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
 
-- result `*` - This argument can be useful if the modal promise
-  gets handler(s) attached to it.  
+| Param | Type | Description |
+| --- | --- | --- |
+| result | <code>\*</code> | This argument can be useful if the modal promise   gets handler(s) attached to it. |
 
-**Type**: `function`  
 <a name="bootstrapLightbox.Lightbox.setImage"></a>
-###Lightbox.setImage
+#### Lightbox.setImage : <code>function</code>
 This method can be used in all methods which navigate/change the
   current image.
 
-**Params**
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
 
-- newIndex `Number` - The index in the array of images to set as
-  the new current image.  
+| Param | Type | Description |
+| --- | --- | --- |
+| newIndex | <code>Number</code> | The index in the array of images to set as   the new current image. |
 
-**Type**: `function`  
 <a name="bootstrapLightbox.Lightbox.firstImage"></a>
-###Lightbox.firstImage
+#### Lightbox.firstImage : <code>function</code>
 Navigate to the first image.
 
-**Type**: `function`  
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
 <a name="bootstrapLightbox.Lightbox.prevImage"></a>
-###Lightbox.prevImage
+#### Lightbox.prevImage : <code>function</code>
 Navigate to the previous image.
 
-**Type**: `function`  
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
 <a name="bootstrapLightbox.Lightbox.nextImage"></a>
-###Lightbox.nextImage
+#### Lightbox.nextImage : <code>function</code>
 Navigate to the next image.
 
-**Type**: `function`  
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
 <a name="bootstrapLightbox.Lightbox.lastImage"></a>
-###Lightbox.lastImage
+#### Lightbox.lastImage : <code>function</code>
 Navigate to the last image.
 
-**Type**: `function`  
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
 <a name="bootstrapLightbox.Lightbox.setImages"></a>
-###Lightbox.setImages
+#### Lightbox.setImages : <code>function</code>
 Call this method to set both the array of images and the current image
   (based on the current index). A use case is when the image collection
   gets changed dynamically in some way while the lightbox is still
   open.
 
-**Params**
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
 
-- newImages `Array` - The new array of images.  
+| Param | Type | Description |
+| --- | --- | --- |
+| newImages | <code>Array</code> | The new array of images. |
 
-**Type**: `function`  
 <a name="bootstrapLightbox.lightboxSrc"></a>
-##class: bootstrapLightbox.lightboxSrc
+### bootstrapLightbox.lightboxSrc
 This attribute directive is used in an `<img>` element in the
   modal template in place of `src`. It handles resizing both the `<img>`
   element and its relevant parent elements within the modal.
 
-**Members**
-
-* [class: bootstrapLightbox.lightboxSrc](#bootstrapLightbox.lightboxSrc)
-
+**Kind**: static class of <code>[bootstrapLightbox](#bootstrapLightbox)</code>  
