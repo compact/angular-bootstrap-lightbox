@@ -288,6 +288,14 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      */
 
     /**
+     * Whether an image is currently being loaded.
+     * @type     {Boolean}
+     * @name     loading
+     * @memberOf bootstrapLightbox.Lightbox
+     */
+    Lightbox.loading = false;
+
+    /**
      * Open the lightbox modal.
      * @param    {Array}  newImages An array of images. Each image may be of
      *   any type.
@@ -361,7 +369,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         throw 'Invalid image.';
       }
 
-      // start the loading bar
+      // update the loading flag and start the loading bar
+      Lightbox.loading = true;
       if (cfpLoadingBar) {
         cfpLoadingBar.start();
       }
@@ -370,7 +379,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       var imageUrl = Lightbox.getImageUrl(image);
 
       var success = function (properties) {
-        // update service properties
+        // update service properties for the image
         properties = properties || {};
         Lightbox.index = properties.index || newIndex;
         Lightbox.image = properties.image || image;
@@ -378,7 +387,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         Lightbox.imageCaption = properties.imageCaption ||
           Lightbox.getImageCaption(image);
 
-        // complete the loading bar
+        // restore the loading flag and complete the loading bar
+        Lightbox.loading = false;
         if (cfpLoadingBar) {
           cfpLoadingBar.complete();
         }
