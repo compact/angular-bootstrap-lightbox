@@ -2,8 +2,7 @@
  * @namespace bootstrapLightbox
  */
 angular.module('bootstrapLightbox', [
-  'ui.bootstrap.modal',
-  'ui.bootstrap.tpls' // templates
+  'ui.bootstrap'
 ]);
 
 // optional dependencies
