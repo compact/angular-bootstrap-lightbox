@@ -249,7 +249,6 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         Lightbox.index = 1;
         Lightbox.image = {};
         Lightbox.imageUrl = null;
-        Lightbox.showVideo = null;
         Lightbox.imageCaption = null;
 
         Lightbox.keyboardNavEnabled = false;
@@ -294,43 +293,39 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         cfpLoadingBar.start();
       }
 
-      var success = function () {
-        Lightbox.index = newIndex;
-        Lightbox.image = Lightbox.images[Lightbox.index];
+      var image = Lightbox.images[newIndex];
+      var imageUrl = Lightbox.getImageUrl(image);
+
+      var success = function (properties) {
+        // update service properties
+        properties = properties || {};
+        Lightbox.index = properties.index || newIndex;
+        Lightbox.image = properties.image || image;
+        Lightbox.imageUrl = properties.imageUrl || imageUrl;
+        Lightbox.imageCaption = properties.imageCaption ||
+          Lightbox.getImageCaption(image);
 
         // complete the loading bar
         if (cfpLoadingBar) {
           cfpLoadingBar.complete();
         }
       };
-      var medium = Lightbox.images[newIndex];
 
-      var imageUrl = Lightbox.getImageUrl(medium);
-      Lightbox.showVideo = Lightbox.isVideo(medium);
-
-      if (Lightbox.showVideo){
-         success();
-          // set the url and caption
-          Lightbox.imageUrl = imageUrl;
-          Lightbox.imageCaption = Lightbox.getImageCaption(Lightbox.image);
-      } else {
-          // load the image before setting it, so everything in the view is updated
-          // at the same time; otherwise, the previous image remains while the
-          // current image is loading
-          ImageLoader.load(imageUrl).then(function () {
-            success();
-
-            // set the url and caption
-            Lightbox.imageUrl = imageUrl;
-            Lightbox.imageCaption = Lightbox.getImageCaption(Lightbox.image);
-          }, function () {
-            success();
-
-            // blank image
-            Lightbox.imageUrl = '//:0';
+      if (!Lightbox.isVideo(image)) {
+        // load the image before setting it, so everything in the view is
+        // updated at the same time; otherwise, the previous image remains while
+        // the current image is loading
+        ImageLoader.load(imageUrl).then(function () {
+          success();
+        }, function () {
+          success({
+            'imageUrl': '//:0', // blank image
             // use the caption to show the user an error
-            Lightbox.imageCaption = 'Failed to load image';
+            'imageCaption': 'Failed to load image'
           });
+        });
+      } else {
+        success();
       }
     };
 

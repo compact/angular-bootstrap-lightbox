@@ -28,11 +28,19 @@
       <span>{{Lightbox.imageCaption}}</span>
     </div>
 
-    <!-- video, requires 'videosharing-embed' module -->
-    <div ng-if="Lightbox.showVideo" class="embed-responsive embed-responsive-16by9">
-      <embed-video lightbox-video lightbox-src="{{Lightbox.imageUrl}}" ng-href="{{Lightbox.imageUrl}}" controls="1" showinfo="0" title="0" byline="0" portrait="0" info="0" badge="0" class="embed-responsive-item"></embed-video>
-    </div>
     <!-- image -->
-    <img ng-if='!Lightbox.showVideo' lightbox-src="{{Lightbox.imageUrl}}" alt="">
+    <img ng-if="!Lightbox.isVideo(Lightbox.image)"
+        lightbox-src="{{Lightbox.imageUrl}}">
+
+    <!-- video, requires `videosharing-embed` module -->
+    <div ng-if="Lightbox.isVideo(Lightbox.image)"
+        class="embed-responsive embed-responsive-16by9">
+      <embed-video iframe-id="lightbox-video"
+          lightbox-src="{{Lightbox.imageUrl}}"
+          ng-href="{{Lightbox.imageUrl}}"
+          class="embed-responsive-item">
+        <a ng-href="{{Lightbox.imageUrl}}">Watch video</a>
+      </embed-video>
+    </div>
   </div>
 </div>

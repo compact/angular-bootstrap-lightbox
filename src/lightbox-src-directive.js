@@ -148,30 +148,32 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
       scope.$watch(function () {
         return attrs.lightboxSrc;
       }, function (src) {
-
-        if (src && angular.isDefined(attrs.lightboxVideo)){
-          imageWidth = 16;
-          imageHeight = 9;
-          // resize the video element and the containing modal
-          resize();
-          return;
-        }
-
         // blank the image before resizing the element; see
         // http://stackoverflow.com/questions/5775469
         element[0].src = '//:0';
 
-        ImageLoader.load(src).then(function (image) {
-          // these variables must be set before resize(), as they are used in it
-          imageWidth = image.naturalWidth;
-          imageHeight = image.naturalHeight;
+        if (!Lightbox.isVideo(Lightbox.image)) { // image
+          ImageLoader.load(src).then(function (image) {
+            // these variables must be set before resize(), as they are used in
+            // it
+            imageWidth = image.naturalWidth;
+            imageHeight = image.naturalHeight;
 
-          // resize the img element and the containing modal
+            // resize the img element and the containing modal
+            resize();
+
+            // show the image
+            element[0].src = src;
+          });
+        } else { // video
+          // default dimensions
+          imageWidth = 1280;
+          imageHeight = 720;
+
+          // resize the video element and the containing modal
           resize();
-
-          // show the image
-          element[0].src = src;
-        });
+          return;
+        }
       });
 
       // resize the image and modal whenever the window gets resized

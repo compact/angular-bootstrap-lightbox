@@ -2,8 +2,7 @@
  * @namespace bootstrapLightbox
  */
 angular.module('bootstrapLightbox', [
-  'ui.bootstrap.modal',
-  'ui.bootstrap.tpls' // templates
+  'ui.bootstrap'
 ]);
 
 // optional dependencies
@@ -25,7 +24,7 @@ angular.module('bootstrapLightbox').run(['$templateCache', function($templateCac
   'use strict';
 
   $templateCache.put('lightbox.html',
-    "<div class=modal-body ng-swipe-left=Lightbox.nextImage() ng-swipe-right=Lightbox.prevImage()><div class=lightbox-nav><button class=close aria-hidden=true ng-click=$dismiss()>×</button><div class=btn-group><a class=\"btn btn-xs btn-default\" ng-click=Lightbox.prevImage()>‹ Previous</a> <a ng-href={{Lightbox.imageUrl}} target=_blank class=\"btn btn-xs btn-default\" title=\"Open in new tab\">Open image in new tab</a> <a class=\"btn btn-xs btn-default\" ng-click=Lightbox.nextImage()>Next ›</a></div></div><div class=lightbox-image-container><div class=lightbox-image-caption><span>{{Lightbox.imageCaption}}</span></div><div ng-if=Lightbox.showVideo class=\"embed-responsive embed-responsive-16by9\"><embed-video lightbox-video lightbox-src={{Lightbox.imageUrl}} ng-href={{Lightbox.imageUrl}} controls showinfo=0 title=0 byline=0 portrait=0 info=0 badge=0 class=embed-responsive-item></embed-video></div><img ng-if=!Lightbox.showVideo lightbox-src={{Lightbox.imageUrl}} alt=\"\"></div></div>"
+    "<div class=modal-body ng-swipe-left=Lightbox.nextImage() ng-swipe-right=Lightbox.prevImage()><div class=lightbox-nav><button class=close aria-hidden=true ng-click=$dismiss()>×</button><div class=btn-group><a class=\"btn btn-xs btn-default\" ng-click=Lightbox.prevImage()>‹ Previous</a> <a ng-href={{Lightbox.imageUrl}} target=_blank class=\"btn btn-xs btn-default\" title=\"Open in new tab\">Open image in new tab</a> <a class=\"btn btn-xs btn-default\" ng-click=Lightbox.nextImage()>Next ›</a></div></div><div class=lightbox-image-container><div class=lightbox-image-caption><span>{{Lightbox.imageCaption}}</span></div><img ng-if=!Lightbox.isVideo(Lightbox.image) lightbox-src={{Lightbox.imageUrl}}> <div ng-if=Lightbox.isVideo(Lightbox.image) class=\"embed-responsive embed-responsive-16by9\"><embed-video iframe-id=lightbox-video lightbox-src={{Lightbox.imageUrl}} ng-href={{Lightbox.imageUrl}} class=embed-responsive-item><a ng-href={{Lightbox.imageUrl}}>Watch video</a></embed-video></div></div></div>"
   );
 
 }]);
@@ -323,7 +322,6 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         Lightbox.index = 1;
         Lightbox.image = {};
         Lightbox.imageUrl = null;
-        Lightbox.showVideo = null;
         Lightbox.imageCaption = null;
 
         Lightbox.keyboardNavEnabled = false;
@@ -368,43 +366,39 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
         cfpLoadingBar.start();
       }
 
-      var success = function () {
-        Lightbox.index = newIndex;
-        Lightbox.image = Lightbox.images[Lightbox.index];
+      var image = Lightbox.images[newIndex];
+      var imageUrl = Lightbox.getImageUrl(image);
+
+      var success = function (properties) {
+        // update service properties
+        properties = properties || {};
+        Lightbox.index = properties.index || newIndex;
+        Lightbox.image = properties.image || image;
+        Lightbox.imageUrl = properties.imageUrl || imageUrl;
+        Lightbox.imageCaption = properties.imageCaption ||
+          Lightbox.getImageCaption(image);
 
         // complete the loading bar
         if (cfpLoadingBar) {
           cfpLoadingBar.complete();
         }
       };
-      var medium = Lightbox.images[newIndex];
 
-      var imageUrl = Lightbox.getImageUrl(medium);
-      Lightbox.showVideo = Lightbox.isVideo(medium);
-
-      if (Lightbox.showVideo){
-         success();
-          // set the url and caption
-          Lightbox.imageUrl = imageUrl;
-          Lightbox.imageCaption = Lightbox.getImageCaption(Lightbox.image);
-      } else {
-          // load the image before setting it, so everything in the view is updated
-          // at the same time; otherwise, the previous image remains while the
-          // current image is loading
-          ImageLoader.load(imageUrl).then(function () {
-            success();
-
-            // set the url and caption
-            Lightbox.imageUrl = imageUrl;
-            Lightbox.imageCaption = Lightbox.getImageCaption(Lightbox.image);
-          }, function () {
-            success();
-
-            // blank image
-            Lightbox.imageUrl = '//:0';
+      if (!Lightbox.isVideo(image)) {
+        // load the image before setting it, so everything in the view is
+        // updated at the same time; otherwise, the previous image remains while
+        // the current image is loading
+        ImageLoader.load(imageUrl).then(function () {
+          success();
+        }, function () {
+          success({
+            'imageUrl': '//:0', // blank image
             // use the caption to show the user an error
-            Lightbox.imageCaption = 'Failed to load image';
+            'imageCaption': 'Failed to load image'
           });
+        });
+      } else {
+        success();
       }
     };
 
@@ -649,30 +643,32 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
       scope.$watch(function () {
         return attrs.lightboxSrc;
       }, function (src) {
-
-        if (src && angular.isDefined(attrs.lightboxVideo)){
-          imageWidth = 16;
-          imageHeight = 9;
-          // resize the video element and the containing modal
-          resize();
-          return;
-        }
-
         // blank the image before resizing the element; see
         // http://stackoverflow.com/questions/5775469
         element[0].src = '//:0';
 
-        ImageLoader.load(src).then(function (image) {
-          // these variables must be set before resize(), as they are used in it
-          imageWidth = image.naturalWidth;
-          imageHeight = image.naturalHeight;
+        if (!Lightbox.isVideo(Lightbox.image)) { // image
+          ImageLoader.load(src).then(function (image) {
+            // these variables must be set before resize(), as they are used in
+            // it
+            imageWidth = image.naturalWidth;
+            imageHeight = image.naturalHeight;
 
-          // resize the img element and the containing modal
+            // resize the img element and the containing modal
+            resize();
+
+            // show the image
+            element[0].src = src;
+          });
+        } else { // video
+          // default dimensions
+          imageWidth = 1280;
+          imageHeight = 720;
+
+          // resize the video element and the containing modal
           resize();
-
-          // show the image
-          element[0].src = src;
-        });
+          return;
+        }
       });
 
       // resize the image and modal whenever the window gets resized
