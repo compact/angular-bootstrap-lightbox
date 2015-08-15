@@ -42,8 +42,9 @@ Large images are scaled to fit inside the window. An optional image caption over
 
 5. Optional dependencies:
 
-  * To enable swipe navigation in the lightbox, include the [ngTouch](https://docs.angularjs.org/api/ngTouch) script before `angular-bootstrap-lightbox.js`.
-  * To show a loading bar while an image is loading, include the [angular-loading-bar](https://github.com/chieffancypants/angular-loading-bar) script before `angular-bootstrap-lightbox.js`.
+  * To enable swipe navigation in the lightbox, include the [ngTouch](https://docs.angularjs.org/api/ngTouch) script.
+  * To show a loading bar while an image is loading, include the [angular-loading-bar](https://github.com/chieffancypants/angular-loading-bar) script.
+  * For video support, include the [ng-videosharing-embed](https://github.com/erost/ng-videosharing-embed) script.
 
 ## Basic example
 
@@ -120,9 +121,24 @@ angular.module('app').config(function (LightboxProvider) {
 });
 ```
 
-### Setting different limits for the image and lightbox dimensions
+### Image and modal scaling
 
-By default, images are scaled only if they are too large for the modal to contain without scrolling. To change this behaviour, see the [documentation](src/lightbox-service.js) of the following methods:
+By default, images are scaled only if they are too large for the modal to contain without scrolling.
 
-* `LightboxProvider.calculateImageDimensionLimits`
-* `LightboxProvider.calculateModalDimensions`
+If you want all images to be scaled to the maximum possible dimensions, update the `Lightbox.fullScreenMode` boolean:
+
+```js
+angular.module('app').config(function (LightboxProvider) {
+  LightboxProvider.fullScreenMode = true;
+});
+```
+
+For more custom behaviour, see the [documentation](src/lightbox-service.js) of the methods `calculateImageDimensionLimits` and `calculateModalDimensions`.
+
+### Videos
+
+The `ng-videosharing-embed` library is used for embedding videos if it is included in your app. You can use another video library by changing the template.
+
+An element in the array of 'images' is considered a video if it is an object with a `type` property having the value `video` (see the [demo](http://compact.github.io/angular-bootstrap-lightbox/demo5/index.html)). To change this, write your own `LightboxProvider.isVideo` method.
+
+For now, the maximum video dimensions are fixed at 1280x720.
