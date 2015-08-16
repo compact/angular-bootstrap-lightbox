@@ -10,10 +10,6 @@ Large images are scaled to fit inside the window. An optional image caption over
 
 [Demos](http://compact.github.io/angular-bootstrap-lightbox/)
 
-## API documentation
-
-[API documentation](api.md) of the services and directive in the Angular module
-
 ## Setup
 
 1. Install in one of the following ways:
@@ -142,3 +138,35 @@ An element in the array of 'images' is considered a video if it is an object wit
 By default, a video is embedded directly if its url ends in `.mp4`, `.ogg`, or `.webm`. Every other url is considered a video from an external sharing service (such as YouTube). To change this check, edit the `LightboxProvider.isSharedVideo` method. The `ng-videosharing-embed` library is used for embedding shared videos if it is included in your app. You can use another video library by changing the template.
 
 For now, the maximum video dimensions are fixed at 1280x720 (16:9).
+
+## Development
+
+* [API documentation](api.md) of the services and directive in the Angular module
+
+* Setup:
+
+  ```sh
+  npm install
+  bower install
+  ```
+
+* Build:
+
+  ```sh
+  grunt
+  ```
+
+* Generate docs:
+
+  ```sh
+  grunt jsdoc2md
+  ```
+
+* Serve the GitHub Pages:
+
+  ```sh
+  git checkout gh-pages
+  git checkout master -- dist/angular-bootstrap-lightbox.min.js dist/angular-bootstrap-lightbox.min.css
+  bundle install
+  bundle exec jekyll serve
+  ```
