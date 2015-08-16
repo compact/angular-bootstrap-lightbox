@@ -32,12 +32,22 @@
     <img ng-if="!Lightbox.isVideo(Lightbox.image)"
         lightbox-src="{{Lightbox.imageUrl}}">
 
-    <!-- video, requires `videosharing-embed` module -->
+    <!-- video -->
     <div ng-if="Lightbox.isVideo(Lightbox.image)"
         class="embed-responsive embed-responsive-16by9">
-      <embed-video iframe-id="lightbox-video"
+      <!-- video file embedded directly -->
+      <video ng-if="!Lightbox.isSharedVideo(Lightbox.image)"
+          lightbox-src="{{Lightbox.imageUrl}}"
+          controls
+          autoplay="true">
+      </video>
+
+      <!-- video embedded with an external service using
+           `ng-videosharing-embed` -->
+      <embed-video ng-if="Lightbox.isSharedVideo(Lightbox.image)"
           lightbox-src="{{Lightbox.imageUrl}}"
           ng-href="{{Lightbox.imageUrl}}"
+          iframe-id="lightbox-video"
           class="embed-responsive-item">
         <a ng-href="{{Lightbox.imageUrl}}">Watch video</a>
       </embed-video>

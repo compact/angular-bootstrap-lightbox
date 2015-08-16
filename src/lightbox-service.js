@@ -136,6 +136,20 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     return false;
   };
 
+  /**
+   * @param    {*} image An element in the array of images.
+   * @return   {Boolean} Whether the provided element is a video that is to be
+   *   embedded with an external service like YouTube. By default, this is
+   *   determined by the url not ending in `.mp4`, `.ogg`, or `.webm`.
+   * @type     {Function}
+   * @name     isSharedVideo
+   * @memberOf bootstrapLightbox.Lightbox
+   */
+  this.isSharedVideo = function (image) {
+    return this.isVideo(image) &&
+      !this.getImageUrl(image).match(/\.(mp4|ogg|webm)$/);
+  };
+
   this.$get = ['$document', '$injector', '$modal', '$timeout', 'ImageLoader',
       function ($document, $injector, $modal, $timeout, ImageLoader) {
     // optional dependency
@@ -170,6 +184,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     Lightbox.calculateImageDimensionLimits = this.calculateImageDimensionLimits;
     Lightbox.calculateModalDimensions = this.calculateModalDimensions;
     Lightbox.isVideo = this.isVideo;
+    Lightbox.isSharedVideo = this.isSharedVideo;
 
     /**
      * Whether keyboard navigation is currently enabled for navigating through

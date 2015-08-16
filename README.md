@@ -137,8 +137,8 @@ For more custom behaviour, see the [documentation](src/lightbox-service.js) of t
 
 ### Videos
 
-The `ng-videosharing-embed` library is used for embedding videos if it is included in your app. You can use another video library by changing the template.
-
 An element in the array of 'images' is considered a video if it is an object with a `type` property having the value `video` (see the [demo](http://compact.github.io/angular-bootstrap-lightbox/demo5/index.html)). To change this, write your own `LightboxProvider.isVideo` method.
 
-For now, the maximum video dimensions are fixed at 1280x720.
+By default, a video is embedded directly if its url ends in `.mp4`, `.ogg`, or `.webm`. Every other url is considered a video from an external sharing service (such as YouTube). To change this check, edit the `LightboxProvider.isSharedVideo` method. The `ng-videosharing-embed` library is used for embedding shared videos if it is included in your app. You can use another video library by changing the template.
+
+For now, the maximum video dimensions are fixed at 1280x720 (16:9).

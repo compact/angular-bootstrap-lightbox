@@ -148,11 +148,11 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
       scope.$watch(function () {
         return attrs.lightboxSrc;
       }, function (src) {
-        // blank the image before resizing the element; see
-        // http://stackoverflow.com/questions/5775469
-        element[0].src = '//:0';
-
         if (!Lightbox.isVideo(Lightbox.image)) { // image
+          // blank the image before resizing the element; see
+          // http://stackoverflow.com/questions/5775469
+          element[0].src = '//:0';
+
           ImageLoader.load(src).then(function (image) {
             // these variables must be set before resize(), as they are used in
             // it
@@ -178,7 +178,9 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
 
           // resize the video element and the containing modal
           resize();
-          return;
+
+          // the src attribute applies to `<video>` and not `<embed-video>`
+          element[0].src = src;
         }
       });
 

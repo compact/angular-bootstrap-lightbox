@@ -24,7 +24,7 @@ angular.module('bootstrapLightbox').run(['$templateCache', function($templateCac
   'use strict';
 
   $templateCache.put('lightbox.html',
-    "<div class=modal-body ng-swipe-left=Lightbox.nextImage() ng-swipe-right=Lightbox.prevImage()><div class=lightbox-nav><button class=close aria-hidden=true ng-click=$dismiss()>×</button><div class=btn-group><a class=\"btn btn-xs btn-default\" ng-click=Lightbox.prevImage()>‹ Previous</a> <a ng-href={{Lightbox.imageUrl}} target=_blank class=\"btn btn-xs btn-default\" title=\"Open in new tab\">Open image in new tab</a> <a class=\"btn btn-xs btn-default\" ng-click=Lightbox.nextImage()>Next ›</a></div></div><div class=lightbox-image-container><div class=lightbox-image-caption><span>{{Lightbox.imageCaption}}</span></div><img ng-if=!Lightbox.isVideo(Lightbox.image) lightbox-src={{Lightbox.imageUrl}}> <div ng-if=Lightbox.isVideo(Lightbox.image) class=\"embed-responsive embed-responsive-16by9\"><embed-video iframe-id=lightbox-video lightbox-src={{Lightbox.imageUrl}} ng-href={{Lightbox.imageUrl}} class=embed-responsive-item><a ng-href={{Lightbox.imageUrl}}>Watch video</a></embed-video></div></div></div>"
+    "<div class=modal-body ng-swipe-left=Lightbox.nextImage() ng-swipe-right=Lightbox.prevImage()><div class=lightbox-nav><button class=close aria-hidden=true ng-click=$dismiss()>×</button><div class=btn-group><a class=\"btn btn-xs btn-default\" ng-click=Lightbox.prevImage()>‹ Previous</a> <a ng-href={{Lightbox.imageUrl}} target=_blank class=\"btn btn-xs btn-default\" title=\"Open in new tab\">Open image in new tab</a> <a class=\"btn btn-xs btn-default\" ng-click=Lightbox.nextImage()>Next ›</a></div></div><div class=lightbox-image-container><div class=lightbox-image-caption><span>{{Lightbox.imageCaption}}</span></div><img ng-if=!Lightbox.isVideo(Lightbox.image) lightbox-src={{Lightbox.imageUrl}}> <div ng-if=Lightbox.isVideo(Lightbox.image) class=\"embed-responsive embed-responsive-16by9\"><video ng-if=!Lightbox.isSharedVideo(Lightbox.image) lightbox-src={{Lightbox.imageUrl}} controls autoplay></video><embed-video ng-if=Lightbox.isSharedVideo(Lightbox.image) lightbox-src={{Lightbox.imageUrl}} ng-href={{Lightbox.imageUrl}} iframe-id=lightbox-video class=embed-responsive-item><a ng-href={{Lightbox.imageUrl}}>Watch video</a></embed-video></div></div></div>"
   );
 
 }]);
@@ -209,6 +209,20 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     return false;
   };
 
+  /**
+   * @param    {*} image An element in the array of images.
+   * @return   {Boolean} Whether the provided element is a video that is to be
+   *   embedded with an external service like YouTube. By default, this is
+   *   determined by the url not ending in `.mp4`, `.ogg`, or `.webm`.
+   * @type     {Function}
+   * @name     isSharedVideo
+   * @memberOf bootstrapLightbox.Lightbox
+   */
+  this.isSharedVideo = function (image) {
+    return this.isVideo(image) &&
+      !this.getImageUrl(image).match(/\.(mp4|ogg|webm)$/);
+  };
+
   this.$get = ['$document', '$injector', '$modal', '$timeout', 'ImageLoader',
       function ($document, $injector, $modal, $timeout, ImageLoader) {
     // optional dependency
@@ -243,6 +257,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     Lightbox.calculateImageDimensionLimits = this.calculateImageDimensionLimits;
     Lightbox.calculateModalDimensions = this.calculateModalDimensions;
     Lightbox.isVideo = this.isVideo;
+    Lightbox.isSharedVideo = this.isSharedVideo;
 
     /**
      * Whether keyboard navigation is currently enabled for navigating through
@@ -653,11 +668,11 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
       scope.$watch(function () {
         return attrs.lightboxSrc;
       }, function (src) {
-        // blank the image before resizing the element; see
-        // http://stackoverflow.com/questions/5775469
-        element[0].src = '//:0';
-
         if (!Lightbox.isVideo(Lightbox.image)) { // image
+          // blank the image before resizing the element; see
+          // http://stackoverflow.com/questions/5775469
+          element[0].src = '//:0';
+
           ImageLoader.load(src).then(function (image) {
             // these variables must be set before resize(), as they are used in
             // it
@@ -683,7 +698,9 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
 
           // resize the video element and the containing modal
           resize();
-          return;
+
+          // the src attribute applies to `<video>` and not `<embed-video>`
+          element[0].src = src;
         }
       });
 
