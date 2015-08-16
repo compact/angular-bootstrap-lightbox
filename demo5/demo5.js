@@ -4,6 +4,11 @@ angular.module('demo5').controller('GalleryCtrl', function ($scope, Lightbox) {
   $scope.images = [
     {
       'type': 'video',
+      'url': 'http://cdn2.streamable.com/video/tore.webm',
+      'thumbUrl': 'http://cdn2.streamable.com/image/tore.jpg'
+    },
+    {
+      'type': 'video',
       'url': 'https://www.youtube.com/watch?v=N7TkK2joi4I',
       'thumbUrl': 'https://i.ytimg.com/vi/N7TkK2joi4I/1.jpg'
     },

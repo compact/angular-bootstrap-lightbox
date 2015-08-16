@@ -4,8 +4,10 @@ layout: demo
 module: demo5
 ---
 
+The first item is a WebM that gets embedded directly. The second and fourth items are YouTube videos that get embedded using the [ng-videosharing-embed](https://github.com/erost/ng-videosharing-embed) library. See the [readme](https://github.com/compact/angular-bootstrap-lightbox#videos) for details.
+
 {% raw %}
-<ul class="gallery" ng-controller="GalleryCtrl">
+<ul class="gallery gallery5" ng-controller="GalleryCtrl">
   <li ng-repeat="image in images">
     <a ng-click="Lightbox.openModal(images, $index)">
       <img ng-src="{{image.thumbUrl}}" class="img-thumbnail">
@@ -18,7 +20,7 @@ module: demo5
 
 {% highlight html %}
 {% raw %}
-<ul class="gallery" ng-controller="GalleryCtrl">
+<ul class="gallery gallery5" ng-controller="GalleryCtrl">
   <li ng-repeat="image in images">
     <a ng-click="Lightbox.openModal(images, $index)">
       <img ng-src="{{'\{\{image.thumbUrl\}\}'}}" class="img-thumbnail">
