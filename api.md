@@ -13,6 +13,7 @@
     * [.calculateImageDimensionLimits](#bootstrapLightbox.Lightbox.calculateImageDimensionLimits) ⇒ <code>Object</code>
     * [.calculateModalDimensions](#bootstrapLightbox.Lightbox.calculateModalDimensions) ⇒ <code>Object</code>
     * [.isVideo](#bootstrapLightbox.Lightbox.isVideo) ⇒ <code>Boolean</code>
+    * [.isSharedVideo](#bootstrapLightbox.Lightbox.isSharedVideo) ⇒ <code>Boolean</code>
     * [.images](#bootstrapLightbox.Lightbox.images) : <code>Array</code>
     * [.index](#bootstrapLightbox.Lightbox.index) : <code>Number</code>
     * [.keyboardNavEnabled](#bootstrapLightbox.Lightbox.keyboardNavEnabled) : <code>Boolean</code>
@@ -62,6 +63,7 @@ Lightbox service.
   * [.calculateImageDimensionLimits](#bootstrapLightbox.Lightbox.calculateImageDimensionLimits) ⇒ <code>Object</code>
   * [.calculateModalDimensions](#bootstrapLightbox.Lightbox.calculateModalDimensions) ⇒ <code>Object</code>
   * [.isVideo](#bootstrapLightbox.Lightbox.isVideo) ⇒ <code>Boolean</code>
+  * [.isSharedVideo](#bootstrapLightbox.Lightbox.isSharedVideo) ⇒ <code>Boolean</code>
   * [.images](#bootstrapLightbox.Lightbox.images) : <code>Array</code>
   * [.index](#bootstrapLightbox.Lightbox.index) : <code>Number</code>
   * [.keyboardNavEnabled](#bootstrapLightbox.Lightbox.keyboardNavEnabled) : <code>Boolean</code>
@@ -143,6 +145,17 @@ Calculate the width and height of the modal. This method gets called
 | --- | --- | --- |
 | image | <code>\*</code> | An element in the array of images. |
 
+<a name="bootstrapLightbox.Lightbox.isSharedVideo"></a>
+#### Lightbox.isSharedVideo ⇒ <code>Boolean</code>
+**Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
+**Returns**: <code>Boolean</code> - Whether the provided element is a video that is to be
+  embedded with an external service like YouTube. By default, this is
+  determined by the url not ending in `.mp4`, `.ogg`, or `.webm`.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| image | <code>\*</code> | An element in the array of images. |
+
 <a name="bootstrapLightbox.Lightbox.images"></a>
 #### Lightbox.images : <code>Array</code>
 Array of all images to be shown in the lightbox (not `Image` objects).
@@ -200,6 +213,7 @@ Open the lightbox modal.
 | --- | --- | --- |
 | newImages | <code>Array</code> | An array of images. Each image may be of   any type. |
 | newIndex | <code>Number</code> | The index in `newImages` to set as the   current image. |
+| modalParams | <code>Object</code> | Custom params for the angular UI   bootstrap modal (in $modal.open()). |
 
 <a name="bootstrapLightbox.Lightbox.closeModal"></a>
 #### Lightbox.closeModal : <code>function</code>
