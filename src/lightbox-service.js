@@ -243,17 +243,19 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      *   any type.
      * @param    {Number} newIndex  The index in `newImages` to set as the
      *   current image.
+     * @param    {Object} modalParams  Custom params for the angular UI
+     *   bootstrap modal (in $modal.open()).
      * @return   {Object} The created UI Bootstrap modal instance.
      * @type     {Function}
      * @name     openModal
      * @memberOf bootstrapLightbox.Lightbox
      */
-    Lightbox.openModal = function (newImages, newIndex) {
+    Lightbox.openModal = function (newImages, newIndex, modalParams) {
       Lightbox.images = newImages;
       Lightbox.setImage(newIndex);
 
       // store the modal instance so we can close it manually if we need to
-      Lightbox.modalInstance = $modal.open({
+      Lightbox.modalInstance = $modal.open(angular.extend({
         'templateUrl': Lightbox.templateUrl,
         'controller': ['$scope', function ($scope) {
           // $scope is the modal scope, a child of $rootScope
@@ -262,7 +264,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
           Lightbox.keyboardNavEnabled = true;
         }],
         'windowClass': 'lightbox-modal'
-      });
+      }, modalParams || {}));
 
       // modal close handler
       Lightbox.modalInstance.result['finally'](function () {
