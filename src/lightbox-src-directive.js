@@ -153,7 +153,8 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
           // http://stackoverflow.com/questions/5775469
           element[0].src = '//:0';
 
-          ImageLoader.load(src).then(function (image) {
+          if(src){
+            ImageLoader.load(src).then(function (image) {
             // these variables must be set before resize(), as they are used in
             // it
             imageWidth = image.naturalWidth;
