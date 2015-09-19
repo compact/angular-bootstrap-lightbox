@@ -164,13 +164,20 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
 
             // show the image
             element[0].src = src;
-          }, function () {
-            imageWidth = 0;
-            imageHeight = 0;
+            }, function () {
+              imageWidth = 0;
+              imageHeight = 0;
 
-            // resize the img element even if loading fails
-            resize();
-          });
+              // resize the img element even if loading fails
+              resize();
+            });
+          } else {
+              imageWidth = 0;
+              imageHeight = 0;
+
+              // resize the empty img element
+              resize();
+          }
         } else { // video
           // default dimensions
           imageWidth = 1280;
