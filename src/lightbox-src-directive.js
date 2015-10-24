@@ -79,6 +79,11 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
     };
   };
 
+  // format the given dimension for passing into the `css()` method of `jqLite`
+  var formatDimension = function (dimension) {
+    return typeof dimension === 'number' ? dimension + 'px' : dimension;
+  };
+
   // the dimensions of the image
   var imageWidth = 0;
   var imageHeight = 0;
@@ -131,7 +136,7 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
         angular.element(
           document.querySelector('.lightbox-modal .modal-dialog')
         ).css({
-          'width': modalDimensions.width + 'px'
+          'width': formatDimension(modalDimensions.width)
         });
 
         // .modal-content has no width specified; if we set the width on
@@ -140,7 +145,7 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
         angular.element(
           document.querySelector('.lightbox-modal .modal-content')
         ).css({
-          'height': modalDimensions.height + 'px'
+          'height': formatDimension(modalDimensions.height)
         });
       };
 
