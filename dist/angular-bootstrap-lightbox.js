@@ -24,7 +24,7 @@ angular.module('bootstrapLightbox').run(['$templateCache', function($templateCac
   'use strict';
 
   $templateCache.put('lightbox.html',
-    "<div class=modal-body ng-swipe-left=Lightbox.nextImage() ng-swipe-right=Lightbox.prevImage()><div class=lightbox-nav><button class=close aria-hidden=true ng-click=$dismiss()>×</button><div class=btn-group ng-if=\"Lightbox.images.length > 1\"><a class=\"btn btn-xs btn-default\" ng-click=Lightbox.prevImage()>‹ Previous</a> <a ng-href={{Lightbox.imageUrl}} target=_blank class=\"btn btn-xs btn-default\" title=\"Open in new tab\">Open image in new tab</a> <a class=\"btn btn-xs btn-default\" ng-click=Lightbox.nextImage()>Next ›</a></div></div><div class=lightbox-image-container><div class=lightbox-image-caption><span>{{Lightbox.imageCaption}}</span></div><img ng-if=!Lightbox.isVideo(Lightbox.image) lightbox-src={{Lightbox.imageUrl}}> <div ng-if=Lightbox.isVideo(Lightbox.image) class=\"embed-responsive embed-responsive-16by9\"><video ng-if=!Lightbox.isSharedVideo(Lightbox.image) lightbox-src={{Lightbox.imageUrl}} controls autoplay></video><embed-video ng-if=Lightbox.isSharedVideo(Lightbox.image) lightbox-src={{Lightbox.imageUrl}} ng-href={{Lightbox.imageUrl}} iframe-id=lightbox-video class=embed-responsive-item><a ng-href={{Lightbox.imageUrl}}>Watch video</a></embed-video></div></div></div>"
+    "<div class=modal-body ng-swipe-left=Lightbox.nextImage() ng-swipe-right=Lightbox.prevImage()><div class=lightbox-nav><button class=close aria-hidden=true ng-click=$dismiss()>×</button><div class=btn-group ng-if=\"Lightbox.images.length > 1\"><a class=\"btn btn-xs btn-default\" ng-click=Lightbox.prevImage()>‹ Previous</a> <a ng-href={{Lightbox.imageUrl}} target=_blank class=\"btn btn-xs btn-default\" title=\"Open in new tab\">Open image in new tab</a> <a class=\"btn btn-xs btn-default\" ng-click=Lightbox.nextImage()>Next ›</a></div></div><div class=lightbox-image-container><div class=lightbox-image-caption><span>{{Lightbox.imageCaption}}</span></div><img ng-if=!Lightbox.isVideo(Lightbox.image) lightbox-src={{Lightbox.imageUrl}}><div ng-if=Lightbox.isVideo(Lightbox.image) class=\"embed-responsive embed-responsive-16by9\"><video ng-if=!Lightbox.isSharedVideo(Lightbox.image) lightbox-src={{Lightbox.imageUrl}} controls autoplay></video><embed-video ng-if=Lightbox.isSharedVideo(Lightbox.image) lightbox-src={{Lightbox.imageUrl}} ng-href={{Lightbox.imageUrl}} iframe-id=lightbox-video class=embed-responsive-item><a ng-href={{Lightbox.imageUrl}}>Watch video</a></embed-video></div></div></div>"
   );
 
 }]);
@@ -78,7 +78,7 @@ angular.module('bootstrapLightbox').service('ImageLoader', ['$q',
  */
 angular.module('bootstrapLightbox').provider('Lightbox', function () {
   /**
-   * Template URL passed into `$modal.open()`.
+   * Template URL passed into `$uibModal.open()`.
    * @type     {String}
    * @name     templateUrl
    * @memberOf bootstrapLightbox.Lightbox
@@ -223,8 +223,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       !this.getImageUrl(image).match(/\.(mp4|ogg|webm)$/);
   };
 
-  this.$get = ['$document', '$injector', '$modal', '$timeout', 'ImageLoader',
-      function ($document, $injector, $modal, $timeout, ImageLoader) {
+  this.$get = ['$document', '$injector', '$uibModal', '$timeout', 'ImageLoader',
+      function ($document, $injector, $uibModal, $timeout, ImageLoader) {
     // optional dependency
     var cfpLoadingBar = $injector.has('cfpLoadingBar') ?
       $injector.get('cfpLoadingBar'): null;
@@ -317,7 +317,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      * @param    {Number} newIndex  The index in `newImages` to set as the
      *   current image.
      * @param    {Object} modalParams  Custom params for the angular UI
-     *   bootstrap modal (in $modal.open()).
+     *   bootstrap modal (in $uibModal.open()).
      * @return   {Object} The created UI Bootstrap modal instance.
      * @type     {Function}
      * @name     openModal
@@ -328,7 +328,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       Lightbox.setImage(newIndex);
 
       // store the modal instance so we can close it manually if we need to
-      Lightbox.modalInstance = $modal.open(angular.extend({
+      Lightbox.modalInstance = $uibModal.open(angular.extend({
         'templateUrl': Lightbox.templateUrl,
         'controller': ['$scope', function ($scope) {
           // $scope is the modal scope, a child of $rootScope

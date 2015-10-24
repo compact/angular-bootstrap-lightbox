@@ -1,6 +1,6 @@
 # angular-bootstrap-lightbox
 
-This lightbox displays images using an [AngularUI Bootstrap Modal](http://angular-ui.github.io/bootstrap/#/modal).
+This lightbox displays images using an [AngularUI Bootstrap Modal](http://angular-ui.github.io/bootstrap/#/modal) (v0.14).
 
 When the lightbox is opened, navigating to the previous/next image can be achieved by clicking buttons above the image, clicking the left/right arrow keys, or swiping to the left/right (optional with ngTouch). The escape key for closing the modal is automatically binded by AngularUI Bootstrap.
 
@@ -21,13 +21,13 @@ Large images are scaled to fit inside the window. An optional image caption over
 2. Include the stylesheet in your app:
 
   ```html
-  <link rel="stylesheet" href="bower_components/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.css">
+  <link rel="stylesheet" href="angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.css">
   ```
 
 3. Include the script in your app:
 
   ```html
-  <script src="bower_components/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.js"></script>
+  <script src="angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.js"></script>
   ```
 
 4. The Angular module is named `bootstrapLightbox`. Add it as a dependency to your module:

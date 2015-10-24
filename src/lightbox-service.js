@@ -5,7 +5,7 @@
  */
 angular.module('bootstrapLightbox').provider('Lightbox', function () {
   /**
-   * Template URL passed into `$modal.open()`.
+   * Template URL passed into `$uibModal.open()`.
    * @type     {String}
    * @name     templateUrl
    * @memberOf bootstrapLightbox.Lightbox
@@ -150,8 +150,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       !this.getImageUrl(image).match(/\.(mp4|ogg|webm)$/);
   };
 
-  this.$get = ['$document', '$injector', '$modal', '$timeout', 'ImageLoader',
-      function ($document, $injector, $modal, $timeout, ImageLoader) {
+  this.$get = ['$document', '$injector', '$uibModal', '$timeout', 'ImageLoader',
+      function ($document, $injector, $uibModal, $timeout, ImageLoader) {
     // optional dependency
     var cfpLoadingBar = $injector.has('cfpLoadingBar') ?
       $injector.get('cfpLoadingBar'): null;
@@ -244,7 +244,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      * @param    {Number} newIndex  The index in `newImages` to set as the
      *   current image.
      * @param    {Object} modalParams  Custom params for the angular UI
-     *   bootstrap modal (in $modal.open()).
+     *   bootstrap modal (in $uibModal.open()).
      * @return   {Object} The created UI Bootstrap modal instance.
      * @type     {Function}
      * @name     openModal
@@ -255,7 +255,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       Lightbox.setImage(newIndex);
 
       // store the modal instance so we can close it manually if we need to
-      Lightbox.modalInstance = $modal.open(angular.extend({
+      Lightbox.modalInstance = $uibModal.open(angular.extend({
         'templateUrl': Lightbox.templateUrl,
         'controller': ['$scope', function ($scope) {
           // $scope is the modal scope, a child of $rootScope
