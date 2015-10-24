@@ -28,8 +28,9 @@
       </div>
     </header>
 
-    <nav class="btn-group" dropdown>
-      <button id="menu-button" type="button" class="btn btn-primary" dropdown-toggle>
+    <nav class="btn-group" uib-dropdown>
+      <button id="menu-button" type="button" class="btn btn-primary"
+          uib-dropdown-toggle>
         {{page.title}} <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="menu-button">
@@ -51,8 +52,8 @@
     </section>
   </div>
 
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-touch.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-touch.min.js"></script>
   <script src="{{site.baseurl}}/lib/ui-bootstrap-tpls.js"></script>
   <script src="{{site.baseurl}}/lib/loading-bar.js"></script>
   <script src="{{site.baseurl}}/lib/ng-videosharing-embed.min.js"></script>
