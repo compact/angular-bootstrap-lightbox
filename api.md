@@ -83,7 +83,7 @@ Lightbox service.
 
 <a name="bootstrapLightbox.Lightbox.templateUrl"></a>
 #### Lightbox.templateUrl : <code>String</code>
-Template URL passed into `$modal.open()`.
+Template URL passed into `$uibModal.open()`.
 
 **Kind**: static property of <code>[Lightbox](#bootstrapLightbox.Lightbox)</code>  
 <a name="bootstrapLightbox.Lightbox.fullScreenMode"></a>
@@ -213,7 +213,7 @@ Open the lightbox modal.
 | --- | --- | --- |
 | newImages | <code>Array</code> | An array of images. Each image may be of   any type. |
 | newIndex | <code>Number</code> | The index in `newImages` to set as the   current image. |
-| modalParams | <code>Object</code> | Custom params for the angular UI   bootstrap modal (in $modal.open()). |
+| modalParams | <code>Object</code> | Custom params for the angular UI   bootstrap modal (in $uibModal.open()). |
 
 <a name="bootstrapLightbox.Lightbox.closeModal"></a>
 #### Lightbox.closeModal : <code>function</code>
