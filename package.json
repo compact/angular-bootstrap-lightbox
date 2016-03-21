@@ -1,6 +1,6 @@
 {
   "name": "angular-bootstrap-lightbox",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "An AngularJS lightbox built using UI Bootstrap Modal.",
   "keywords": [
     "angular",

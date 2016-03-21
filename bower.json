@@ -1,6 +1,6 @@
 {
   "name": "angular-bootstrap-lightbox",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "main": [
     "dist/angular-bootstrap-lightbox.js",
     "dist/angular-bootstrap-lightbox.css"
@@ -13,9 +13,10 @@
   ],
   "dependencies": {
     "angular": "^1.4.7",
-    "angular-bootstrap": "^0.14.3"
+    "angular-bootstrap": "~1.2.4"
   },
   "devDependencies": {
+    "bootstrap":"~3.3.6",
     "angular-loading-bar": "^0.8.0",
     "angular-touch": "^1.4.7",
     "ng-videosharing-embed": "^0.3.4"
