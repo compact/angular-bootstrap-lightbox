@@ -346,7 +346,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
           success();
         }, function () {
           success({
-            'imageUrl': '//:0', // blank image
+            'imageUrl': '#', // blank image
             // use the caption to show the user an error
             'imageCaption': 'Failed to load image'
           });

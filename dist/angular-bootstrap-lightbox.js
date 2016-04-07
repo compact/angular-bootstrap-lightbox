@@ -419,7 +419,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
           success();
         }, function () {
           success({
-            'imageUrl': '//:0', // blank image
+            'imageUrl': '#', // blank image
             // use the caption to show the user an error
             'imageCaption': 'Failed to load image'
           });
@@ -675,29 +675,39 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
       scope.$watch(function () {
         return attrs.lightboxSrc;
       }, function (src) {
+        // do nothing if there's no image
+        if (!Lightbox.image) {
+          return;
+        }
+
         if (!Lightbox.isVideo(Lightbox.image)) { // image
-          // blank the image before resizing the element; see
-          // http://stackoverflow.com/questions/5775469
-          element[0].src = '//:0';
+          // blank the image before resizing the element
+          element[0].src = '#';
 
-          ImageLoader.load(src).then(function (image) {
-            // these variables must be set before resize(), as they are used in
-            // it
-            imageWidth = image.naturalWidth;
-            imageHeight = image.naturalHeight;
-
-            // resize the img element and the containing modal
-            resize();
-
-            // show the image
-            element[0].src = src;
-          }, function () {
+          // handle failure to load the image
+          var failure = function () {
             imageWidth = 0;
             imageHeight = 0;
 
-            // resize the img element even if loading fails
             resize();
-          });
+          };
+
+          if (src) {
+            ImageLoader.load(src).then(function (image) {
+              // these variables must be set before resize(), as they are used
+              // in it
+              imageWidth = image.naturalWidth;
+              imageHeight = image.naturalHeight;
+
+              // resize the img element and the containing modal
+              resize();
+
+              // show the image
+              element[0].src = src;
+            }, failure);
+          } else {
+            failure();
+          }
         } else { // video
           // default dimensions
           imageWidth = 1280;

@@ -153,36 +153,38 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
       scope.$watch(function () {
         return attrs.lightboxSrc;
       }, function (src) {
+        // do nothing if there's no image
+        if (!Lightbox.image) {
+          return;
+        }
+
         if (!Lightbox.isVideo(Lightbox.image)) { // image
-          // blank the image before resizing the element; see
-          // http://stackoverflow.com/questions/5775469
-          element[0].src = '//:0';
+          // blank the image before resizing the element
+          element[0].src = '#';
 
-          if(src){
-            ImageLoader.load(src).then(function (image) {
-            // these variables must be set before resize(), as they are used in
-            // it
-            imageWidth = image.naturalWidth;
-            imageHeight = image.naturalHeight;
+          // handle failure to load the image
+          var failure = function () {
+            imageWidth = 0;
+            imageHeight = 0;
 
-            // resize the img element and the containing modal
             resize();
+          };
 
-            // show the image
-            element[0].src = src;
-            }, function () {
-              imageWidth = 0;
-              imageHeight = 0;
+          if (src) {
+            ImageLoader.load(src).then(function (image) {
+              // these variables must be set before resize(), as they are used
+              // in it
+              imageWidth = image.naturalWidth;
+              imageHeight = image.naturalHeight;
 
-              // resize the img element even if loading fails
+              // resize the img element and the containing modal
               resize();
-            });
+
+              // show the image
+              element[0].src = src;
+            }, failure);
           } else {
-              imageWidth = 0;
-              imageHeight = 0;
-
-              // resize the empty img element
-              resize();
+            failure();
           }
         } else { // video
           // default dimensions
