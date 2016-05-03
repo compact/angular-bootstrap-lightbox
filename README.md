@@ -8,7 +8,7 @@ Large images are scaled to fit inside the window. An optional image caption over
 
 ## Demos
 
-[Demos](http://compact.github.io/angular-bootstrap-lightbox/)
+[Demos](http://compact.github.io/angular-bootstrap-lightbox/) / [Plunker](http://plnkr.co/edit/pEXXDYLl0NtkqupEXaJK?p=preview)
 
 ## Setup
 
