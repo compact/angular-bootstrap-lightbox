@@ -267,7 +267,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       }, modalParams || {}));
 
       // modal close handler
-      Lightbox.modalInstance.result['finally'](function () {
+      Lightbox.modalInstance.result.then(function () {
         // prevent the lightbox from flickering from the old image when it gets
         // opened again
         Lightbox.images = [];
