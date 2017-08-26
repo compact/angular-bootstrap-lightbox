@@ -92,8 +92,17 @@ If you make your own template and save it at `lightbox.html`, no further code is
 
 ```js
 angular.module('app').config(function (LightboxProvider) {
-  // set a custom template
+  // set a custom template path
   LightboxProvider.templateUrl = 'path/to/your-template.html';
+});
+```
+
+Alternatively, you can set an inline template in the provider:
+
+```js
+angular.module('app').config(function (LightboxProvider) {
+  // set a custom template
+  LightboxProvider.template = '<h2>Customized</h2><img lightbox-src="{{Lightbox.imageUrl}}"><h2>lightbox</h2>';
 });
 ```
 
