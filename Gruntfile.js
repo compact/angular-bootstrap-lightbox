@@ -9,6 +9,17 @@ module.exports = function (grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
+  let jsFiles = [
+    'src/module.js',
+    '.tmp/templates.js',
+    'src/image-loader-service.js',
+    'src/lightbox-service.js',
+    'src/lightbox-src-directive.js'
+  ];
+  let cssFiles = [
+    'src/<%= library.name %>.css',
+  ];
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     library: grunt.file.readJSON('bower.json'),
@@ -17,19 +28,11 @@ module.exports = function (grunt) {
         separator: ''
       },
       library: {
-        src: [
-          'src/module.js',
-          '.tmp/templates.js',
-          'src/image-loader-service.js',
-          'src/lightbox-service.js',
-          'src/lightbox-src-directive.js'
-        ],
+        src: jsFiles,
         dest: 'dist/<%= library.name %>.js'
       },
       css: {
-        src: [
-          'src/<%= library.name %>.css',
-        ],
+        src: cssFiles,
         dest: 'dist/<%= library.name %>.css'
       }
     },
@@ -91,6 +94,12 @@ module.exports = function (grunt) {
         dest: 'api.md'
       }
     },
+    watch: {
+      dev: {
+        files: jsFiles.concat(cssFiles),
+        tasks: ['default']
+      }
+    }
   });
 
   grunt.registerTask('default', [

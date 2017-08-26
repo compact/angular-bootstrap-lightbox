@@ -156,6 +156,12 @@ For now, the maximum video dimensions are fixed at 1280x720 (16:9).
   grunt
   ```
 
+* Watch source files and build automatically on changes:
+
+  ```sh
+  grunt watch
+  ```
+
 * Generate docs:
 
   ```sh
