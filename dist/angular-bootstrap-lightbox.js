@@ -86,6 +86,14 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
   this.templateUrl = 'lightbox.html';
 
   /**
+   * Inline template string passed into `$uibModal.open()` . If set, overrides `templateUrl`.
+   * @type     {String}
+   * @name     template
+   * @memberOf bootstrapLightbox.Lightbox
+   */
+  this.template = null;
+
+  /**
    * Whether images should be scaled to the maximum possible dimensions.
    * @type     {Boolean}
    * @name     fullScreenMode
@@ -251,6 +259,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     // set the configurable properties and methods, the defaults of which are
     // defined above
     Lightbox.templateUrl = this.templateUrl;
+    Lightbox.template = this.template;
     Lightbox.fullScreenMode = this.fullScreenMode;
     Lightbox.getImageUrl = this.getImageUrl;
     Lightbox.getImageCaption = this.getImageCaption;
@@ -327,17 +336,27 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       Lightbox.images = newImages;
       Lightbox.setImage(newIndex);
 
-      // store the modal instance so we can close it manually if we need to
-      Lightbox.modalInstance = $uibModal.open(angular.extend({
-        'templateUrl': Lightbox.templateUrl,
-        'controller': ['$scope', function ($scope) {
-          // $scope is the modal scope, a child of $rootScope
-          $scope.Lightbox = Lightbox;
+      var templateConfig = {};
+      if (Lightbox.template !== null){
+        templateConfig.template = Lightbox.template;
+      } else {
+        templateConfig.templateUrl = Lightbox.templateUrl;
+      }
 
-          Lightbox.keyboardNavEnabled = true;
-        }],
-        'windowClass': 'lightbox-modal'
-      }, modalParams || {}));
+      // store the modal instance so we can close it manually if we need to
+      Lightbox.modalInstance = $uibModal.open(angular.extend(
+        templateConfig,
+        {
+          'controller': ['$scope', function ($scope) {
+            // $scope is the modal scope, a child of $rootScope
+            $scope.Lightbox = Lightbox;
+
+            Lightbox.keyboardNavEnabled = true;
+          }],
+          'windowClass': 'lightbox-modal'
+        },
+        modalParams || {}
+      ));
 
       // modal close handler
       Lightbox.modalInstance.result['finally'](function () {
