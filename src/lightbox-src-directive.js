@@ -181,7 +181,7 @@ angular.module('bootstrapLightbox').directive('lightboxSrc', ['$window',
               resize();
 
               // show the image
-              element[0].src = src;
+              element[0].src = image.src;
             }, failure);
           } else {
             failure();
