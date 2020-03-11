@@ -48,7 +48,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
    *   dimensions if they conflict.
    * @param    {Object} dimensions Contains the properties `windowWidth`,
    *   `windowHeight`, `imageWidth`, and `imageHeight`.
-   * @return   {Object} May optionally contain the properties `minWidth`,
+   * @return   {!Object} May optionally contain the properties `minWidth`,
    *   `minHeight`, `maxWidth`, and `maxHeight`.
    * @type     {Function}
    * @name     calculateImageDimensionLimits
@@ -86,7 +86,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
    *   are calculated.
    * @param    {Object} dimensions Contains the properties `windowWidth`,
    *   `windowHeight`, `imageDisplayWidth`, and `imageDisplayHeight`.
-   * @return   {Object} Must contain the properties `width` and `height`.
+   * @return   {!Object} Must contain the properties `width` and `height`.
    * @type     {Function}
    * @name     calculateModalDimensions
    * @memberOf bootstrapLightbox.Lightbox
@@ -123,7 +123,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
 
   /**
    * @param    {*} image An element in the array of images.
-   * @return   {Boolean} Whether the provided element is a video.
+   * @return   {boolean} Whether the provided element is a video.
    * @type     {Function}
    * @name     isVideo
    * @memberOf bootstrapLightbox.Lightbox
@@ -245,7 +245,7 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
      *   current image.
      * @param    {Object} modalParams  Custom params for the angular UI
      *   bootstrap modal (in $uibModal.open()).
-     * @return   {Object} The created UI Bootstrap modal instance.
+     * @return   {!Object} The created UI Bootstrap modal instance.
      * @type     {Function}
      * @name     openModal
      * @memberOf bootstrapLightbox.Lightbox
